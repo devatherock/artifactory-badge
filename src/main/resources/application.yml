@@ -1,0 +1,24 @@
+micronaut:
+  application:
+    name: artifactory-badge
+  caches:
+    layers-cache:
+      expire-after-write: 30m
+      expire-after-access: 10m
+      maximum-size: 10000
+    size-cache:
+      expire-after-write: 30m
+      expire-after-access: 10m
+      maximum-size: 10000
+    pulls-cache:
+      expire-after-write: 30m
+      expire-after-access: 10m
+      maximum-size: 10000
+  router:
+    static-resources:
+      swagger:
+        paths: classpath:META-INF/swagger
+        mapping: /swagger/**
+      swagger-ui:
+        paths: classpath:META-INF/swagger/views/swagger-ui
+        mapping: /swagger-ui/**

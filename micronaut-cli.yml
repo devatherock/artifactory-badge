@@ -1,0 +1,5 @@
+profile: service
+defaultPackage: io.github.devatherock
+---
+testFramework: junit
+sourceLanguage: java

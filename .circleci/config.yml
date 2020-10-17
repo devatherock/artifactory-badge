@@ -1,0 +1,98 @@
+slack_image: &slack_image
+  docker:
+    - image: devatherock/simple-slack:0.4.0
+      auth:
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
+
+orbs:
+  docker: circleci/docker@1.5.0
+  gradle: circleci/gradle@2.2.0
+
+work_directory: &work_directory
+  working_directory: ~/artifactory-badge
+
+resource_class: &resource_class
+  resource_class: small
+  
+executors:
+  jdk-executor:
+    docker:
+      - image: cimg/openjdk:11.0
+        auth:
+          username: $DOCKER_USERNAME
+          password: $DOCKER_PASSWORD
+    <<: *resource_class
+    <<: *work_directory
+    environment:
+      # To generate swagger UI
+      JAVA_TOOL_OPTIONS: '-Dmicronaut.openapi.views.spec=swagger-ui.enabled=true,swagger-ui.theme=flattop'
+
+version: 2.1
+jobs:
+  notify_success:
+    <<: *slack_image
+    <<: *resource_class
+    environment:
+      TEXT: "Success: {{.CircleBuildUrl}} by {{.CircleUsername}}"
+    steps:
+      - run: /bin/simpleslack -c "#33ad7f" || true
+  notify_failure:
+    <<: *slack_image
+    <<: *resource_class
+    environment:
+      TEXT: "Failure: {{.CircleBuildUrl}} by {{.CircleUsername}}"
+    steps:
+      - run:
+          name: Failure notification
+          command: /bin/simpleslack -c "#a1040c" || true
+          when: on_fail
+
+workflows:
+  version: 2.1
+  build_publish:
+    jobs:
+      - gradle/run:
+          executor: jdk-executor
+          context:
+            - docker-credentials
+          filters:
+            branches:
+              only: master
+          post-steps:
+            - persist_to_workspace:
+                root: ~/artifactory-badge
+                paths:
+                  - build
+      - docker/publish:
+          executor: jdk-executor
+          context:
+            - docker-credentials
+          requires:
+            - gradle/run
+          image: devatherock/artifactory-badge
+          attach-at: ~/artifactory-badge
+          tag: "0.1.0,latest"
+          use-remote-docker: true
+          docker-username: DOCKER_USERNAME
+      - notify_success:
+          context:
+            - docker-credentials
+            - slack-webhook
+          requires:
+            - docker/publish
+      - notify_failure:
+          context:
+            - docker-credentials
+            - slack-webhook 
+          requires:
+            - docker/publish
+  pr_check:
+    jobs:
+      - gradle/run:
+          executor: jdk-executor
+          context:
+            - docker-credentials
+          filters:
+            branches:
+              ignore: master

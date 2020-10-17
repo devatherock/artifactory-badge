@@ -1,0 +1,3 @@
+artifactory:
+  url: http://localhost:${micronaut.server.port:8080}
+  api-key: dummy

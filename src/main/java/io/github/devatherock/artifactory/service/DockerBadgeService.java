@@ -1,6 +1,5 @@
 package io.github.devatherock.artifactory.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.devatherock.artifactory.config.ArtifactoryProperties;
 import io.github.devatherock.artifactory.entities.ArtifactoryFileStats;
 import io.github.devatherock.artifactory.entities.ArtifactoryFolderElement;
@@ -9,11 +8,13 @@ import io.github.devatherock.artifactory.entities.DockerLayer;
 import io.github.devatherock.artifactory.entities.DockerManifest;
 import io.micronaut.cache.annotation.Cacheable;
 import io.micronaut.core.util.CollectionUtils;
+import io.micronaut.http.HttpMethod;
+import io.micronaut.http.HttpRequest;
+import io.micronaut.http.client.BlockingHttpClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Singleton;
-import java.io.IOException;
 
 @Slf4j
 @Singleton
@@ -21,10 +22,10 @@ import java.io.IOException;
 public class DockerBadgeService {
     private static final double BYTES_IN_MB = 1024 * 1024;
     private static final String FILE_NAME_MANIFEST = "/manifest.json";
+    private static final String HDR_API_KEY = "X-JFrog-Art-Api";
 
-    private final ArtifactoryClient artifactoryClient;
+    private final BlockingHttpClient artifactoryClient;
     private final ShieldsIOClient shieldsIOClient;
-    private final ObjectMapper objectMapper;
     private final ArtifactoryProperties artifactoryConfig;
 
     @Cacheable(cacheNames = "size-cache")
@@ -60,16 +61,19 @@ public class DockerBadgeService {
 
     @Cacheable("pulls-cache")
     public String getPullsCountBadge(String packageName, String badgeLabel) {
-        ArtifactoryFolderInfo folderInfo = artifactoryClient.getFolderInfo(packageName, artifactoryConfig.getApiKey());
+        HttpRequest<Object> folderRequest = HttpRequest.create(HttpMethod.GET, artifactoryConfig.getStorageUrlPrefix()
+                + packageName).header(HDR_API_KEY, artifactoryConfig.getApiKey());
+        ArtifactoryFolderInfo folderInfo = artifactoryClient.retrieve(folderRequest, ArtifactoryFolderInfo.class);
 
         if (null != folderInfo && CollectionUtils.isNotEmpty(folderInfo.getChildren())) {
             long downloadCount = 0;
 
             for (ArtifactoryFolderElement child : folderInfo.getChildren()) {
                 if (child.isFolder()) {
-                    ArtifactoryFileStats fileStats = artifactoryClient.getFileStats(
-                            packageName + child.getUri() + FILE_NAME_MANIFEST,
-                            artifactoryConfig.getApiKey());
+                    HttpRequest<Object> fileRequest = HttpRequest.create(HttpMethod.GET, artifactoryConfig.getStorageUrlPrefix()
+                            + packageName + child.getUri() + FILE_NAME_MANIFEST).header(HDR_API_KEY, artifactoryConfig.getApiKey());
+                    ArtifactoryFileStats fileStats = artifactoryClient.retrieve(fileRequest, ArtifactoryFileStats.class);
+
                     if (null != fileStats) {
                         downloadCount += fileStats.getDownloadCount();
                     }
@@ -89,18 +93,8 @@ public class DockerBadgeService {
 
     private DockerManifest readManifest(String packageName, String tag) {
         String fullPackageName = packageName + "/" + tag;
-        String manifestContent = artifactoryClient.getFileContent(
-                fullPackageName + FILE_NAME_MANIFEST, artifactoryConfig.getApiKey());
-
-        return readJson(manifestContent, DockerManifest.class);
-    }
-
-    private <T> T readJson(String content, Class<T> outputClass) {
-        try {
-            return objectMapper.readValue(content, outputClass);
-        } catch (IOException e) {
-            LOGGER.error("Exception when reading content: {}", e.getMessage());
-            return null;
-        }
+        HttpRequest<Object> manifestRequest = HttpRequest.create(HttpMethod.GET, artifactoryConfig.getUrlPrefix()
+                + fullPackageName).header(HDR_API_KEY, artifactoryConfig.getApiKey());
+        return artifactoryClient.retrieve(manifestRequest, DockerManifest.class);
     }
 }

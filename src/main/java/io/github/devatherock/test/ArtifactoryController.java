@@ -18,9 +18,9 @@ import lombok.extern.slf4j.Slf4j;
 @Controller("/artifactory")
 public class ArtifactoryController {
 
-    @Get(value = "/{fileName}", produces = MediaType.APPLICATION_JSON)
+    @Get(value = "/{fileName:.*}", produces = MediaType.APPLICATION_JSON)
     public DockerManifest getFileContent(@PathVariable String fileName,
-                                         @Header(name = "X-JFrog-Art-Api") String apiKey) {
+                                         @Header(value = "X-JFrog-Art-Api") String apiKey) {
         LOGGER.info("API key in getFileContent {}: {}", fileName, apiKey);
         return DockerManifest.builder()
                 .layer(new DockerLayer(2757034))
@@ -32,9 +32,9 @@ public class ArtifactoryController {
                 .build();
     }
 
-    @Get(value = "/api/storage/{folderName}", produces = MediaType.APPLICATION_JSON)
+    @Get(value = "/api/storage/{folderName:.*}", produces = MediaType.APPLICATION_JSON)
     public Object getFolderInfo(@PathVariable String folderName,
-                                @Header(name = "X-JFrog-Art-Api") String apiKey) {
+                                @Header(value = "X-JFrog-Art-Api") String apiKey) {
         LOGGER.info("API key in getFolderInfo {}: {}", folderName, apiKey);
 
         if (folderName.endsWith("manifest.json")) {

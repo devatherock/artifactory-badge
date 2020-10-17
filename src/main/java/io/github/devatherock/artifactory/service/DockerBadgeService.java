@@ -99,7 +99,8 @@ public class DockerBadgeService {
         try {
             return objectMapper.readValue(content, outputClass);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            LOGGER.error("Exception when reading content: {}", e.getMessage());
+            return null;
         }
     }
 }

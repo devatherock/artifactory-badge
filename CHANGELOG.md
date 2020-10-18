@@ -9,3 +9,4 @@
 - Caught exception when JSON processing fails
 - Used an explicit HttpClient so as to not URL encode slashes
 - Enabled SSL. Used injected HttpClient
+- Used Apache HTTP client to generate the badge

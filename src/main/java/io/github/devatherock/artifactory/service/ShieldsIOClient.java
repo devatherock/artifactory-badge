@@ -4,7 +4,7 @@ import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.PathVariable;
 import io.micronaut.http.client.annotation.Client;
 
-@Client(value = "https://img.shields.io/badge")
+@Client(value = "${artifactory.badge.shields-io.url}")
 public interface ShieldsIOClient {
 	
 	@Get(value = "/{fileName}")

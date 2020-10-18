@@ -1,7 +1,6 @@
 micronaut:
   application:
     name: artifactory-badge
-  ssl: true
   caches:
     layers-cache:
       expire-after-write: 30m

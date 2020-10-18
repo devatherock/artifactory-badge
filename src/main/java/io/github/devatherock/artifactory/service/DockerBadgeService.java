@@ -11,14 +11,15 @@ import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.http.HttpMethod;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.client.BlockingHttpClient;
-import lombok.RequiredArgsConstructor;
+import io.micronaut.http.client.HttpClient;
+import io.micronaut.http.client.annotation.Client;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Slf4j
 @Singleton
-@RequiredArgsConstructor
 public class DockerBadgeService {
     private static final double BYTES_IN_MB = 1024 * 1024;
     private static final String FILE_NAME_MANIFEST = "/manifest.json";
@@ -27,6 +28,15 @@ public class DockerBadgeService {
     private final BlockingHttpClient artifactoryClient;
     private final ShieldsIOClient shieldsIOClient;
     private final ArtifactoryProperties artifactoryConfig;
+
+    @Inject
+    public DockerBadgeService(@Client("${artifactory.url}") HttpClient artifactoryClient,
+                              ShieldsIOClient shieldsIOClient,
+                              ArtifactoryProperties artifactoryConfig) {
+        this.artifactoryClient = artifactoryClient.toBlocking();
+        this.shieldsIOClient = shieldsIOClient;
+        this.artifactoryConfig = artifactoryConfig;
+    }
 
     @Cacheable(cacheNames = "size-cache")
     public String getImageSizeBadge(String packageName, String tag, String badgeLabel) {
@@ -70,8 +80,10 @@ public class DockerBadgeService {
 
             for (ArtifactoryFolderElement child : folderInfo.getChildren()) {
                 if (child.isFolder()) {
-                    HttpRequest<Object> fileRequest = HttpRequest.create(HttpMethod.GET, artifactoryConfig.getStorageUrlPrefix()
-                            + packageName + child.getUri() + FILE_NAME_MANIFEST + "?stats").header(HDR_API_KEY, artifactoryConfig.getApiKey());
+                    HttpRequest<Object> fileRequest = HttpRequest.create(HttpMethod.GET,
+                            artifactoryConfig.getStorageUrlPrefix() + packageName
+                                    + child.getUri() + FILE_NAME_MANIFEST + "?stats")
+                            .header(HDR_API_KEY, artifactoryConfig.getApiKey());
                     ArtifactoryFileStats fileStats = artifactoryClient.retrieve(fileRequest, ArtifactoryFileStats.class);
 
                     if (null != fileStats) {

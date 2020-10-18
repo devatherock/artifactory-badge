@@ -83,7 +83,7 @@ public class BadgeGenerator {
                 labelWidth, valueWidth));
         svg.append(String.format("<rect width=\"%d\" height=\"20\" fill=\"url(#s)\"/>", totalWidth));
         svg.append("</g>");
-        svg.append("<g font-family=\"mono\" font-size=\"smaller\">");
+        svg.append("<g font-family=\"monospace\">");
         svg.append(
                 String.format("<text aria-hidden=\"true\" x=\"0\" y=\"15\" fill=\"#fff\" xml:space=\"preserve\"> %s </text>",
                         label));

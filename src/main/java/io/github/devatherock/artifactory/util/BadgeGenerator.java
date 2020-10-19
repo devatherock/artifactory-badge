@@ -29,6 +29,7 @@ public class BadgeGenerator {
 
     @SneakyThrows
     public String generateBadge(String label, String value) {
+        LOGGER.debug("In generateBadge");
         String badge = null;
 
         if (config.isEnabled()) {

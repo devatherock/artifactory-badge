@@ -11,3 +11,4 @@
 - Used an explicit HttpClient so as to not URL encode slashes
 - Enabled SSL. Used injected HttpClient
 - Used Apache HTTP client to generate the badge
+- Used the IO thread pool instead of the default event loop

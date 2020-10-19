@@ -8,6 +8,7 @@ import io.github.devatherock.artifactory.entities.DockerLayer;
 import io.github.devatherock.artifactory.entities.DockerManifest;
 import io.github.devatherock.artifactory.util.BadgeGenerator;
 import io.micronaut.cache.annotation.Cacheable;
+import io.micronaut.core.annotation.Blocking;
 import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.http.HttpMethod;
 import io.micronaut.http.HttpRequest;
@@ -20,6 +21,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Slf4j
+@Blocking
 @Singleton
 public class DockerBadgeService {
     private static final double BYTES_IN_MB = 1024 * 1024;
@@ -41,6 +43,7 @@ public class DockerBadgeService {
 
     @Cacheable(cacheNames = "size-cache")
     public String getImageSizeBadge(String packageName, String tag, String badgeLabel) {
+        LOGGER.debug("In getImageSizeBadge");
         DockerManifest manifest = readManifest(packageName, tag);
 
         if (null != manifest && CollectionUtils.isNotEmpty(manifest.getLayers())) {
@@ -59,6 +62,7 @@ public class DockerBadgeService {
 
     @Cacheable("layers-cache")
     public String getImageLayersBadge(String packageName, String tag, String badgeLabel) {
+        LOGGER.debug("In getImageLayersBadge");
         DockerManifest manifest = readManifest(packageName, tag);
 
         if (null != manifest && CollectionUtils.isNotEmpty(manifest.getLayers())) {
@@ -71,6 +75,7 @@ public class DockerBadgeService {
 
     @Cacheable("pulls-cache")
     public String getPullsCountBadge(String packageName, String badgeLabel) {
+        LOGGER.debug("In getPullsCountBadge");
         HttpRequest<Object> folderRequest = HttpRequest.create(HttpMethod.GET, artifactoryConfig.getStorageUrlPrefix()
                 + packageName).header(HDR_API_KEY, artifactoryConfig.getApiKey());
         ArtifactoryFolderInfo folderInfo = artifactoryClient.retrieve(folderRequest, ArtifactoryFolderInfo.class);

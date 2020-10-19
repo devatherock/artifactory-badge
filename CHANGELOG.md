@@ -12,3 +12,4 @@
 - Enabled SSL. Used injected HttpClient
 - Used Apache HTTP client to generate the badge
 - Used the IO thread pool instead of the default event loop
+- Set the number of threads on the IO pool to `200`, to match spring boot's tomcat

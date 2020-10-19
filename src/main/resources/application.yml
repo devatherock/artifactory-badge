@@ -1,6 +1,10 @@
 micronaut:
   application:
     name: artifactory-badge
+  executors:
+    io:
+      type: fixed
+      nThreads: 200
   caches:
     layers-cache:
       expire-after-write: 30m

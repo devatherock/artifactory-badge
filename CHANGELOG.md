@@ -5,6 +5,7 @@
 - Initial version that generates docker pulls, image size and layers badges
 - `/health` endpoint
 - Custom badge generator
+- [Issue 16](https://github.com/devatherock/artifactory-badge/issues/16): Environment variables to configure log levels
 
 ### Changed
 - Caught exception when JSON processing fails

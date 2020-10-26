@@ -13,16 +13,15 @@ import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.http.HttpMethod;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.client.BlockingHttpClient;
-import io.micronaut.http.client.HttpClient;
-import io.micronaut.http.client.annotation.Client;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Slf4j
 @Blocking
 @Singleton
+@RequiredArgsConstructor
 public class DockerBadgeService {
     private static final double BYTES_IN_MB = 1024 * 1024;
     private static final String FILE_NAME_MANIFEST = "/manifest.json";
@@ -32,14 +31,6 @@ public class DockerBadgeService {
     private final BadgeGenerator badgeGenerator;
     private final ArtifactoryProperties artifactoryConfig;
 
-    @Inject
-    public DockerBadgeService(@Client("${artifactory.url}") HttpClient artifactoryClient,
-                              BadgeGenerator badgeGenerator,
-                              ArtifactoryProperties artifactoryConfig) {
-        this.artifactoryClient = artifactoryClient.toBlocking();
-        this.badgeGenerator = badgeGenerator;
-        this.artifactoryConfig = artifactoryConfig;
-    }
 
     @Cacheable(cacheNames = "size-cache")
     public String getImageSizeBadge(String packageName, String tag, String badgeLabel) {

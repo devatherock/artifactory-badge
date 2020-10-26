@@ -7,6 +7,7 @@
 - Custom badge generator
 - [#16](https://github.com/devatherock/artifactory-badge/issues/16): Environment variables to configure log levels
 - [#19](https://github.com/devatherock/artifactory-badge/issues/19): A `BlockingHttpClient` bean
+- [#17](https://github.com/devatherock/artifactory-badge/issues/17): Documented environment variables that can be used to configure the application
 
 ### Changed
 - Caught exception when JSON processing fails

@@ -8,5 +8,9 @@ import lombok.Setter;
 @Setter
 @ConfigurationProperties("artifactory.badge.shields-io")
 public class ShieldsIOProperties {
+    /**
+     * Indicates if <a href="https://shields.io">shields.io</a> should be used to
+     * generate the badge
+     */
     private boolean enabled = true;
 }

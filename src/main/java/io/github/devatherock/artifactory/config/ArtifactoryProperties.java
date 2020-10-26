@@ -14,21 +14,27 @@ import javax.validation.constraints.NotBlank;
 @Context
 @ConfigurationProperties("artifactory")
 public class ArtifactoryProperties {
-	@NotBlank(message = "artifactory.url not specified")
-	private String url;
+    /**
+     * The JFrog artifactory URL that hosts the docker registry
+     */
+    @NotBlank(message = "artifactory.url not specified")
+    private String url;
 
-	@NotBlank(message = "artifactory.api-key not specified")
-	private String apiKey;
+    /**
+     * API key for interacting with artifactory's REST API
+     */
+    @NotBlank(message = "artifactory.api-key not specified")
+    private String apiKey;
 
-	@Setter(AccessLevel.NONE)
-	private String urlPrefix;
+    @Setter(AccessLevel.NONE)
+    private String urlPrefix;
 
-	@Setter(AccessLevel.NONE)
-	private String storageUrlPrefix;
+    @Setter(AccessLevel.NONE)
+    private String storageUrlPrefix;
 
-	@PostConstruct
-	public void init() {
-		urlPrefix = url + "/artifactory/";
-		storageUrlPrefix = urlPrefix + "api/storage/";
-	}
+    @PostConstruct
+    public void init() {
+        urlPrefix = url + "/artifactory/";
+        storageUrlPrefix = urlPrefix + "api/storage/";
+    }
 }

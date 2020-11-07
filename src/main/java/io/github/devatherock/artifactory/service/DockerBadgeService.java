@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Singleton;
+import java.text.DecimalFormat;
 
 @Slf4j
 @Blocking
@@ -45,7 +46,7 @@ public class DockerBadgeService {
                     .get() / BYTES_IN_MB;
 
             LOGGER.info("Size of {}/{}: {} MB", packageName, tag, imageSize);
-            return badgeGenerator.generateBadge(badgeLabel, String.format("%.2f MB", imageSize));
+            return badgeGenerator.generateBadge(badgeLabel, String.format("%s MB", formatDecimal(imageSize)));
         } else {
             return generateNotFoundBadge(badgeLabel);
         }
@@ -103,5 +104,17 @@ public class DockerBadgeService {
         HttpRequest<Object> manifestRequest = HttpRequest.create(HttpMethod.GET, artifactoryConfig.getUrlPrefix()
                 + fullPackageName + FILE_NAME_MANIFEST).header(HDR_API_KEY, artifactoryConfig.getApiKey());
         return artifactoryClient.retrieve(manifestRequest, DockerManifest.class);
+    }
+
+    /**
+     * Formats a decimal number into a string
+     *
+     * @param inputDecimal
+     * @return a formatted string
+     */
+    private String formatDecimal(double inputDecimal) {
+        DecimalFormat decimalFormat = new DecimalFormat("0.##");
+        decimalFormat.setDecimalSeparatorAlwaysShown(false);
+        return decimalFormat.format(inputDecimal);
     }
 }

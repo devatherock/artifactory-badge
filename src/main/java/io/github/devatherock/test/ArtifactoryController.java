@@ -23,12 +23,13 @@ public class ArtifactoryController {
                                          @Header(value = "X-JFrog-Art-Api") String apiKey) {
         LOGGER.info("API key in getFileContent {}: {}", fileName, apiKey);
         return DockerManifest.builder()
-                .layer(new DockerLayer(2757034))
-                .layer(new DockerLayer(238))
-                .layer(new DockerLayer(54935634))
-                .layer(new DockerLayer(10079002))
-                .layer(new DockerLayer(565))
-                .layer(new DockerLayer(9562318))
+                .layer(new DockerLayer(28311552)) // 27 MB
+                .layer(new DockerLayer(56623104)) // 54 MB
+                .layer(new DockerLayer(10485760)) // 10 MB
+                .layer(new DockerLayer(9437184)) // 9 MB
+                .layer(new DockerLayer(524288)) // 0.5 MB
+                .layer(new DockerLayer(536871)) // 0.51200008 MB
+                .layer(new DockerLayer(786432)) // 0.75 MB
                 .build();
     }
 

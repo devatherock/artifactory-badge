@@ -15,6 +15,7 @@
 - Used the IO thread pool instead of the default event loop
 - Set the number of threads on the IO pool to `200`, to match spring boot's tomcat
 - Upgraded JRE base image to `11.0.8` from `11.0.1` to fix SSL errors with TLS v1.3
+- [#10](https://github.com/devatherock/artifactory-badge/issues/10): Hid decimal point when image size is a whole number
 
 ### Removed
 - [#13](https://github.com/devatherock/artifactory-badge/issues/13): Apache HTTP Client

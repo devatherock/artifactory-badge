@@ -53,6 +53,7 @@ workflows:
   build_publish:
     jobs:
       - gradle/run:
+          name: build
           executor: jdk-executor
           context:
             - docker-credentials
@@ -65,14 +66,15 @@ workflows:
                 paths:
                   - build
       - docker/publish:
+          name: publish
           executor: jdk-executor
           context:
             - docker-credentials
           requires:
-            - gradle/run
+            - build
           image: devatherock/artifactory-badge
           attach-at: ~/artifactory-badge
-          tag: "0.1.9,latest"
+          tag: "0.1.10,latest"
           use-remote-docker: true
           docker-username: DOCKER_USERNAME
       - notify_success:
@@ -80,16 +82,17 @@ workflows:
             - docker-credentials
             - slack-webhook
           requires:
-            - docker/publish
+            - publish
       - notify_failure:
           context:
             - docker-credentials
             - slack-webhook 
           requires:
-            - docker/publish
+            - publish
   pr_check:
     jobs:
       - gradle/run:
+          name: test
           executor: jdk-executor
           context:
             - docker-credentials

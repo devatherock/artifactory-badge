@@ -13,10 +13,22 @@ import io.micronaut.http.annotation.PathVariable;
 import io.swagger.v3.oas.annotations.Hidden;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Slf4j
 @Hidden
 @Controller("/artifactory")
 public class ArtifactoryController {
+    private static final Map<Integer, Long> PULLS_RANDOMIZER = new HashMap<>();
+
+    static {
+        PULLS_RANDOMIZER.put(0, 333l);
+        PULLS_RANDOMIZER.put(1, 450l);
+        PULLS_RANDOMIZER.put(2, 450_000l);
+        PULLS_RANDOMIZER.put(3, 450_000_000l);
+        PULLS_RANDOMIZER.put(4, 450_000_000_000l);
+    }
 
     @Get(value = "/{fileName:.*}", produces = MediaType.APPLICATION_JSON)
     public DockerManifest getFileContent(@PathVariable String fileName,
@@ -39,7 +51,8 @@ public class ArtifactoryController {
         LOGGER.info("API key in getFolderInfo {}: {}", folderName, apiKey);
 
         if (folderName.endsWith("manifest.json")) {
-            return new ArtifactoryFileStats(450);
+            int randomNumber = (int) (Math.random() * PULLS_RANDOMIZER.size());
+            return new ArtifactoryFileStats(PULLS_RANDOMIZER.get(randomNumber));
         } else {
             return ArtifactoryFolderInfo.builder()
                     .child(ArtifactoryFolderElement.builder().uri("/1.1.0").folder(true).build())

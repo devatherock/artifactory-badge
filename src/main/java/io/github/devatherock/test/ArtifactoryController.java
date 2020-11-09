@@ -21,6 +21,7 @@ import java.util.Map;
 @Controller("/artifactory")
 public class ArtifactoryController {
     private static final Map<Integer, Long> PULLS_RANDOMIZER = new HashMap<>();
+    private static final Map<String, String> MODIFIED_TIME = new HashMap<>();
 
     static {
         PULLS_RANDOMIZER.put(0, 333l);
@@ -28,6 +29,9 @@ public class ArtifactoryController {
         PULLS_RANDOMIZER.put(2, 450_000l);
         PULLS_RANDOMIZER.put(3, 450_000_000l);
         PULLS_RANDOMIZER.put(4, 450_000_000_000l);
+        MODIFIED_TIME.put("latest", "2020-10-01T00:00:00.000Z");
+        MODIFIED_TIME.put("1.1.0", "2020-10-08T00:00:00.000Z");
+        MODIFIED_TIME.put("1.1.2", "2020-10-15T00:00:00.000Z");
     }
 
     @Get(value = "/{fileName:.*}", produces = MediaType.APPLICATION_JSON)
@@ -53,6 +57,11 @@ public class ArtifactoryController {
         if (folderName.endsWith("manifest.json")) {
             int randomNumber = (int) (Math.random() * PULLS_RANDOMIZER.size());
             return new ArtifactoryFileStats(PULLS_RANDOMIZER.get(randomNumber));
+        } else if (MODIFIED_TIME.keySet().stream().anyMatch(key -> folderName.endsWith(key))) {
+            return ArtifactoryFolderInfo.builder()
+                    .lastModified(MODIFIED_TIME.get(folderName.substring(folderName.lastIndexOf('/') + 1)))
+                    .path(folderName)
+                    .build();
         } else {
             return ArtifactoryFolderInfo.builder()
                     .child(ArtifactoryFolderElement.builder().uri("/1.1.0").folder(true).build())

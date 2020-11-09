@@ -8,6 +8,7 @@
 - [#16](https://github.com/devatherock/artifactory-badge/issues/16): Environment variables to configure log levels
 - [#19](https://github.com/devatherock/artifactory-badge/issues/19): A `BlockingHttpClient` bean
 - [#17](https://github.com/devatherock/artifactory-badge/issues/17): Documented environment variables that can be used to configure the application
+- [#20](https://github.com/devatherock/artifactory-badge/issues/20): `/version` endpoint to generate lastest version badge
 
 ### Changed
 - Caught exception when JSON processing fails

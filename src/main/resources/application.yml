@@ -18,6 +18,10 @@ micronaut:
       expire-after-write: 30m
       expire-after-access: 10m
       maximum-size: 10000
+    version-cache:
+      expire-after-write: 30m
+      expire-after-access: 10m
+      maximum-size: 10000
   router:
     static-resources:
       swagger:

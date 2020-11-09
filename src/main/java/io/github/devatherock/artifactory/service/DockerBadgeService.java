@@ -18,8 +18,11 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Singleton;
 import java.text.DecimalFormat;
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 @Slf4j
 @Blocking
@@ -32,6 +35,15 @@ public class DockerBadgeService {
     private static final double PULLS_REDUCER = 1000;
     private static final int MAX_REDUCTIONS = 3;
     private static final Map<Integer, String> PULLS_SUFFIX = new HashMap<>();
+    /**
+     * Formatter to parse dates like {@code 2020-10-01T00:00:00.000Z}
+     */
+    private static final DateTimeFormatter MODIFIED_TIME_PARSER = DateTimeFormatter
+            .ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+    /**
+     * Pattern to match versions like {@code 1}, {@code 1.2} and {@code 1.2.2}
+     */
+    private static final Pattern PTRN_NUMERIC_VERSION = Pattern.compile("^[0-9]+([\\.0-9]+)*$");
 
     static {
         PULLS_SUFFIX.put(0, "");
@@ -81,9 +93,7 @@ public class DockerBadgeService {
     @Cacheable("pulls-cache")
     public String getPullsCountBadge(String packageName, String badgeLabel) {
         LOGGER.debug("In getPullsCountBadge");
-        HttpRequest<Object> folderRequest = HttpRequest.create(HttpMethod.GET, artifactoryConfig.getStorageUrlPrefix()
-                + packageName).header(HDR_API_KEY, artifactoryConfig.getApiKey());
-        ArtifactoryFolderInfo folderInfo = artifactoryClient.retrieve(folderRequest, ArtifactoryFolderInfo.class);
+        ArtifactoryFolderInfo folderInfo = getArtifactoryFolderInfo(packageName);
 
         if (null != folderInfo && CollectionUtils.isNotEmpty(folderInfo.getChildren())) {
             long downloadCount = 0;
@@ -108,6 +118,44 @@ public class DockerBadgeService {
         }
     }
 
+    @Cacheable("version-cache")
+    public String getLatestVersionBadge(String packageName, String badgeLabel) {
+        LOGGER.debug("In getLatestVersionBadge");
+        ArtifactoryFolderInfo folderInfo = getArtifactoryFolderInfo(packageName);
+
+        if (null != folderInfo && CollectionUtils.isNotEmpty(folderInfo.getChildren())) {
+            ArtifactoryFolderInfo latestVersion = null;
+
+            for (ArtifactoryFolderElement child : folderInfo.getChildren()) {
+                if (child.isFolder()) {
+                    ArtifactoryFolderInfo currentVersion = getArtifactoryFolderInfo(packageName + child.getUri());
+
+                    if (null == latestVersion || Instant.from(MODIFIED_TIME_PARSER.parse(currentVersion.getLastModified()))
+                            .compareTo(Instant.from(MODIFIED_TIME_PARSER.parse(latestVersion.getLastModified()))) > 0) {
+                        latestVersion = currentVersion;
+                    }
+                }
+            }
+
+            LOGGER.info("Latest version of {}: {}", packageName, latestVersion.getPath());
+            return badgeGenerator.generateBadge(badgeLabel, getVersionBadgeValue(latestVersion));
+        } else {
+            return generateNotFoundBadge(badgeLabel);
+        }
+    }
+
+    /**
+     * Gets folder information from artifactory
+     *
+     * @param packageName the package name
+     * @return {@link ArtifactoryFolderInfo}
+     */
+    private ArtifactoryFolderInfo getArtifactoryFolderInfo(String packageName) {
+        HttpRequest<Object> folderRequest = HttpRequest.create(HttpMethod.GET, artifactoryConfig.getStorageUrlPrefix()
+                + packageName).header(HDR_API_KEY, artifactoryConfig.getApiKey());
+        return artifactoryClient.retrieve(folderRequest, ArtifactoryFolderInfo.class);
+    }
+
     /**
      * Generates a not found badge
      *
@@ -130,6 +178,19 @@ public class DockerBadgeService {
         HttpRequest<Object> manifestRequest = HttpRequest.create(HttpMethod.GET, artifactoryConfig.getUrlPrefix()
                 + fullPackageName + FILE_NAME_MANIFEST).header(HDR_API_KEY, artifactoryConfig.getApiKey());
         return artifactoryClient.retrieve(manifestRequest, DockerManifest.class);
+    }
+
+    /**
+     * Returns the formatted value to be displayed in the version badge
+     *
+     * @param version
+     * @return the version badge value
+     */
+    private String getVersionBadgeValue(ArtifactoryFolderInfo version) {
+        String versionValue = version.getPath().substring(version.getPath().lastIndexOf('/') + 1);
+
+        // Append v prefix if version is numeric or a semantic version
+        return PTRN_NUMERIC_VERSION.matcher(versionValue).matches() ? 'v' + versionValue : versionValue;
     }
 
     /**

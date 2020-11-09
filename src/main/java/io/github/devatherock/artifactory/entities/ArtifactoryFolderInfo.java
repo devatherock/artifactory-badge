@@ -22,4 +22,8 @@ import java.util.List;
 public class ArtifactoryFolderInfo {
     @Singular("child")
     private List<ArtifactoryFolderElement> children;
+
+    private String lastModified;
+
+    private String path;
 }

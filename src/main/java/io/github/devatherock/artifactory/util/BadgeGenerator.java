@@ -23,8 +23,7 @@ public class BadgeGenerator {
         String badge = null;
 
         if (config.isEnabled()) {
-            String shieldIoImageName = String.format("%s-%s-blue.svg", label, value);
-            badge = shieldsIOClient.downloadBadge(shieldIoImageName);
+            badge = shieldsIOClient.downloadBadge(label, value, "blue");
         } else {
             badge = generateSvg(label, value);
         }

@@ -31,7 +31,7 @@ public class ArtifactoryController {
         PULLS_RANDOMIZER.put(4, 450_000_000_000l);
         MODIFIED_TIME.put("latest", "2020-10-01T00:00:00.000Z");
         MODIFIED_TIME.put("1.1.0", "2020-10-08T00:00:00.000Z");
-        MODIFIED_TIME.put("1.1.2", "2020-10-15T00:00:00.000Z");
+        MODIFIED_TIME.put("1.1.2-rc.1", "2020-10-15T00:00:00.000Z");
     }
 
     @Get(value = "/{fileName:.*}", produces = MediaType.APPLICATION_JSON)
@@ -65,7 +65,7 @@ public class ArtifactoryController {
         } else {
             return ArtifactoryFolderInfo.builder()
                     .child(ArtifactoryFolderElement.builder().uri("/1.1.0").folder(true).build())
-                    .child(ArtifactoryFolderElement.builder().uri("/1.1.2").folder(true).build())
+                    .child(ArtifactoryFolderElement.builder().uri("/1.1.2-rc.1").folder(true).build())
                     .child(ArtifactoryFolderElement.builder().uri("/latest").folder(true).build())
                     .child(ArtifactoryFolderElement.builder().uri("/dummy").folder(false).build())
                     .build();

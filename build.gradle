@@ -102,7 +102,7 @@ sonarqube {
         if(prLink) {
             property 'sonar.pullrequest.branch', System.env['CIRCLE_BRANCH']
             property 'sonar.pullrequest.key', prLink.substring(prLink.lastIndexOf('/') + 1)
-            property 'sonar.pullrequest.base', 'master')
+            property 'sonar.pullrequest.base', 'master'
         }
     }
 }

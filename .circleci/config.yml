@@ -18,7 +18,7 @@ resource_class: &resource_class
 executors:
   jdk-executor:
     docker:
-      - image: oracle/graalvm-ce:20.2.0-java11
+      - image: devatherock/graalvm:20.2.0-java11
         auth:
           username: $DOCKER_USERNAME
           password: $DOCKER_PASSWORD
@@ -39,10 +39,27 @@ jobs:
             - v1-dependencies-{{ checksum "build.gradle" }}
             - v1-dependencies-
       - run: |
-          yum -y install git
           git clone --depth=1 --branch=master https://github.com/devatherock/gradle-includes.git ../gradle-includes
-          gu install native-image
           ./gradlew --no-daemon test -Dgraalvm=true
+          
+  build:
+    executor: jdk-executor
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "build.gradle" }}
+            - v1-dependencies-
+      - run: |
+          ./gradlew -no-daemon build coveralls sonarqube -Dsonar.login=$SONAR_TOKEN -Dgraalvm=true
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: v1-dependencies-{{ checksum "build.gradle" }}
+      - persist_to_workspace:
+          root: ~/artifactory-badge
+          paths:
+            - build
 
   notify_success:
     <<: *slack_image
@@ -70,21 +87,13 @@ workflows:
   version: 2.1
   build_publish:
     jobs:
-      - gradle/run:
-          name: build
-          executor: jdk-executor
+      - build:
           context:
             - docker-credentials
             - sonar-credentials
           filters:
             branches:
               only: master
-          command: build coveralls sonarqube -Dsonar.login=$SONAR_TOKEN -Dgraalvm=true
-          post-steps:
-            - persist_to_workspace:
-                root: ~/artifactory-badge
-                paths:
-                  - build
       - docker/publish:
           name: publish
           executor: jdk-executor

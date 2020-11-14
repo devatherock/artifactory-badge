@@ -31,6 +31,7 @@ executors:
 version: 2.1
 jobs:
   test:
+    executor: jdk-executor
     steps:
       - checkout
       - restore_cache:
@@ -110,7 +111,6 @@ workflows:
   pr_check:
     jobs:
       - test:
-          executor: jdk-executor
           context:
             - docker-credentials
           filters:

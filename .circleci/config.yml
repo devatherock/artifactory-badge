@@ -30,6 +30,18 @@ executors:
 
 version: 2.1
 jobs:
+  test:
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "build.gradle" }}
+            - v1-dependencies-
+      - run: |
+          yum -y install git
+          git clone --depth=1 --branch=master https://github.com/devatherock/gradle-includes.git ../gradle-includes
+          ./gradlew --no-daemon test -Dgraalvm=true
+
   notify_success:
     <<: *slack_image
     <<: *resource_class
@@ -97,17 +109,10 @@ workflows:
             - publish
   pr_check:
     jobs:
-      - gradle/run:
-          name: test
+      - test:
           executor: jdk-executor
           context:
             - docker-credentials
           filters:
             branches:
               ignore: master
-          command: test -Dgraalvm=true
-          pre-steps:
-            - run:
-                command: |
-                  yum -y install git
-                  git clone --depth=1 --branch=master https://github.com/devatherock/gradle-includes.git ../gradle-includes    

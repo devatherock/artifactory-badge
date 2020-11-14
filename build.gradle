@@ -94,3 +94,11 @@ ext.jacoco = [
     ]
 ]
 apply from: '../gradle-includes/checks.gradle'
+
+sonarqube {
+    properties {
+        if(System.env['CIRCLE_PULL_REQUEST']) {
+            property 'sonar.pullrequest.branch', System.env['CIRCLE_BRANCH']
+        }
+    }
+}

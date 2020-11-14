@@ -9,6 +9,12 @@ import io.micronaut.scheduling.annotation.ExecuteOn;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Controller to generate version badge, for docker images and jar files
+ * 
+ * @author devaprasadh
+ *
+ */
 @Slf4j
 @ExecuteOn(TaskExecutors.IO)
 @Controller
@@ -17,6 +23,13 @@ public class VersionController {
     private static final String CONTENT_TYPE_BADGE = "image/svg+xml; charset=utf-8";
     private final DockerBadgeService badgeService;
 
+    /**
+     * Generates the {@code version} badge
+     * 
+     * @param packageName
+     * @param badgeLabel
+     * @return the version badge
+     */
     @Get(value = "/version", produces = CONTENT_TYPE_BADGE)
     public String getLatestVersion(@QueryValue("package") String packageName,
                                    @QueryValue(value = "label", defaultValue = "version") String badgeLabel) {

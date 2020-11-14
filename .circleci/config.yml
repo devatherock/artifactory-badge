@@ -18,7 +18,7 @@ resource_class: &resource_class
 executors:
   jdk-executor:
     docker:
-      - image: cimg/openjdk:11.0
+      - image: oracle/graalvm-ce:20.2.0-java11
         auth:
           username: $DOCKER_USERNAME
           password: $DOCKER_PASSWORD
@@ -61,9 +61,11 @@ workflows:
           executor: jdk-executor
           context:
             - docker-credentials
+            - sonar-credentials
           filters:
             branches:
               only: master
+          command: build coveralls sonarqube -Dsonar.login=$SONAR_TOKEN -Dgraalvm=true
           post-steps:
             - persist_to_workspace:
                 root: ~/artifactory-badge
@@ -78,7 +80,7 @@ workflows:
             - build
           image: devatherock/artifactory-badge
           attach-at: ~/artifactory-badge
-          tag: "0.1.12,latest"
+          tag: "0.1.13,latest"
           use-remote-docker: true
           docker-username: DOCKER_USERNAME
       - notify_success:
@@ -103,3 +105,8 @@ workflows:
           filters:
             branches:
               ignore: master
+          command: test -Dgraalvm=true
+          pre-steps:
+            - run:
+                command: |
+                  git clone --depth=1 --branch=master https://github.com/devatherock/gradle-includes.git ../gradle-includes    

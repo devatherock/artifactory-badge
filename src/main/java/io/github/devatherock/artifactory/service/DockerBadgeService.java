@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
 @Singleton
 @RequiredArgsConstructor
 public class DockerBadgeService {
-    private static final double BYTES_IN_MB = 1024 * 1024;
+    private static final double BYTES_IN_MB = 1024d * 1024;
     private static final String FILE_NAME_MANIFEST = "/manifest.json";
     private static final String HDR_API_KEY = "X-JFrog-Art-Api";
     private static final double PULLS_REDUCER = 1000;
@@ -137,8 +137,12 @@ public class DockerBadgeService {
                 }
             }
 
-            LOGGER.info("Latest version of {}: {}", packageName, latestVersion.getPath());
-            return badgeGenerator.generateBadge(badgeLabel, getVersionBadgeValue(latestVersion));
+            if(null != latestVersion) {
+                LOGGER.info("Latest version of {}: {}", packageName, latestVersion.getPath());
+                return badgeGenerator.generateBadge(badgeLabel, getVersionBadgeValue(latestVersion));
+            } else {
+                return generateNotFoundBadge(badgeLabel);
+            }
         } else {
             return generateNotFoundBadge(badgeLabel);
         }

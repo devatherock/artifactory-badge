@@ -5,8 +5,6 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/devatherock/artifactory-badge.svg)](https://hub.docker.com/r/devatherock/artifactory-badge/)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=artifactory-badge&metric=ncloc)](https://sonarcloud.io/component_measures?id=artifactory-badge&metric=ncloc)
 [![Docker Image Size](https://img.shields.io/docker/image-size/devatherock/artifactory-badge.svg?sort=date)](https://hub.docker.com/r/devatherock/artifactory-badge/)
-[![Docker Image Layers](https://img.shields.io/microbadger/layers/devatherock/artifactory-badge.svg)](https://microbadger.com/images/devatherock/artifactory-badge)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 # artifactory-badge
 Badge generator for docker registries hosted in jfrog artifactory
 

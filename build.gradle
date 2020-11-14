@@ -97,8 +97,12 @@ apply from: '../gradle-includes/checks.gradle'
 
 sonarqube {
     properties {
-        if(System.env['CIRCLE_PULL_REQUEST']) {
+        def prLink = System.env['CIRCLE_PULL_REQUEST']
+        
+        if(prLink) {
             property 'sonar.pullrequest.branch', System.env['CIRCLE_BRANCH']
+            property 'sonar.pullrequest.key', prLink.substring(prLink.lastIndexOf('/') + 1)
+            property 'sonar.pullrequest.base', 'master')
         }
     }
 }

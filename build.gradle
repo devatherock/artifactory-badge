@@ -88,24 +88,9 @@ ext.jacoco = [
     exclusions: [
         'io/github/devatherock/Application.class',
         'io/github/devatherock/test/ArtifactoryController.class',
-        'io/github/devatherock/artifactory/service/DockerBadgeService.class',
         // Excluded for now till tests are written
-        'io/github/devatherock/artifactory/util/BadgeGenerator.class' // Excluded for now till tests are written
+        'io/github/devatherock/artifactory/service/DockerBadgeService.class',
+        'io/github/devatherock/artifactory/util/BadgeGenerator.class'
     ]
 ]
 apply from: '../gradle-includes/checks.gradle'
-
-sonarqube {
-    properties {
-        def prLink = System.env['CIRCLE_PULL_REQUEST']
-        
-        if(prLink) {
-            property 'sonar.pullrequest.branch', System.env['CIRCLE_BRANCH']
-            property 'sonar.pullrequest.key', prLink.substring(prLink.lastIndexOf('/') + 1)
-            property 'sonar.pullrequest.base', 'master'
-            property 'sonar.pullrequest.provider', 'github'
-            property 'sonar.pullrequest.github.repository', "devatherock/${System.env['CIRCLE_PROJECT_REPONAME']}"
-            property 'sonar.pullrequest.github.endpoint', 'https://api.github.com/'
-        }
-    }
-}

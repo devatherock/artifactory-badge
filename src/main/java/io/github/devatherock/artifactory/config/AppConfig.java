@@ -7,6 +7,9 @@ import io.micronaut.http.client.annotation.Client;
 
 import javax.inject.Singleton;
 
+/**
+ * Bean definitions for the application
+ */
 @Factory
 public class AppConfig {
 

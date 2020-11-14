@@ -1,0 +1,15 @@
+{
+  "rules": [
+    {"excludeClasses": "io.github.devatherock.artifactory.controllers.DockerControllerSpec"},
+    {"excludeClasses": "io.github.devatherock.artifactory.controllers.VersionControllerSpec"},
+    {"excludeClasses": "io.github.devatherock.artifactory.config.AppConfigSpec"},
+    {"excludeClasses": "io.github.devatherock.artifactory.config.ArtifactoryPropertiesSpec"},
+    {"excludeClasses": "org.spockframework.**"},
+    {"excludeClasses": "org.gradle.**"},
+    {"excludeClasses": "net.sf.cglib.**"},
+    {"excludeClasses": "org.codehaus.groovy.**"},
+    {"excludeClasses": "spock.**"},
+    {"excludeClasses": "org.hamcrest.**"},
+    {"excludeClasses": "org.objenesis.**"}
+  ]
+}

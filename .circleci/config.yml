@@ -41,6 +41,7 @@ jobs:
       - run: |
           yum -y install git
           git clone --depth=1 --branch=master https://github.com/devatherock/gradle-includes.git ../gradle-includes
+          gu install native-image
           ./gradlew --no-daemon test -Dgraalvm=true
 
   notify_success:

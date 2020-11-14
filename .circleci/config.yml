@@ -109,5 +109,5 @@ workflows:
           pre-steps:
             - run:
                 command: |
-                  sudo yum install git
+                  sudo yum -y install git
                   git clone --depth=1 --branch=master https://github.com/devatherock/gradle-includes.git ../gradle-includes    

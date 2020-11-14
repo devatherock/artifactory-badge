@@ -48,7 +48,7 @@ jobs:
             - v1-dependencies-
       - run: |
           git clone --depth=1 --branch=master https://github.com/devatherock/gradle-includes.git ../gradle-includes
-          ./gradlew --no-daemon test -Dgraalvm=true
+          ./gradlew --no-daemon test sonarqube -Dsonar.login=$SONAR_TOKEN -Dgraalvm=true
           
   build:
     executor: jdk-executor
@@ -132,6 +132,7 @@ workflows:
       - test:
           context:
             - docker-credentials
+            - sonar-credentials
           filters:
             branches:
               ignore: master

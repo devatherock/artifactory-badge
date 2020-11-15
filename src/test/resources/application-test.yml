@@ -1,3 +1,6 @@
 artifactory:
   url: http://localhost:8081
   api-key: dummyKey
+  badge:
+    shields-io:
+      url: http://localhost:8081

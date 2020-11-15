@@ -12,7 +12,7 @@ class AppConfigSpec extends Specification {
     @Subject
     AppConfig appConfig = new AppConfig()
 
-    def 'test initialize http client'() {
+    void 'test initialize http client'() {
         given:
         HttpClient httpClient = Mock()
         BlockingHttpClient outputClient = Mock()

@@ -38,6 +38,21 @@ executors:
 
 version: 2.1
 jobs:
+  publish_release:
+    executor: jdk-executor
+    steps:
+      - checkout
+      - setup_remote_docker
+      - attach_workspace:
+          at: ~/artifactory-badge
+      - run: |
+          TAG=${CIRCLE_TAG#v}
+          DEV_TAG=${CIRCLE_SHA1:0:8}
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+          docker pull devatherock/artifactory-badge:$DEV_TAG
+          docker tag devatherock/artifactory-badge:$DEV_TAG devatherock/artifactory-badge:$TAG
+          docker push devatherock/artifactory-badge:$TAG
+
   notify_success:
     <<: *slack_image
     <<: *resource_class
@@ -92,7 +107,7 @@ workflows:
             - build
           image: devatherock/artifactory-badge
           attach-at: ~/artifactory-badge
-          tag: "0.1.14,latest"
+          tag: "${CIRCLE_SHA1:0:8},latest"
           use-remote-docker: true
           docker-username: DOCKER_USERNAME
       - notify_success:
@@ -107,6 +122,28 @@ workflows:
             - slack-webhook 
           requires:
             - publish
+  release:
+    jobs:
+      - publish_release:
+          context:
+            - docker-credentials
+          filters:
+            branches:
+              only: non-existent-branch
+            tags:
+              only: /^v[0-9\.]+$/
+      - notify_success:
+          context:
+            - docker-credentials
+            - slack-webhook
+          requires:
+            - publish_release
+      - notify_failure:
+          context:
+            - docker-credentials
+            - slack-webhook
+          requires:
+            - publish_release
   pr_check:
     jobs:
       - gradle/run:

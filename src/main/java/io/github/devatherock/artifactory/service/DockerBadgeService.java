@@ -24,6 +24,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+/**
+ * Service class to fetch information required for the badges and then generate
+ * them
+ * 
+ * @author devaprasadh
+ *
+ */
 @Slf4j
 @Blocking
 @Singleton
@@ -56,7 +63,6 @@ public class DockerBadgeService {
     private final BadgeGenerator badgeGenerator;
     private final ArtifactoryProperties artifactoryConfig;
 
-
     @Cacheable(cacheNames = "size-cache")
     public String getImageSizeBadge(String packageName, String tag, String badgeLabel) {
         LOGGER.debug("In getImageSizeBadge");
@@ -70,8 +76,7 @@ public class DockerBadgeService {
                     .get() / BYTES_IN_MB;
 
             LOGGER.info("Size of {}/{}: {} MB", packageName, tag, imageSize);
-            return badgeGenerator.generateBadge(badgeLabel, String.format("%s MB",
-                    formatDecimal(imageSize, "0.##")));
+            return badgeGenerator.generateBadge(badgeLabel, String.format("%s MB", formatDecimal(imageSize, "0.##")));
         } else {
             return generateNotFoundBadge(badgeLabel);
         }
@@ -100,11 +105,13 @@ public class DockerBadgeService {
 
             for (ArtifactoryFolderElement child : folderInfo.getChildren()) {
                 if (child.isFolder()) {
-                    HttpRequest<Object> fileRequest = HttpRequest.create(HttpMethod.GET,
-                            artifactoryConfig.getStorageUrlPrefix() + packageName
-                                    + child.getUri() + FILE_NAME_MANIFEST + "?stats")
+                    HttpRequest<Object> fileRequest = HttpRequest
+                            .create(HttpMethod.GET,
+                                    artifactoryConfig.getStorageUrlPrefix() + packageName + child.getUri()
+                                            + FILE_NAME_MANIFEST + "?stats")
                             .header(HDR_API_KEY, artifactoryConfig.getApiKey());
-                    ArtifactoryFileStats fileStats = artifactoryClient.retrieve(fileRequest, ArtifactoryFileStats.class);
+                    ArtifactoryFileStats fileStats = artifactoryClient.retrieve(fileRequest,
+                            ArtifactoryFileStats.class);
 
                     if (null != fileStats) {
                         downloadCount += fileStats.getDownloadCount();
@@ -130,14 +137,15 @@ public class DockerBadgeService {
                 if (child.isFolder()) {
                     ArtifactoryFolderInfo currentVersion = getArtifactoryFolderInfo(packageName + child.getUri());
 
-                    if (null == latestVersion || Instant.from(MODIFIED_TIME_PARSER.parse(currentVersion.getLastModified()))
-                            .compareTo(Instant.from(MODIFIED_TIME_PARSER.parse(latestVersion.getLastModified()))) > 0) {
+                    if (null == latestVersion
+                            || Instant.from(MODIFIED_TIME_PARSER.parse(currentVersion.getLastModified())).compareTo(
+                                    Instant.from(MODIFIED_TIME_PARSER.parse(latestVersion.getLastModified()))) > 0) {
                         latestVersion = currentVersion;
                     }
                 }
             }
 
-            if(null != latestVersion) {
+            if (null != latestVersion) {
                 LOGGER.info("Latest version of {}: {}", packageName, latestVersion.getPath());
                 return badgeGenerator.generateBadge(badgeLabel, getVersionBadgeValue(latestVersion));
             } else {
@@ -155,8 +163,9 @@ public class DockerBadgeService {
      * @return {@link ArtifactoryFolderInfo}
      */
     private ArtifactoryFolderInfo getArtifactoryFolderInfo(String packageName) {
-        HttpRequest<Object> folderRequest = HttpRequest.create(HttpMethod.GET, artifactoryConfig.getStorageUrlPrefix()
-                + packageName).header(HDR_API_KEY, artifactoryConfig.getApiKey());
+        HttpRequest<Object> folderRequest = HttpRequest
+                .create(HttpMethod.GET, artifactoryConfig.getStorageUrlPrefix() + packageName)
+                .header(HDR_API_KEY, artifactoryConfig.getApiKey());
         return artifactoryClient.retrieve(folderRequest, ArtifactoryFolderInfo.class);
     }
 
@@ -179,8 +188,9 @@ public class DockerBadgeService {
      */
     private DockerManifest readManifest(String packageName, String tag) {
         String fullPackageName = packageName + "/" + tag;
-        HttpRequest<Object> manifestRequest = HttpRequest.create(HttpMethod.GET, artifactoryConfig.getUrlPrefix()
-                + fullPackageName + FILE_NAME_MANIFEST).header(HDR_API_KEY, artifactoryConfig.getApiKey());
+        HttpRequest<Object> manifestRequest = HttpRequest
+                .create(HttpMethod.GET, artifactoryConfig.getUrlPrefix() + fullPackageName + FILE_NAME_MANIFEST)
+                .header(HDR_API_KEY, artifactoryConfig.getApiKey());
         return artifactoryClient.retrieve(manifestRequest, DockerManifest.class);
     }
 

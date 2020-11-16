@@ -54,8 +54,8 @@ docker run --rm \
         <rect width="144" height="20" fill="url(#s)"/>
     </g>
     <g font-family="monospace">
-        <text aria-hidden="true" x="0" y="15" fill="#fff" xml:space="preserve">docker pulls</text>
-        <text aria-hidden="true" x="112" y="15" fill="#fff" xml:space="preserve">47</text>
+        <text aria-hidden="true" x="0" y="15" fill="#fff" xml:space="preserve"> docker pulls </text>
+        <text aria-hidden="true" x="112" y="15" fill="#fff" xml:space="preserve"> 47 </text>
     </g>
 </svg>
 ```

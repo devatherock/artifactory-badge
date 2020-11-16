@@ -3,11 +3,16 @@ package io.github.devatherock.artifactory.util;
 import io.github.devatherock.artifactory.config.ShieldsIOProperties;
 import io.github.devatherock.artifactory.service.ShieldsIOClient;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Singleton;
 
+/**
+ * Class to generate the badges
+ * 
+ * @author devaprasadh
+ *
+ */
 @Slf4j
 @Singleton
 @RequiredArgsConstructor
@@ -17,7 +22,6 @@ public class BadgeGenerator {
     private final ShieldsIOClient shieldsIOClient;
     private final ShieldsIOProperties config;
 
-    @SneakyThrows
     public String generateBadge(String label, String value) {
         LOGGER.debug("In generateBadge");
         String badge = null;

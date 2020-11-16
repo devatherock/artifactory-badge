@@ -94,16 +94,10 @@ ext.jacoco = [
     // Should be removed when all tests have been written
     coverageThresholds: [
         'io.github.devatherock.artifactory.service.DockerBadgeService': [
-            'BRANCH': 0.57,
-            'COMPLEXITY': 0.48,
-            'INSTRUCTION': 0.91,
-            'LINE': 0.90
-        ],
-        'io.github.devatherock.artifactory.util.BadgeGenerator': [
-            'BRANCH': 0.50,
+            'BRANCH': 0.66,
             'COMPLEXITY': 0.50,
-            'INSTRUCTION': 0.10,
-            'LINE': 0.14
+            'INSTRUCTION': 0.93,
+            'LINE': 0.90
         ]
     ]
 ]

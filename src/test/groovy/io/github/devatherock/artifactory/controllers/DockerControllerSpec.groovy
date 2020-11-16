@@ -2,6 +2,7 @@ package io.github.devatherock.artifactory.controllers
 
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock
+import io.github.devatherock.test.TestUtil
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.annotation.Client
@@ -12,7 +13,8 @@ import spock.lang.Specification
 
 import javax.inject.Inject
 
-import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalTo
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 
 /**
  * Test class for {@link DockerController}
@@ -46,15 +48,16 @@ class DockerControllerSpec extends Specification {
 
         and:
         WireMock.givenThat(WireMock.get("/artifactory/api/storage/${packageName}")
-                .willReturn(WireMock.okJson(getFoldersResponse())))
+                .willReturn(WireMock.okJson(
+                        TestUtil.getFoldersResponse('/devatherock/simple-slack','2020-10-01T00:00:00.000Z'))))
         WireMock.givenThat(WireMock.get("/artifactory/api/storage/${packageName}/1.1.0/manifest.json?stats")
-                .willReturn(WireMock.okJson(getManifestStats('1.1.0', 10))))
+                .willReturn(WireMock.okJson(TestUtil.getManifestStats('1.1.0', 10))))
         WireMock.givenThat(WireMock.get("/artifactory/api/storage/${packageName}/1.1.2/manifest.json?stats")
-                .willReturn(WireMock.okJson(getManifestStats('1.1.2', 20))))
+                .willReturn(WireMock.okJson(TestUtil.getManifestStats('1.1.2', 20))))
         WireMock.givenThat(WireMock.get("/artifactory/api/storage/${packageName}/latest/manifest.json?stats")
-                .willReturn(WireMock.okJson(getManifestStats('latest', 30))))
+                .willReturn(WireMock.okJson(TestUtil.getManifestStats('latest', 30))))
         WireMock.givenThat(WireMock.get("/artifactory/api/storage/${packageName}/abcdefgh/manifest.json?stats")
-                .willReturn(WireMock.okJson(getManifestStats('abcdefgh', 40))))
+                .willReturn(WireMock.okJson(TestUtil.getManifestStats('abcdefgh', 40))))
         WireMock.givenThat(WireMock.get(WireMock.urlPathEqualTo('/static/v1'))
                 .withQueryParam('label', equalTo('docker pulls'))
                 .withQueryParam('message', equalTo('100'))
@@ -67,6 +70,16 @@ class DockerControllerSpec extends Specification {
                         .queryParam('package', packageName).build()))
 
         then:
+        WireMock.verify(1, WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}")))
+        WireMock.verify(1,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/1.1.0/manifest.json?stats")))
+        WireMock.verify(1,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/1.1.2/manifest.json?stats")))
+        WireMock.verify(1,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/latest/manifest.json?stats")))
+        WireMock.verify(1,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/abcdefgh/manifest.json?stats")))
+        WireMock.verify(1, WireMock.getRequestedFor(WireMock.urlPathEqualTo("/static/v1")))
         badge == 'dummyBadge'
     }
 
@@ -76,15 +89,16 @@ class DockerControllerSpec extends Specification {
 
         and:
         WireMock.givenThat(WireMock.get("/artifactory/api/storage/${packageName}")
-                .willReturn(WireMock.okJson(getFoldersResponse())))
+                .willReturn(WireMock.okJson(
+                        TestUtil.getFoldersResponse('/devatherock/simple-slack', '2020-10-01T00:00:00.000Z'))))
         WireMock.givenThat(WireMock.get("/artifactory/api/storage/${packageName}/1.1.0/manifest.json?stats")
-                .willReturn(WireMock.okJson(getManifestStats('1.1.0', 10))))
+                .willReturn(WireMock.okJson(TestUtil.getManifestStats('1.1.0', 10))))
         WireMock.givenThat(WireMock.get("/artifactory/api/storage/${packageName}/1.1.2/manifest.json?stats")
-                .willReturn(WireMock.okJson(getManifestStats('1.1.2', 20))))
+                .willReturn(WireMock.okJson(TestUtil.getManifestStats('1.1.2', 20))))
         WireMock.givenThat(WireMock.get("/artifactory/api/storage/${packageName}/latest/manifest.json?stats")
-                .willReturn(WireMock.okJson(getManifestStats('latest', 30))))
+                .willReturn(WireMock.okJson(TestUtil.getManifestStats('latest', 30))))
         WireMock.givenThat(WireMock.get("/artifactory/api/storage/${packageName}/abcdefgh/manifest.json?stats")
-                .willReturn(WireMock.okJson(getManifestStats('abcdefgh', 40))))
+                .willReturn(WireMock.okJson(TestUtil.getManifestStats('abcdefgh', 40))))
         WireMock.givenThat(WireMock.get(WireMock.urlPathEqualTo('/static/v1'))
                 .withQueryParam('label', equalTo('downloads'))
                 .withQueryParam('message', equalTo('100'))
@@ -98,6 +112,16 @@ class DockerControllerSpec extends Specification {
                         .queryParam('label', 'downloads').build()))
 
         then:
+        WireMock.verify(1, WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}")))
+        WireMock.verify(1,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/1.1.0/manifest.json?stats")))
+        WireMock.verify(1,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/1.1.2/manifest.json?stats")))
+        WireMock.verify(1,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/latest/manifest.json?stats")))
+        WireMock.verify(1,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/abcdefgh/manifest.json?stats")))
+        WireMock.verify(1, WireMock.getRequestedFor(WireMock.urlPathEqualTo("/static/v1")))
         badge == 'dummyBadge'
     }
 
@@ -107,7 +131,7 @@ class DockerControllerSpec extends Specification {
 
         and:
         WireMock.givenThat(WireMock.get("/artifactory/${packageName}/latest/manifest.json")
-                .willReturn(WireMock.okJson(getManifest())))
+                .willReturn(WireMock.okJson(TestUtil.getManifest())))
         WireMock.givenThat(WireMock.get(WireMock.urlPathEqualTo('/static/v1'))
                 .withQueryParam('label', equalTo('image size'))
                 .withQueryParam('message', equalTo('11 MB'))
@@ -120,6 +144,9 @@ class DockerControllerSpec extends Specification {
                         .queryParam('package', packageName).build()))
 
         then:
+        WireMock.verify(1,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/${packageName}/latest/manifest.json")))
+        WireMock.verify(1, WireMock.getRequestedFor(WireMock.urlPathEqualTo("/static/v1")))
         badge == 'dummyBadge'
     }
 
@@ -129,7 +156,7 @@ class DockerControllerSpec extends Specification {
 
         and:
         WireMock.givenThat(WireMock.get("/artifactory/${packageName}/1.2.0/manifest.json")
-                .willReturn(WireMock.okJson(getManifest())))
+                .willReturn(WireMock.okJson(TestUtil.getManifest())))
         WireMock.givenThat(WireMock.get(WireMock.urlPathEqualTo('/static/v1'))
                 .withQueryParam('label', equalTo('size'))
                 .withQueryParam('message', equalTo('11 MB'))
@@ -144,6 +171,9 @@ class DockerControllerSpec extends Specification {
                         .queryParam('label', 'size').build()))
 
         then:
+        WireMock.verify(1,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/${packageName}/1.2.0/manifest.json")))
+        WireMock.verify(1, WireMock.getRequestedFor(WireMock.urlPathEqualTo("/static/v1")))
         badge == 'dummyBadge'
     }
 
@@ -153,7 +183,7 @@ class DockerControllerSpec extends Specification {
 
         and:
         WireMock.givenThat(WireMock.get("/artifactory/${packageName}/latest/manifest.json")
-                .willReturn(WireMock.okJson(getManifest())))
+                .willReturn(WireMock.okJson(TestUtil.getManifest())))
         WireMock.givenThat(WireMock.get(WireMock.urlPathEqualTo('/static/v1'))
                 .withQueryParam('label', equalTo('layers'))
                 .withQueryParam('message', equalTo('2'))
@@ -166,6 +196,9 @@ class DockerControllerSpec extends Specification {
                         .queryParam('package', packageName).build()))
 
         then:
+        WireMock.verify(1,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/${packageName}/latest/manifest.json")))
+        WireMock.verify(1, WireMock.getRequestedFor(WireMock.urlPathEqualTo("/static/v1")))
         badge == 'dummyBadge'
     }
 
@@ -175,7 +208,7 @@ class DockerControllerSpec extends Specification {
 
         and:
         WireMock.givenThat(WireMock.get("/artifactory/${packageName}/1.2.0/manifest.json")
-                .willReturn(WireMock.okJson(getManifest())))
+                .willReturn(WireMock.okJson(TestUtil.getManifest())))
         WireMock.givenThat(WireMock.get(WireMock.urlPathEqualTo('/static/v1'))
                 .withQueryParam('label', equalTo('number of layers'))
                 .withQueryParam('message', equalTo('2'))
@@ -190,72 +223,9 @@ class DockerControllerSpec extends Specification {
                         .queryParam('label', 'number of layers').build()))
 
         then:
+        WireMock.verify(1,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/${packageName}/1.2.0/manifest.json")))
+        WireMock.verify(1, WireMock.getRequestedFor(WireMock.urlPathEqualTo("/static/v1")))
         badge == 'dummyBadge'
-    }
-
-    String getFoldersResponse() {
-        """{
-            "repo": "docker",
-            "path": "/devatherock/simple-slack",
-            "created": "2018-09-23T18:02:56.147Z",
-            "createdBy": "devatherock",
-            "lastModified": "2018-09-23T18:02:56.147Z",
-            "modifiedBy": "devatherock",
-            "lastUpdated": "2018-09-23T18:02:56.147Z",
-            "children": [
-                {
-                    "uri": "/1.1.0",
-                    "folder": true
-                },
-                {
-                    "uri": "/1.1.2",
-                    "folder": true
-                },
-                {
-                    "uri": "/latest",
-                    "folder": true
-                },
-                {
-                    "uri": "/abcdefgh",
-                    "folder": true
-                }
-            ],
-            "uri": "http://localhost:8081/artifactory/api/storage/docker/devatherock/simple-slack"
-        }"""
-    }
-
-    String getManifestStats(String tag, int downloadCount) {
-        """{
-            "uri": "http://localhost:8081/artifactory/docker/devatherock/simple-slack/${tag}/manifest.json",
-            "downloadCount": ${downloadCount},
-            "lastDownloaded": 1602863958001,
-            "lastDownloadedBy": "devatherock",
-            "remoteDownloadCount": 0,
-            "remoteLastDownloaded": 0
-        }"""
-    }
-
-    String getManifest() {
-        """{
-            "schemaVersion": 2,
-            "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
-            "config": {
-                "mediaType": "application/vnd.docker.container.image.v1+json",
-                "size": 3027,
-                "digest": "sha256:9fe1c24da9391a4d7346200a997c06c7c900466181081af7953a2a15c9fffd7c"
-            },
-            "layers": [
-                {
-                    "mediaType": "application/vnd.docker.image.rootfs.diff.tar.gzip",
-                    "size": 10485760,
-                    "digest": "sha256:e7c96db7181be991f19a9fb6975cdbbd73c65f4a2681348e63a141a2192a5f10"
-                },
-                {
-                    "mediaType": "application/vnd.docker.image.rootfs.diff.tar.gzip",
-                    "size": 1048576,
-                    "digest": "sha256:f910a506b6cb1dbec766725d70356f695ae2bf2bea6224dbe8c7c6ad4f3664a2"
-                }
-            ]
-        }"""
     }
 }

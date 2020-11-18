@@ -13,6 +13,12 @@ import javax.inject.Singleton;
 @Factory
 public class AppConfig {
 
+    /**
+     * HTTP client for interacting with artifactory APIs
+     * 
+     * @param artifactoryClient
+     * @return a http client
+     */
     @Singleton
     public BlockingHttpClient httpClient(@Client("${artifactory.url}") HttpClient artifactoryClient) {
         return artifactoryClient.toBlocking();

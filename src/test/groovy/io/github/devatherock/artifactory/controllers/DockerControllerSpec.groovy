@@ -2,6 +2,7 @@ package io.github.devatherock.artifactory.controllers
 
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock
+import io.github.devatherock.artifactory.service.DockerBadgeService
 import io.github.devatherock.test.TestUtil
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.client.HttpClient
@@ -49,7 +50,7 @@ class DockerControllerSpec extends Specification {
         and:
         WireMock.givenThat(WireMock.get("/artifactory/api/storage/${packageName}")
                 .willReturn(WireMock.okJson(
-                        TestUtil.getFoldersResponse('/devatherock/simple-slack','2020-10-01T00:00:00.000Z'))))
+                        TestUtil.getFoldersResponse('/devatherock/simple-slack', '2020-10-01T00:00:00.000Z'))))
         WireMock.givenThat(WireMock.get("/artifactory/api/storage/${packageName}/1.1.0/manifest.json?stats")
                 .willReturn(WireMock.okJson(TestUtil.getManifestStats('1.1.0', 10))))
         WireMock.givenThat(WireMock.get("/artifactory/api/storage/${packageName}/1.1.2/manifest.json?stats")
@@ -70,15 +71,21 @@ class DockerControllerSpec extends Specification {
                         .queryParam('package', packageName).build()))
 
         then:
-        WireMock.verify(1, WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}")))
         WireMock.verify(1,
-                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/1.1.0/manifest.json?stats")))
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}"))
+                        .withHeader(DockerBadgeService.HDR_API_KEY, equalTo('dummyKey')))
         WireMock.verify(1,
-                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/1.1.2/manifest.json?stats")))
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/1.1.0/manifest.json?stats"))
+                        .withHeader(DockerBadgeService.HDR_API_KEY, equalTo('dummyKey')))
         WireMock.verify(1,
-                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/latest/manifest.json?stats")))
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/1.1.2/manifest.json?stats"))
+                        .withHeader(DockerBadgeService.HDR_API_KEY, equalTo('dummyKey')))
         WireMock.verify(1,
-                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/abcdefgh/manifest.json?stats")))
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/latest/manifest.json?stats"))
+                        .withHeader(DockerBadgeService.HDR_API_KEY, equalTo('dummyKey')))
+        WireMock.verify(1,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/abcdefgh/manifest.json?stats"))
+                        .withHeader(DockerBadgeService.HDR_API_KEY, equalTo('dummyKey')))
         WireMock.verify(1, WireMock.getRequestedFor(WireMock.urlPathEqualTo("/static/v1")))
         badge == 'dummyBadge'
     }
@@ -112,15 +119,21 @@ class DockerControllerSpec extends Specification {
                         .queryParam('label', 'downloads').build()))
 
         then:
-        WireMock.verify(1, WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}")))
         WireMock.verify(1,
-                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/1.1.0/manifest.json?stats")))
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}"))
+                        .withHeader(DockerBadgeService.HDR_API_KEY, equalTo('dummyKey')))
         WireMock.verify(1,
-                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/1.1.2/manifest.json?stats")))
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/1.1.0/manifest.json?stats"))
+                        .withHeader(DockerBadgeService.HDR_API_KEY, equalTo('dummyKey')))
         WireMock.verify(1,
-                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/latest/manifest.json?stats")))
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/1.1.2/manifest.json?stats"))
+                        .withHeader(DockerBadgeService.HDR_API_KEY, equalTo('dummyKey')))
         WireMock.verify(1,
-                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/abcdefgh/manifest.json?stats")))
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/latest/manifest.json?stats"))
+                        .withHeader(DockerBadgeService.HDR_API_KEY, equalTo('dummyKey')))
+        WireMock.verify(1,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/abcdefgh/manifest.json?stats"))
+                        .withHeader(DockerBadgeService.HDR_API_KEY, equalTo('dummyKey')))
         WireMock.verify(1, WireMock.getRequestedFor(WireMock.urlPathEqualTo("/static/v1")))
         badge == 'dummyBadge'
     }
@@ -145,7 +158,8 @@ class DockerControllerSpec extends Specification {
 
         then:
         WireMock.verify(1,
-                WireMock.getRequestedFor(urlEqualTo("/artifactory/${packageName}/latest/manifest.json")))
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/${packageName}/latest/manifest.json"))
+                        .withHeader(DockerBadgeService.HDR_API_KEY, equalTo('dummyKey')))
         WireMock.verify(1, WireMock.getRequestedFor(WireMock.urlPathEqualTo("/static/v1")))
         badge == 'dummyBadge'
     }
@@ -172,7 +186,8 @@ class DockerControllerSpec extends Specification {
 
         then:
         WireMock.verify(1,
-                WireMock.getRequestedFor(urlEqualTo("/artifactory/${packageName}/1.2.0/manifest.json")))
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/${packageName}/1.2.0/manifest.json"))
+                        .withHeader(DockerBadgeService.HDR_API_KEY, equalTo('dummyKey')))
         WireMock.verify(1, WireMock.getRequestedFor(WireMock.urlPathEqualTo("/static/v1")))
         badge == 'dummyBadge'
     }
@@ -197,7 +212,8 @@ class DockerControllerSpec extends Specification {
 
         then:
         WireMock.verify(1,
-                WireMock.getRequestedFor(urlEqualTo("/artifactory/${packageName}/latest/manifest.json")))
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/${packageName}/latest/manifest.json"))
+                        .withHeader(DockerBadgeService.HDR_API_KEY, equalTo('dummyKey')))
         WireMock.verify(1, WireMock.getRequestedFor(WireMock.urlPathEqualTo("/static/v1")))
         badge == 'dummyBadge'
     }
@@ -224,7 +240,8 @@ class DockerControllerSpec extends Specification {
 
         then:
         WireMock.verify(1,
-                WireMock.getRequestedFor(urlEqualTo("/artifactory/${packageName}/1.2.0/manifest.json")))
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/${packageName}/1.2.0/manifest.json"))
+                        .withHeader(DockerBadgeService.HDR_API_KEY, equalTo('dummyKey')))
         WireMock.verify(1, WireMock.getRequestedFor(WireMock.urlPathEqualTo("/static/v1")))
         badge == 'dummyBadge'
     }

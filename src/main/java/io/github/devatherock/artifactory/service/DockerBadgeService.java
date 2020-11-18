@@ -13,6 +13,7 @@ import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.http.HttpMethod;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.client.BlockingHttpClient;
+import io.micronaut.http.client.exceptions.HttpClientResponseException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,9 +28,8 @@ import java.util.regex.Pattern;
 /**
  * Service class to fetch information required for the badges and then generate
  * them
- * 
- * @author devaprasadh
  *
+ * @author devaprasadh
  */
 @Slf4j
 @Blocking
@@ -139,7 +139,7 @@ public class DockerBadgeService {
 
                     if (null == latestVersion
                             || Instant.from(MODIFIED_TIME_PARSER.parse(currentVersion.getLastModified())).compareTo(
-                                    Instant.from(MODIFIED_TIME_PARSER.parse(latestVersion.getLastModified()))) > 0) {
+                            Instant.from(MODIFIED_TIME_PARSER.parse(latestVersion.getLastModified()))) > 0) {
                         latestVersion = currentVersion;
                     }
                 }
@@ -188,10 +188,19 @@ public class DockerBadgeService {
      */
     private DockerManifest readManifest(String packageName, String tag) {
         String fullPackageName = packageName + "/" + tag;
+        DockerManifest manifest = null;
+
         HttpRequest<Object> manifestRequest = HttpRequest
                 .create(HttpMethod.GET, artifactoryConfig.getUrlPrefix() + fullPackageName + FILE_NAME_MANIFEST)
                 .header(HDR_API_KEY, artifactoryConfig.getApiKey());
-        return artifactoryClient.retrieve(manifestRequest, DockerManifest.class);
+
+        try {
+            manifest = artifactoryClient.retrieve(manifestRequest, DockerManifest.class);
+        } catch (HttpClientResponseException exception) {
+            LOGGER.warn("Exception when reading manifest.json of {}", fullPackageName, exception);
+        }
+
+        return manifest;
     }
 
     /**

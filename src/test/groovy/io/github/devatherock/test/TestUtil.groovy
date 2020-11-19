@@ -31,14 +31,52 @@ class TestUtil {
                     "uri": "/abcdefgh",
                     "folder": true
                 }
-            ],
-            "uri": "http://localhost:8081/artifactory/api/storage/docker/devatherock/simple-slack"
+            ]
         }"""
     }
 
-    static String getManifestStats(String tag, int downloadCount) {
+    static String getFolderWithFileResponse() {
         """{
-            "uri": "http://localhost:8081/artifactory/docker/devatherock/simple-slack/${tag}/manifest.json",
+            "repo": "docker",
+            "path": "io/github/devatherock/simple-yaml",
+            "created": "2020-10-01T00:00:00.000Z",
+            "createdBy": "devatherock",
+            "lastModified": "2020-10-01T00:00:00.000Z",
+            "modifiedBy": "devatherock",
+            "lastUpdated": "2020-10-01T00:00:00.000Z",
+            "children": [
+                {
+                    "uri": "/1.1.0",
+                    "folder": true
+                },
+                {
+                    "uri": "/maven-metadata.xml",
+                    "folder": false
+                }
+            ]
+        }"""
+    }
+
+    static String getFolderWithOnlyFileResponse() {
+        """{
+            "repo": "docker",
+            "path": "io/github/devatherock/simple-yaml",
+            "created": "2020-10-01T00:00:00.000Z",
+            "createdBy": "devatherock",
+            "lastModified": "2020-10-01T00:00:00.000Z",
+            "modifiedBy": "devatherock",
+            "lastUpdated": "2020-10-01T00:00:00.000Z",
+            "children": [
+                {
+                    "uri": "/maven-metadata.xml",
+                    "folder": false
+                }
+            ]
+        }"""
+    }
+
+    static String getManifestStats(int downloadCount) {
+        """{
             "downloadCount": ${downloadCount},
             "lastDownloaded": 1602863958001,
             "lastDownloadedBy": "devatherock",

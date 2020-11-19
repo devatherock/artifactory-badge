@@ -90,15 +90,6 @@ ext.jacoco = [
     exclusions: [
         'io/github/devatherock/Application.class',
         'io/github/devatherock/test/ArtifactoryController.class'
-    ],
-    // Should be removed when all tests have been written
-    coverageThresholds: [
-        'io.github.devatherock.artifactory.service.DockerBadgeService': [
-            'BRANCH': 0.66,
-            'COMPLEXITY': 0.50,
-            'INSTRUCTION': 0.93,
-            'LINE': 0.90
-        ]
     ]
 ]
 apply from: '../gradle-includes/checks.gradle'

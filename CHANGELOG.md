@@ -11,6 +11,7 @@
 - [#20](https://github.com/devatherock/artifactory-badge/issues/20): `/version` endpoint to generate latest version badge
 - `/metrics` endpoint
 - Enabled access logs
+- [#24](https://github.com/devatherock/artifactory-badge/issues/24): Unit tests for 100% code coverage
 
 ### Changed
 - Caught exception when JSON processing fails
@@ -21,6 +22,7 @@
 - [#10](https://github.com/devatherock/artifactory-badge/issues/10): Hid decimal point when image size is a whole number
 - [#11](https://github.com/devatherock/artifactory-badge/issues/11): Shortened pulls count
 - [#25](https://github.com/devatherock/artifactory-badge/issues/25): Used a different `shields.io` URL, so that badge values with `-` are supported
+- [#15](https://github.com/devatherock/artifactory-badge/issues/15): Handled HTTP 404s from artifactory APIs
 
 ### Removed
 - [#13](https://github.com/devatherock/artifactory-badge/issues/13): Apache HTTP Client

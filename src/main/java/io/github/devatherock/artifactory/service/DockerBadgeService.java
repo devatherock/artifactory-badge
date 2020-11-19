@@ -69,11 +69,8 @@ public class DockerBadgeService {
         DockerManifest manifest = readManifest(packageName, tag);
 
         if (null != manifest && CollectionUtils.isNotEmpty(manifest.getLayers())) {
-            double imageSize = manifest.getLayers()
-                    .stream()
-                    .map(DockerLayer::getSize)
-                    .reduce((totalSize, currentLayerSize) -> totalSize + currentLayerSize)
-                    .get() / BYTES_IN_MB;
+            double imageSize = manifest.getLayers().stream().map(DockerLayer::getSize)
+                    .reduce((totalSize, currentLayerSize) -> totalSize + currentLayerSize).get() / BYTES_IN_MB;
 
             LOGGER.info("Size of {}/{}: {} MB", packageName, tag, imageSize);
             return badgeGenerator.generateBadge(badgeLabel, String.format("%s MB", formatDecimal(imageSize, "0.##")));
@@ -105,13 +102,7 @@ public class DockerBadgeService {
 
             for (ArtifactoryFolderElement child : folderInfo.getChildren()) {
                 if (child.isFolder()) {
-                    HttpRequest<Object> fileRequest = HttpRequest
-                            .create(HttpMethod.GET,
-                                    artifactoryConfig.getStorageUrlPrefix() + packageName + child.getUri()
-                                            + FILE_NAME_MANIFEST + "?stats")
-                            .header(HDR_API_KEY, artifactoryConfig.getApiKey());
-                    ArtifactoryFileStats fileStats = artifactoryClient.retrieve(fileRequest,
-                            ArtifactoryFileStats.class);
+                    ArtifactoryFileStats fileStats = getManifestStats(packageName, child.getUri());
 
                     if (null != fileStats) {
                         downloadCount += fileStats.getDownloadCount();
@@ -137,9 +128,9 @@ public class DockerBadgeService {
                 if (child.isFolder()) {
                     ArtifactoryFolderInfo currentVersion = getArtifactoryFolderInfo(packageName + child.getUri());
 
-                    if (null == latestVersion
-                            || Instant.from(MODIFIED_TIME_PARSER.parse(currentVersion.getLastModified())).compareTo(
-                            Instant.from(MODIFIED_TIME_PARSER.parse(latestVersion.getLastModified()))) > 0) {
+                    if (null == latestVersion || (null != currentVersion
+                            && Instant.from(MODIFIED_TIME_PARSER.parse(currentVersion.getLastModified())).compareTo(
+                                    Instant.from(MODIFIED_TIME_PARSER.parse(latestVersion.getLastModified()))) > 0)) {
                         latestVersion = currentVersion;
                     }
                 }
@@ -163,10 +154,18 @@ public class DockerBadgeService {
      * @return {@link ArtifactoryFolderInfo}
      */
     private ArtifactoryFolderInfo getArtifactoryFolderInfo(String packageName) {
+        ArtifactoryFolderInfo folderInfo = null;
         HttpRequest<Object> folderRequest = HttpRequest
                 .create(HttpMethod.GET, artifactoryConfig.getStorageUrlPrefix() + packageName)
                 .header(HDR_API_KEY, artifactoryConfig.getApiKey());
-        return artifactoryClient.retrieve(folderRequest, ArtifactoryFolderInfo.class);
+
+        try {
+            folderInfo = artifactoryClient.retrieve(folderRequest, ArtifactoryFolderInfo.class);
+        } catch (HttpClientResponseException exception) {
+            LOGGER.warn("Exception when fetching folder info of {}", packageName, exception);
+        }
+
+        return folderInfo;
     }
 
     /**
@@ -189,7 +188,6 @@ public class DockerBadgeService {
     private DockerManifest readManifest(String packageName, String tag) {
         String fullPackageName = packageName + "/" + tag;
         DockerManifest manifest = null;
-
         HttpRequest<Object> manifestRequest = HttpRequest
                 .create(HttpMethod.GET, artifactoryConfig.getUrlPrefix() + fullPackageName + FILE_NAME_MANIFEST)
                 .header(HDR_API_KEY, artifactoryConfig.getApiKey());
@@ -201,6 +199,30 @@ public class DockerBadgeService {
         }
 
         return manifest;
+    }
+
+    /**
+     * Reads statistics of the {@code manifest.json} file for the supplied docker
+     * image and tag
+     * 
+     * @param packageName the docker image name
+     * @param tagUri      subfolder path to a docker image tag
+     * @return {@link ArtifactoryFileStats}
+     */
+    private ArtifactoryFileStats getManifestStats(String packageName, String tagUri) {
+        ArtifactoryFileStats fileStats = null;
+        HttpRequest<Object> fileRequest = HttpRequest
+                .create(HttpMethod.GET,
+                        artifactoryConfig.getStorageUrlPrefix() + packageName + tagUri + FILE_NAME_MANIFEST + "?stats")
+                .header(HDR_API_KEY, artifactoryConfig.getApiKey());
+
+        try {
+            fileStats = artifactoryClient.retrieve(fileRequest, ArtifactoryFileStats.class);
+        } catch (HttpClientResponseException exception) {
+            LOGGER.warn("Exception when reading manifest stats of {}{}", packageName, tagUri, exception);
+        }
+
+        return fileStats;
     }
 
     /**

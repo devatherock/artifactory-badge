@@ -43,7 +43,7 @@ class DockerControllerSpec extends Specification {
         mockServer.resetRequests()
     }
 
-    void 'test get image pull count - default label'() {
+    void 'test get image pull count - default label and custom badge'() {
         given:
         String packageName = 'docker/devatherock/simple-slack'
 
@@ -54,16 +54,16 @@ class DockerControllerSpec extends Specification {
         WireMock.givenThat(WireMock.get("/artifactory/api/storage/${packageName}/1.1.0/manifest.json?stats")
                 .willReturn(WireMock.okJson(TestUtil.getManifestStats(10))))
         WireMock.givenThat(WireMock.get("/artifactory/api/storage/${packageName}/1.1.2/manifest.json?stats")
-                .willReturn(WireMock.okJson(TestUtil.getManifestStats(20))))
+                .willReturn(WireMock.okJson(TestUtil.getManifestStats(11))))
         WireMock.givenThat(WireMock.get("/artifactory/api/storage/${packageName}/latest/manifest.json?stats")
-                .willReturn(WireMock.okJson(TestUtil.getManifestStats(30))))
+                .willReturn(WireMock.okJson(TestUtil.getManifestStats(12))))
         WireMock.givenThat(WireMock.get("/artifactory/api/storage/${packageName}/abcdefgh/manifest.json?stats")
-                .willReturn(WireMock.okJson(TestUtil.getManifestStats(40))))
+                .willReturn(WireMock.okJson(TestUtil.getManifestStats(14))))
         WireMock.givenThat(WireMock.get(WireMock.urlPathEqualTo('/static/v1'))
                 .withQueryParam('label', equalTo('docker pulls'))
                 .withQueryParam('message', equalTo('100'))
                 .withQueryParam('color', equalTo('blue'))
-                .willReturn(WireMock.okXml('dummyBadge')))
+                .willReturn(WireMock.notFound()))
 
         when:
         String badge = httpClient.toBlocking().retrieve(
@@ -87,7 +87,7 @@ class DockerControllerSpec extends Specification {
                 WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/abcdefgh/manifest.json?stats"))
                         .withHeader(DockerBadgeService.HDR_API_KEY, equalTo('dummyKey')))
         WireMock.verify(1, WireMock.getRequestedFor(WireMock.urlPathEqualTo("/static/v1")))
-        badge == 'dummyBadge'
+        badge == TestUtil.getCustomBadgeResponse()
     }
 
     void 'test get image pull count - custom label'() {
@@ -136,6 +136,59 @@ class DockerControllerSpec extends Specification {
                         .withHeader(DockerBadgeService.HDR_API_KEY, equalTo('dummyKey')))
         WireMock.verify(1, WireMock.getRequestedFor(WireMock.urlPathEqualTo("/static/v1")))
         badge == 'dummyBadge'
+    }
+
+    void 'test get image pull count - caching'() {
+        given:
+        String packageName = 'docker/devatherock/simple-slack'
+
+        and:
+        WireMock.givenThat(WireMock.get("/artifactory/api/storage/${packageName}")
+                .willReturn(WireMock.okJson(
+                        TestUtil.getFoldersResponse('/devatherock/simple-slack', '2020-10-01T00:00:00.000Z'))))
+        WireMock.givenThat(WireMock.get("/artifactory/api/storage/${packageName}/1.1.0/manifest.json?stats")
+                .willReturn(WireMock.okJson(TestUtil.getManifestStats(10))))
+        WireMock.givenThat(WireMock.get("/artifactory/api/storage/${packageName}/1.1.2/manifest.json?stats")
+                .willReturn(WireMock.okJson(TestUtil.getManifestStats(20))))
+        WireMock.givenThat(WireMock.get("/artifactory/api/storage/${packageName}/latest/manifest.json?stats")
+                .willReturn(WireMock.okJson(TestUtil.getManifestStats(30))))
+        WireMock.givenThat(WireMock.get("/artifactory/api/storage/${packageName}/abcdefgh/manifest.json?stats")
+                .willReturn(WireMock.okJson(TestUtil.getManifestStats(40))))
+        WireMock.givenThat(WireMock.get(WireMock.urlPathEqualTo('/static/v1'))
+                .withQueryParam('label', equalTo('dummy'))
+                .withQueryParam('message', equalTo('100'))
+                .withQueryParam('color', equalTo('blue'))
+                .willReturn(WireMock.okXml('dummyBadge')))
+
+        when:
+        String badge = httpClient.toBlocking().retrieve(
+                HttpRequest.GET(UriBuilder.of('/docker/pulls')
+                        .queryParam('package', packageName)
+                        .queryParam('label', 'dummy').build()))
+        String cachedBadge = httpClient.toBlocking().retrieve(
+                HttpRequest.GET(UriBuilder.of('/docker/pulls')
+                        .queryParam('package', packageName)
+                        .queryParam('label', 'dummy').build()))
+
+        then:
+        WireMock.verify(1,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}"))
+                        .withHeader(DockerBadgeService.HDR_API_KEY, equalTo('dummyKey')))
+        WireMock.verify(1,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/1.1.0/manifest.json?stats"))
+                        .withHeader(DockerBadgeService.HDR_API_KEY, equalTo('dummyKey')))
+        WireMock.verify(1,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/1.1.2/manifest.json?stats"))
+                        .withHeader(DockerBadgeService.HDR_API_KEY, equalTo('dummyKey')))
+        WireMock.verify(1,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/latest/manifest.json?stats"))
+                        .withHeader(DockerBadgeService.HDR_API_KEY, equalTo('dummyKey')))
+        WireMock.verify(1,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/abcdefgh/manifest.json?stats"))
+                        .withHeader(DockerBadgeService.HDR_API_KEY, equalTo('dummyKey')))
+        WireMock.verify(1, WireMock.getRequestedFor(WireMock.urlPathEqualTo("/static/v1")))
+        badge == 'dummyBadge'
+        cachedBadge == badge
     }
 
     void 'test get image size - default label and tag'() {
@@ -192,6 +245,40 @@ class DockerControllerSpec extends Specification {
         badge == 'dummyBadge'
     }
 
+    void 'test get image size - caching'() {
+        given:
+        String packageName = 'docker/devatherock/simple-slack'
+
+        and:
+        WireMock.givenThat(WireMock.get("/artifactory/${packageName}/latest/manifest.json")
+                .willReturn(WireMock.okJson(TestUtil.getManifest())))
+        WireMock.givenThat(WireMock.get(WireMock.urlPathEqualTo('/static/v1'))
+                .withQueryParam('label', equalTo('dummy'))
+                .withQueryParam('message', equalTo('11 MB'))
+                .withQueryParam('color', equalTo('blue'))
+                .willReturn(WireMock.okXml('dummyBadge')))
+
+        when:
+        String badge = httpClient.toBlocking().retrieve(
+                HttpRequest.GET(UriBuilder.of('/docker/image-size')
+                        .queryParam('package', packageName)
+                        .queryParam('tag', 'latest')
+                        .queryParam('label', 'dummy').build()))
+        String cachedBadge = httpClient.toBlocking().retrieve(
+                HttpRequest.GET(UriBuilder.of('/docker/image-size')
+                        .queryParam('package', packageName)
+                        .queryParam('tag', 'latest')
+                        .queryParam('label', 'dummy').build()))
+
+        then:
+        WireMock.verify(1,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/${packageName}/latest/manifest.json"))
+                        .withHeader(DockerBadgeService.HDR_API_KEY, equalTo('dummyKey')))
+        WireMock.verify(1, WireMock.getRequestedFor(WireMock.urlPathEqualTo("/static/v1")))
+        badge == 'dummyBadge'
+        cachedBadge == badge
+    }
+
     void 'test get layers - default label and tag'() {
         given:
         String packageName = 'docker/devatherock/simple-slack'
@@ -244,5 +331,39 @@ class DockerControllerSpec extends Specification {
                         .withHeader(DockerBadgeService.HDR_API_KEY, equalTo('dummyKey')))
         WireMock.verify(1, WireMock.getRequestedFor(WireMock.urlPathEqualTo("/static/v1")))
         badge == 'dummyBadge'
+    }
+
+    void 'test get layers - caching'() {
+        given:
+        String packageName = 'docker/devatherock/simple-slack'
+
+        and:
+        WireMock.givenThat(WireMock.get("/artifactory/${packageName}/latest/manifest.json")
+                .willReturn(WireMock.okJson(TestUtil.getManifest())))
+        WireMock.givenThat(WireMock.get(WireMock.urlPathEqualTo('/static/v1'))
+                .withQueryParam('label', equalTo('dummy'))
+                .withQueryParam('message', equalTo('2'))
+                .withQueryParam('color', equalTo('blue'))
+                .willReturn(WireMock.okXml('dummyBadge')))
+
+        when:
+        String badge = httpClient.toBlocking().retrieve(
+                HttpRequest.GET(UriBuilder.of('/docker/layers')
+                        .queryParam('package', packageName)
+                        .queryParam('tag', 'latest')
+                        .queryParam('label', 'dummy').build()))
+        String cachedBadge = httpClient.toBlocking().retrieve(
+                HttpRequest.GET(UriBuilder.of('/docker/layers')
+                        .queryParam('package', packageName)
+                        .queryParam('tag', 'latest')
+                        .queryParam('label', 'dummy').build()))
+
+        then:
+        WireMock.verify(1,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/${packageName}/latest/manifest.json"))
+                        .withHeader(DockerBadgeService.HDR_API_KEY, equalTo('dummyKey')))
+        WireMock.verify(1, WireMock.getRequestedFor(WireMock.urlPathEqualTo("/static/v1")))
+        badge == 'dummyBadge'
+        cachedBadge == badge
     }
 }

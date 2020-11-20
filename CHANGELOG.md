@@ -23,6 +23,7 @@
 - [#11](https://github.com/devatherock/artifactory-badge/issues/11): Shortened pulls count
 - [#25](https://github.com/devatherock/artifactory-badge/issues/25): Used a different `shields.io` URL, so that badge values with `-` are supported
 - [#15](https://github.com/devatherock/artifactory-badge/issues/15): Handled HTTP 404s from artifactory APIs
+- [#35](https://github.com/devatherock/artifactory-badge/issues/35): Handled HTTP errors from `shields.io`
 
 ### Removed
 - [#13](https://github.com/devatherock/artifactory-badge/issues/13): Apache HTTP Client

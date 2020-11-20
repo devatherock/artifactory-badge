@@ -1,6 +1,9 @@
 package io.github.devatherock.artifactory.config;
 
+import javax.annotation.PostConstruct;
+
 import io.micronaut.context.annotation.ConfigurationProperties;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,4 +16,17 @@ public class ShieldsIOProperties {
      * generate the badge
      */
     private boolean enabled = true;
+
+    /**
+     * The {@code shields.io} URL
+     */
+    private String url = "https://img.shields.io";
+
+    @Setter(AccessLevel.NONE)
+    private String badgeUrl;
+
+    @PostConstruct
+    public void init() {
+        badgeUrl = url + "/static/v1";
+    }
 }

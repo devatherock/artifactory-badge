@@ -1,11 +1,13 @@
 {
   "rules": [
-    {"excludeClasses": "io.github.devatherock.artifactory.controllers.DockerControllerSpec"},
-    {"excludeClasses": "io.github.devatherock.artifactory.controllers.VersionControllerSpec"},
     {"excludeClasses": "io.github.devatherock.artifactory.config.AppConfigSpec"},
     {"excludeClasses": "io.github.devatherock.artifactory.config.ArtifactoryPropertiesSpec"},
-    {"excludeClasses": "io.github.devatherock.artifactory.util.BadgeGeneratorSpec"},
+    {"excludeClasses": "io.github.devatherock.artifactory.config.ShieldsIOPropertiesSpec"},
+    {"excludeClasses": "io.github.devatherock.artifactory.controllers.DockerControllerSpec"},
+    {"excludeClasses": "io.github.devatherock.artifactory.controllers.VersionControllerSpec"},
     {"excludeClasses": "io.github.devatherock.artifactory.service.DockerBadgeServiceSpec"},
+    {"excludeClasses": "io.github.devatherock.artifactory.util.BadgeGeneratorSpec"},
+    {"excludeClasses": "io.github.devatherock.test.TestUtil"},
     {"excludeClasses": "org.spockframework.**"},
     {"excludeClasses": "org.gradle.**"},
     {"excludeClasses": "net.sf.cglib.**"},

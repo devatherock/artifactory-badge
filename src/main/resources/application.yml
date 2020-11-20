@@ -30,7 +30,3 @@ micronaut:
       swagger-ui:
         paths: classpath:META-INF/swagger/views/swagger-ui
         mapping: /swagger-ui/**
-artifactory:
-  badge:
-    shields-io:
-      url: https://img.shields.io

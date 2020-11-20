@@ -145,4 +145,61 @@ class VersionControllerSpec extends Specification {
         WireMock.verify(1, WireMock.getRequestedFor(WireMock.urlPathEqualTo("/static/v1")))
         badge == 'dummyBadge'
     }
+
+    void 'test get latest version badge - caching'() {
+        given:
+        String packageName = 'docker/devatherock/simple-slack'
+
+        and:
+        WireMock.givenThat(WireMock.get("/artifactory/api/storage/${packageName}")
+                .willReturn(WireMock.okJson(
+                        TestUtil.getFoldersResponse('/devatherock/simple-slack', '2020-10-01T00:00:00.000Z'))))
+        WireMock.givenThat(WireMock.get("/artifactory/api/storage/${packageName}/1.1.0")
+                .willReturn(WireMock.okJson(
+                        TestUtil.getFoldersResponse('/devatherock/simple-slack/1.1.0', '2020-10-08T00:00:00.000Z'))))
+        WireMock.givenThat(WireMock.get("/artifactory/api/storage/${packageName}/1.1.2")
+                .willReturn(WireMock.okJson(
+                        TestUtil.getFoldersResponse('/devatherock/simple-slack/1.1.2', '2020-10-15T00:00:00.000Z'))))
+        WireMock.givenThat(WireMock.get("/artifactory/api/storage/${packageName}/latest")
+                .willReturn(WireMock.okJson(
+                        TestUtil.getFoldersResponse('/devatherock/simple-slack/latest', '2020-10-01T00:00:00.000Z'))))
+        WireMock.givenThat(WireMock.get("/artifactory/api/storage/${packageName}/abcdefgh")
+                .willReturn(WireMock.okJson(
+                        TestUtil.getFoldersResponse('/devatherock/simple-slack/abcdefgh', '2020-10-22T00:00:00.000Z'))))
+        WireMock.givenThat(WireMock.get(WireMock.urlPathEqualTo('/static/v1'))
+                .withQueryParam('label', equalTo('dummy'))
+                .withQueryParam('message', equalTo('abcdefgh'))
+                .withQueryParam('color', equalTo('blue'))
+                .willReturn(WireMock.okXml('dummyBadge')))
+
+        when:
+        String badge = httpClient.toBlocking().retrieve(
+                HttpRequest.GET(UriBuilder.of('/version')
+                        .queryParam('package', packageName)
+                        .queryParam('label', 'dummy').build()))
+        String cachedBadge = httpClient.toBlocking().retrieve(
+                HttpRequest.GET(UriBuilder.of('/version')
+                        .queryParam('package', packageName)
+                        .queryParam('label', 'dummy').build()))
+
+        then:
+        WireMock.verify(1,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}"))
+                        .withHeader(DockerBadgeService.HDR_API_KEY, equalTo('dummyKey')))
+        WireMock.verify(1,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/1.1.0"))
+                        .withHeader(DockerBadgeService.HDR_API_KEY, equalTo('dummyKey')))
+        WireMock.verify(1,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/1.1.2"))
+                        .withHeader(DockerBadgeService.HDR_API_KEY, equalTo('dummyKey')))
+        WireMock.verify(1,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/latest"))
+                        .withHeader(DockerBadgeService.HDR_API_KEY, equalTo('dummyKey')))
+        WireMock.verify(1,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/abcdefgh"))
+                        .withHeader(DockerBadgeService.HDR_API_KEY, equalTo('dummyKey')))
+        WireMock.verify(1, WireMock.getRequestedFor(WireMock.urlPathEqualTo("/static/v1")))
+        badge == 'dummyBadge'
+        cachedBadge == badge
+    }
 }

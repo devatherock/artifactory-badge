@@ -1,5 +1,14 @@
 package io.github.devatherock.artifactory.service;
 
+import java.text.DecimalFormat;
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Pattern;
+
+import javax.inject.Singleton;
+
 import io.github.devatherock.artifactory.config.ArtifactoryProperties;
 import io.github.devatherock.artifactory.entities.ArtifactoryFileStats;
 import io.github.devatherock.artifactory.entities.ArtifactoryFolderElement;
@@ -17,14 +26,6 @@ import io.micronaut.http.client.exceptions.HttpClientResponseException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.inject.Singleton;
-import java.text.DecimalFormat;
-import java.time.Instant;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Pattern;
-
 /**
  * Service class to fetch information required for the badges and then generate
  * them
@@ -41,6 +42,26 @@ public class DockerBadgeService {
     private static final String HDR_API_KEY = "X-JFrog-Art-Api";
     private static final double PULLS_REDUCER = 1000;
     private static final int MAX_REDUCTIONS = 3;
+
+    /**
+     * Constant for sort by semantic version
+     */
+    private static final String SORT_TYPE_SEMVER = "semver";
+    /**
+     * Major version part of a semantic version
+     */
+    private static final String VERSION_PART_MAJOR = "major";
+    /**
+     * Minor version part of a semantic version
+     */
+    private static final String VERSION_PART_MINOR = "minor";
+    /**
+     * Patch version part of a semantic version
+     */
+    private static final String VERSION_PART_PATCH = "patch";
+    /**
+     * Map containing suffixes for download count
+     */
     private static final Map<Integer, String> PULLS_SUFFIX = new HashMap<>();
     /**
      * Formatter to parse dates like {@code 2020-10-01T00:00:00.000Z}
@@ -50,7 +71,12 @@ public class DockerBadgeService {
     /**
      * Pattern to match versions like {@code 1}, {@code 1.2} and {@code 1.2.2}
      */
-    private static final Pattern PTRN_NUMERIC_VERSION = Pattern.compile("^[0-9]+([\\.0-9]+)*$");
+    private static final Pattern PTRN_NUMERIC_VERSION = Pattern.compile(
+            "^(0|[1-9][0-9]*)(\\.(0|[1-9][0-9]*))*(\\-[0-9A-Za-z-]+(\\.[0-9A-Za-z-]+)*)?(\\+[0-9A-Za-z-]+(\\.[0-9A-Za-z-]+)*)?$");
+    /**
+     * Pattern to match numbers
+     */
+    private static final Pattern PTRN_NUMBER = Pattern.compile("^[0-9]+$");
 
     static {
         PULLS_SUFFIX.put(0, "");
@@ -116,8 +142,16 @@ public class DockerBadgeService {
         }
     }
 
+    /**
+     * Generates the latest version badge for the input package
+     *
+     * @param packageName
+     * @param badgeLabel
+     * @param sortType
+     * @return the latest version badge
+     */
     @Cacheable("version-cache")
-    public String getLatestVersionBadge(String packageName, String badgeLabel) {
+    public String getLatestVersionBadge(String packageName, String badgeLabel, String sortType) {
         LOGGER.debug("In getLatestVersionBadge");
         ArtifactoryFolderInfo folderInfo = getArtifactoryFolderInfo(packageName);
 
@@ -126,12 +160,31 @@ public class DockerBadgeService {
 
             for (ArtifactoryFolderElement child : folderInfo.getChildren()) {
                 if (child.isFolder()) {
-                    ArtifactoryFolderInfo currentVersion = getArtifactoryFolderInfo(packageName + child.getUri());
+                    if (SORT_TYPE_SEMVER.equals(sortType)) {
+                        // Substring to remove the leading slash
+                        String currentVersion = child.getUri().substring(1);
 
-                    if (null == latestVersion || (null != currentVersion
-                            && Instant.from(MODIFIED_TIME_PARSER.parse(currentVersion.getLastModified())).compareTo(
-                                    Instant.from(MODIFIED_TIME_PARSER.parse(latestVersion.getLastModified()))) > 0)) {
-                        latestVersion = currentVersion;
+                        if (PTRN_NUMERIC_VERSION.matcher(currentVersion).matches()) {
+                            if (null == latestVersion) {
+                                latestVersion = ArtifactoryFolderInfo.builder().path(child.getUri()).build();
+                            } else {
+                                // Substring to remove the leading slash
+                                int result = compareVersions(latestVersion.getPath().substring(1), currentVersion,
+                                        VERSION_PART_MAJOR);
+                                if (result == -1) {
+                                    latestVersion = ArtifactoryFolderInfo.builder().path(child.getUri()).build();
+                                }
+                            }
+                        }
+                    } else {
+                        ArtifactoryFolderInfo currentVersion = getArtifactoryFolderInfo(packageName + child.getUri());
+
+                        if (null == latestVersion || (null != currentVersion
+                                && Instant.from(MODIFIED_TIME_PARSER.parse(currentVersion.getLastModified())).compareTo(
+                                        Instant.from(
+                                                MODIFIED_TIME_PARSER.parse(latestVersion.getLastModified()))) > 0)) {
+                            latestVersion = currentVersion;
+                        }
                     }
                 }
             }
@@ -169,16 +222,6 @@ public class DockerBadgeService {
     }
 
     /**
-     * Generates a not found badge
-     *
-     * @param badgeLabel the badge label
-     * @return a not found badge
-     */
-    private String generateNotFoundBadge(String badgeLabel) {
-        return badgeGenerator.generateBadge(badgeLabel, "Not Found");
-    }
-
-    /**
      * Reads a docker {@code manifest.json} file
      *
      * @param packageName the docker image name
@@ -204,7 +247,7 @@ public class DockerBadgeService {
     /**
      * Reads statistics of the {@code manifest.json} file for the supplied docker
      * image and tag
-     * 
+     *
      * @param packageName the docker image name
      * @param tagUri      subfolder path to a docker image tag
      * @return {@link ArtifactoryFileStats}
@@ -223,6 +266,80 @@ public class DockerBadgeService {
         }
 
         return fileStats;
+    }
+
+    /**
+     * Generates a not found badge
+     *
+     * @param badgeLabel the badge label
+     * @return a not found badge
+     */
+    private String generateNotFoundBadge(String badgeLabel) {
+        return badgeGenerator.generateBadge(badgeLabel, "Not Found");
+    }
+
+    /**
+     * Compares two versions
+     *
+     * @param versionOne
+     * @param versionTwo
+     * @param versionPartType
+     * @return {@literal -1} if {@code versionTwo} greater than {@code versionOne},
+     *         {@literal 1} otherwise
+     */
+    private int compareVersions(String versionOne, String versionTwo, String versionPartType) {
+        int result = 0;
+
+        int versionPartEndOne = getVersionPartEndIndex(versionOne);
+        String versionPartOneText = versionOne.substring(0,
+                versionPartEndOne != -1 ? versionPartEndOne : versionOne.length());
+        long versionPartOne = readVersionAsNumber(versionPartOneText);
+        int versionPartEndTwo = getVersionPartEndIndex(versionTwo);
+        String versionPartTwoText = versionTwo.substring(0,
+                versionPartEndTwo != -1 ? versionPartEndTwo : versionTwo.length());
+        long versionPartTwo = readVersionAsNumber(versionPartTwoText);
+
+        if (versionPartOne > versionPartTwo) {
+            result = 1;
+        } else if (versionPartOne < versionPartTwo) {
+            result = -1;
+        } else {
+            if ((versionPartOneText.length() + 1) >= versionOne.length()) {
+                if ((versionPartTwoText.length() + 1) < versionTwo.length()) {
+                    result = -1;
+                }
+            } else if ((versionPartTwoText.length() + 1) < versionTwo.length()) {
+                if (!VERSION_PART_PATCH.equals(versionPartType)) {
+                    result = compareVersions(versionOne.substring(versionPartEndOne + 1),
+                            versionTwo.substring(versionPartEndTwo + 1),
+                            VERSION_PART_MAJOR.equals(versionPartType) ? VERSION_PART_MINOR : VERSION_PART_PATCH);
+                }
+            } else {
+                result = 1;
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * Returns the index at which the first version part ends
+     *
+     * @param version
+     * @return the index
+     */
+    private int getVersionPartEndIndex(String version) {
+        return version.indexOf('.') != -1 ? version.indexOf('.') : version.indexOf('-');
+    }
+
+    /**
+     * Converts version string into a number
+     *
+     * @param version
+     * @return the version as number
+     */
+    private long readVersionAsNumber(String version) {
+        return PTRN_NUMBER.matcher(version).matches() ? Long.parseLong(version) : 0;
     }
 
     /**

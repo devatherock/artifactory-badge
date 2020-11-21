@@ -202,4 +202,41 @@ class VersionControllerSpec extends Specification {
         badge == 'dummyBadge'
         cachedBadge == badge
     }
+
+    void 'test get latest version badge - only semantic versions'() {
+        given:
+        String packageName = 'docker/devatherock/simple-slack'
+
+        and:
+        WireMock.givenThat(WireMock.get("/artifactory/api/storage/${packageName}")
+                .willReturn(WireMock.okJson(
+                        TestUtil.getFoldersResponse('/devatherock/simple-slack', '2020-10-01T00:00:00.000Z'))))
+        WireMock.givenThat(WireMock.get(WireMock.urlPathEqualTo('/static/v1'))
+                .withQueryParam('label', equalTo('dummy'))
+                .withQueryParam('message', equalTo('v1.1.2'))
+                .withQueryParam('color', equalTo('blue'))
+                .willReturn(WireMock.okXml('dummyBadge')))
+
+        when:
+        String badge = httpClient.toBlocking().retrieve(
+                HttpRequest.GET(UriBuilder.of('/version')
+                        .queryParam('package', packageName)
+                        .queryParam('label', 'dummy')
+                        .queryParam('sort', 'semver').build()))
+
+        then:
+        WireMock.verify(1,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}"))
+                        .withHeader(DockerBadgeService.HDR_API_KEY, equalTo('dummyKey')))
+        WireMock.verify(0,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/1.1.0")))
+        WireMock.verify(0,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/1.1.2")))
+        WireMock.verify(0,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/latest")))
+        WireMock.verify(0,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/abcdefgh")))
+        WireMock.verify(1, WireMock.getRequestedFor(WireMock.urlPathEqualTo("/static/v1")))
+        badge == 'dummyBadge'
+    }
 }

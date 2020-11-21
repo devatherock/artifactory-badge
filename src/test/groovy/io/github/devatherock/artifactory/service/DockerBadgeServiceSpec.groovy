@@ -196,7 +196,7 @@ class DockerBadgeServiceSpec extends Specification {
                 .willReturn(WireMock.notFound()))
 
         when:
-        String badge = dockerBadgeService.getLatestVersionBadge(packageName, 'version')
+        String badge = dockerBadgeService.getLatestVersionBadge(packageName, 'version', 'date')
 
         then:
         WireMock.verify(1,
@@ -215,7 +215,7 @@ class DockerBadgeServiceSpec extends Specification {
                 .willReturn(WireMock.okJson('{}')))
 
         when:
-        String badge = dockerBadgeService.getLatestVersionBadge(packageName, 'version')
+        String badge = dockerBadgeService.getLatestVersionBadge(packageName, 'version', 'date')
 
         then:
         WireMock.verify(1,
@@ -236,7 +236,7 @@ class DockerBadgeServiceSpec extends Specification {
                 .willReturn(WireMock.okJson(TestUtil.getFoldersResponse("${packageName}/1.1.0", '2020-10-01T00:00:00.000Z'))))
 
         when:
-        String badge = dockerBadgeService.getLatestVersionBadge(packageName, 'version')
+        String badge = dockerBadgeService.getLatestVersionBadge(packageName, 'version', 'date')
 
         then:
         WireMock.verify(1,
@@ -260,7 +260,7 @@ class DockerBadgeServiceSpec extends Specification {
                 .willReturn(WireMock.okJson(TestUtil.getFolderWithOnlyFileResponse())))
 
         when:
-        String badge = dockerBadgeService.getLatestVersionBadge(packageName, 'version')
+        String badge = dockerBadgeService.getLatestVersionBadge(packageName, 'version', 'date')
 
         then:
         WireMock.verify(1,
@@ -289,7 +289,7 @@ class DockerBadgeServiceSpec extends Specification {
                 .willReturn(WireMock.notFound()))
 
         when:
-        String badge = dockerBadgeService.getLatestVersionBadge(packageName, 'version')
+        String badge = dockerBadgeService.getLatestVersionBadge(packageName, 'version', 'date')
 
         then:
         WireMock.verify(1,
@@ -308,6 +308,29 @@ class DockerBadgeServiceSpec extends Specification {
                 WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/abcdefgh"))
                         .withHeader(DockerBadgeService.HDR_API_KEY, equalTo('dummyKey')))
         1 * badgeGenerator.generateBadge('version', 'v1.1.0') >> 'dummyBadge'
+        badge == 'dummyBadge'
+    }
+
+    void 'test get latest version badge - similar version numbers'() {
+        given:
+        String packageName = 'docker/devatherock/simple-slack'
+
+        and:
+        WireMock.givenThat(WireMock.get("/artifactory/api/storage/${packageName}")
+                .willReturn(WireMock.okJson(TestUtil.getSimilarFoldersResponse())))
+
+        when:
+        String badge = dockerBadgeService.getLatestVersionBadge(packageName, 'version', 'semver')
+
+        then:
+        WireMock.verify(1,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}"))
+                        .withHeader(DockerBadgeService.HDR_API_KEY, equalTo('dummyKey')))
+        WireMock.verify(0,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/1.1.0")))
+        WireMock.verify(0,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/1.1.2")))
+        1 * badgeGenerator.generateBadge('version', 'v1.1.0-alpha') >> 'dummyBadge'
         badge == 'dummyBadge'
     }
 
@@ -342,5 +365,22 @@ class DockerBadgeServiceSpec extends Specification {
         then:
         1 * badgeGenerator.generateBadge('layers', 'Not Found') >> 'dummyBadge'
         badge == 'dummyBadge'
+    }
+
+    void 'test compare versions'() {
+        expect:
+        dockerBadgeService.compareVersions(versionOne, versionTwo, 'major') == expectedResult
+
+        where:
+        versionOne    | versionTwo   | expectedResult
+        '2'           | '1.1'        | 1
+        '1'           | '1.1'        | -1
+        '1.1-alpha'   | '1.1-beta'   | 0
+        '1.1.1-alpha' | '1.1.1-beta' | 0
+        '2.5-alpine'  | '2.5'        | 1
+        '2.5'         | '2.5-alpine' | -1
+        '1.1.1'       | '1.1.2'      | -1
+        '1.1.2'       | '1.1.1'      | 1
+        '1.1.2'       | '1.1.2'      | 0
     }
 }

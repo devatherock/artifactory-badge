@@ -12,6 +12,7 @@
 - `/metrics` endpoint
 - Enabled access logs
 - [#24](https://github.com/devatherock/artifactory-badge/issues/24): Unit tests for 100% code coverage
+- [#31](https://github.com/devatherock/artifactory-badge/issues/31): `sort` parameter to `/version` endpoint with default value as `date`. With value `semver`, it'll pull the latest out of only semantic version tags
 
 ### Changed
 - Caught exception when JSON processing fails

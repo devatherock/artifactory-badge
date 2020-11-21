@@ -57,6 +57,28 @@ class TestUtil {
         }"""
     }
 
+    static String getSimilarFoldersResponse() {
+        """{
+            "repo": "docker",
+            "path": "docker/devatherock/simple-slack",
+            "created": "2020-10-01T00:00:00.000Z",
+            "createdBy": "devatherock",
+            "lastModified": "2020-10-01T00:00:00.000Z",
+            "modifiedBy": "devatherock",
+            "lastUpdated": "2020-10-01T00:00:00.000Z",
+            "children": [
+                {
+                    "uri": "/1.1.0-alpha",
+                    "folder": true
+                },
+                {
+                    "uri": "/1.1.0-beta",
+                    "folder": true
+                }
+            ]
+        }"""
+    }
+
     static String getFolderWithOnlyFileResponse() {
         """{
             "repo": "docker",

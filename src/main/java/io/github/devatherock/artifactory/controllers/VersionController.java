@@ -28,12 +28,14 @@ public class VersionController {
      * 
      * @param packageName
      * @param badgeLabel
+     * @param sort
      * @return the version badge
      */
     @Get(value = "/version", produces = CONTENT_TYPE_BADGE)
     public String getLatestVersion(@QueryValue("package") String packageName,
-                                   @QueryValue(value = "label", defaultValue = "version") String badgeLabel) {
+                                   @QueryValue(value = "label", defaultValue = "version") String badgeLabel,
+                                   @QueryValue(value = "sort", defaultValue = "date") String sortType) {
         LOGGER.debug("In getLatestVersion");
-        return badgeService.getLatestVersionBadge(packageName, badgeLabel);
+        return badgeService.getLatestVersionBadge(packageName, badgeLabel, sortType);
     }
 }

@@ -1,6 +1,10 @@
 # Changelog
 
 ## [Unreleased]
+### Changed
+- Corrected docker image for release job in build pipeline
+
+## [0.2.0] - 2020-11-20
 ### Added
 - Initial version that generates docker pulls, image size and layers badges
 - `/health` endpoint

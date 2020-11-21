@@ -39,7 +39,7 @@ executors:
 version: 2.1
 jobs:
   publish_release:
-    executor: jdk-executor
+    executor: docker-executor
     steps:
       - checkout
       - setup_remote_docker

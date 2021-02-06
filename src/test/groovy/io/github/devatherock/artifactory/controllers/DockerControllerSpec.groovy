@@ -33,9 +33,6 @@ class DockerControllerSpec extends Specification {
     void setupSpec() {
         WireMock.configureFor(8081)
         mockServer.start()
-        while(!mockServer.isRunning()) {
-            Thread.sleep(1000)
-        }
     }
 
     void cleanupSpec() {
@@ -43,7 +40,7 @@ class DockerControllerSpec extends Specification {
     }
 
     void cleanup() {
-        mockServer.resetRequests()
+        mockServer.resetAll()
     }
 
     void 'test get image pull count - default label and custom badge'() {

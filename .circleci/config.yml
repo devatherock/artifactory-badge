@@ -153,7 +153,7 @@ workflows:
           filters:
             branches:
               ignore: master
-          command: test sonarqube -Dsonar.login=$SONAR_TOKEN -Dgraalvm=true --info
+          command: test sonarqube -Dsonar.login=$SONAR_TOKEN -Dgraalvm=true
           post-steps:
             - store_test_results:
                 path: build/test-results

@@ -69,6 +69,7 @@ test {
     if (Boolean.getBoolean('graalvm')) {
         jvmArgs("-agentlib:native-image-agent=access-filter-file=$projectDir/src/main/resources/graal/access-filter.json,config-output-dir=$projectDir/src/main/graal")
     }
+    systemProperty 'micronaut.env.deduction', 'false'
 }
 
 tasks.withType(JavaCompile){

@@ -89,15 +89,13 @@ workflows:
             branches:
               only: master
           command: build coveralls sonarqube -Dsonar.login=$SONAR_TOKEN -Dgraalvm=true
-          pre-steps:
-            - run:
-                command: |
-                  git clone --depth=1 --branch=master https://github.com/devatherock/gradle-includes.git ../gradle-includes
           post-steps:
             - persist_to_workspace:
                 root: ~/artifactory-badge
                 paths:
                   - build
+            - store_test_results:
+                path: build/test-results
       - docker/publish:
           name: publish
           executor: docker-executor
@@ -156,7 +154,6 @@ workflows:
             branches:
               ignore: master
           command: test sonarqube -Dsonar.login=$SONAR_TOKEN -Dgraalvm=true
-          pre-steps:
-            - run:
-                command: |
-                  git clone --depth=1 --branch=master https://github.com/devatherock/gradle-includes.git ../gradle-includes
+          post-steps:
+            - store_test_results:
+                path: build/test-results

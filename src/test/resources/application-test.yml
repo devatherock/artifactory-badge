@@ -4,3 +4,5 @@ artifactory:
   badge:
     shields-io:
       url: http://localhost:8081
+micronaut:
+  http.client.read-timeout: 30

@@ -40,7 +40,7 @@ class DockerControllerSpec extends Specification {
     }
 
     void cleanup() {
-        mockServer.resetRequests()
+        mockServer.resetAll()
     }
 
     void 'test get image pull count - default label and custom badge'() {
@@ -61,7 +61,7 @@ class DockerControllerSpec extends Specification {
                 .willReturn(WireMock.okJson(TestUtil.getManifestStats(14))))
         WireMock.givenThat(WireMock.get(WireMock.urlPathEqualTo('/static/v1'))
                 .withQueryParam('label', equalTo('docker pulls'))
-                .withQueryParam('message', equalTo('100'))
+                .withQueryParam('message', equalTo('47'))
                 .withQueryParam('color', equalTo('blue'))
                 .willReturn(WireMock.notFound()))
 

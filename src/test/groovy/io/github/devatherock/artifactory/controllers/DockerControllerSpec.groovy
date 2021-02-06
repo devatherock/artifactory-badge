@@ -33,6 +33,9 @@ class DockerControllerSpec extends Specification {
     void setupSpec() {
         WireMock.configureFor(8081)
         mockServer.start()
+        while(!mockServer.isRunning()) {
+            Thread.sleep(1000)
+        }
     }
 
     void cleanupSpec() {
@@ -61,7 +64,7 @@ class DockerControllerSpec extends Specification {
                 .willReturn(WireMock.okJson(TestUtil.getManifestStats(14))))
         WireMock.givenThat(WireMock.get(WireMock.urlPathEqualTo('/static/v1'))
                 .withQueryParam('label', equalTo('docker pulls'))
-                .withQueryParam('message', equalTo('100'))
+                .withQueryParam('message', equalTo('47'))
                 .withQueryParam('color', equalTo('blue'))
                 .willReturn(WireMock.notFound()))
 

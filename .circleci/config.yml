@@ -38,6 +38,24 @@ executors:
 
 version: 2.1
 jobs:
+  test:
+    executor: jdk-executor
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/artifactory-badge
+      - restore_cache:
+          keys:
+            - v1-dependencies
+      - run: |
+          ./gradlew test sonarqube -Dsonar.login=$SONAR_TOKEN -Dgraalvm=true
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: v1-dependencies
+      - store_test_results:
+          path: build/test-results
+  
   publish_release:
     executor: docker-executor
     steps:
@@ -144,16 +162,10 @@ workflows:
             - publish_release
   pr_check:
     jobs:
-      - gradle/run:
-          name: test
-          executor: jdk-executor
+      - test:
           context:
             - docker-credentials
             - sonar-credentials
           filters:
             branches:
               ignore: master
-          command: test sonarqube -Dsonar.login=$SONAR_TOKEN -Dgraalvm=true
-          post-steps:
-            - store_test_results:
-                path: build/test-results

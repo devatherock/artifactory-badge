@@ -1,6 +1,6 @@
 slack_image: &slack_image
   docker:
-    - image: devatherock/simple-slack:0.4.0
+    - image: devatherock/simple-slack:0.5.0
       auth:
         username: $DOCKER_USERNAME
         password: $DOCKER_PASSWORD
@@ -91,7 +91,7 @@ jobs:
           docker tag devatherock/artifactory-badge:$DEV_TAG devatherock/artifactory-badge:$TAG
           docker push devatherock/artifactory-badge:$TAG
 
-  notify_success:
+  notify:
     <<: *slack_image
     <<: *resource_class
     environment:
@@ -100,18 +100,6 @@ jobs:
       TITLE: "Build completed"
     steps:
       - run: /bin/simpleslack -c "#33ad7f" || true
-  notify_failure:
-    <<: *slack_image
-    <<: *resource_class
-    environment:
-      TEXT: "Failure: {{.CircleBuildUrl}} by {{.CircleUsername}}"
-      CHANNEL: general
-      TITLE: "Build completed"
-    steps:
-      - run:
-          name: Failure notification
-          command: /bin/simpleslack -c "#a1040c" || true
-          when: on_fail
 
 workflows:
   version: 2.1
@@ -136,16 +124,10 @@ workflows:
           tag: "${CIRCLE_SHA1:0:8},latest"
           use-remote-docker: true
           docker-username: DOCKER_USERNAME
-      - notify_success:
+      - notify:
           context:
             - docker-credentials
             - slack-webhook
-          requires:
-            - publish
-      - notify_failure:
-          context:
-            - docker-credentials
-            - slack-webhook 
           requires:
             - publish
   release:
@@ -158,13 +140,7 @@ workflows:
               only: non-existent-branch
             tags:
               only: /^v[0-9\.]+$/
-      - notify_success:
-          context:
-            - docker-credentials
-            - slack-webhook
-          requires:
-            - publish_release
-      - notify_failure:
+      - notify:
           context:
             - docker-credentials
             - slack-webhook

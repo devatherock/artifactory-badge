@@ -93,4 +93,4 @@ ext.jacoco = [
         'io/github/devatherock/test/ArtifactoryController.class'
     ]
 ]
-apply from: 'checks.gradle'
+apply from: 'https://raw.githubusercontent.com/devatherock/gradle-includes/master/checks.gradle'

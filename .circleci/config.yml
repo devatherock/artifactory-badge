@@ -14,6 +14,13 @@ work_directory: &work_directory
 resource_class: &resource_class
   resource_class: small
   
+release_filter: &release_filter
+  filters:
+    branches:
+      only: non-existent-branch
+    tags:
+      only: /^v[0-9\.]+$/
+  
 executors:
   jdk-executor:
     docker:
@@ -133,15 +140,12 @@ workflows:
       - publish_release:
           context:
             - docker-credentials
-          filters:
-            branches:
-              only: non-existent-branch
-            tags:
-              only: /^v[0-9\.]+$/
+          <<: *release_filter
       - notify:
           context:
             - docker-credentials
             - slack-webhook
+          <<: *release_filter
           requires:
             - publish_release
   pr_check:

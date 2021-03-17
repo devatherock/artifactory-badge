@@ -14,7 +14,6 @@ group "io.github.devatherock"
 
 repositories {
     mavenCentral()
-    maven { url "https://jcenter.bintray.com" }
 }
 
 configurations {

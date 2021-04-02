@@ -1,10 +1,16 @@
 # Changelog
 
 ## [Unreleased]
+### Added
+- Support for JSON logs
+
+### Changed
+- chore: Upgraded micronaut from 2.1.0 to 2.4.2
+- fix: Set log level of `NettyHttpServer` to `TRACE` to show logs in micronaut 2.3.x
+
+## [0.2.1] - 2020-11-20
 ### Changed
 - Corrected docker image for release job in build pipeline
-- chore: Upgraded micronaut from 2.1.0 to 2.3.1
-- fix: Set log level of `NettyHttpServer` to `TRACE` to show logs in micronaut 2.3.x
 
 ## [0.2.0] - 2020-11-20
 ### Added

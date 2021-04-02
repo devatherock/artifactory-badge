@@ -66,3 +66,9 @@ docker run --rm \
 - Set the environment variable `LOGGING_LEVEL_IO_GITHUB_DEVATHEROCK` to `DEBUG` to enable debug logs only in custom code
 - For fine-grained logging control, supply a custom [logback.xml](http://logback.qos.ch/manual/configuration.html) file
 and set the environment variable `JAVA_OPTS` to `-Dlogback.configurationFile=/path/to/custom/logback.xml`
+
+### JSON logs
+
+To output logs as JSON, set the environment variable `JAVA_OPTS` to `-Dlogback.configurationFile=logback-json.xml`. Refer
+[logstash-logback-encoder](https://github.com/logstash/logstash-logback-encoder) documentation to customize the field names and 
+formats in the log

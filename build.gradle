@@ -22,7 +22,7 @@ configurations {
 }
 
 dependencies {
-    def lombokVersion = '1.18.18'
+    def lombokVersion = '1.18.20'
 
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombokVersion
     compileOnly group: 'org.projectlombok', name: 'lombok', version: lombokVersion

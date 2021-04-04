@@ -1,14 +1,15 @@
 package io.github.devatherock.artifactory.util;
 
+import javax.inject.Singleton;
+
 import io.github.devatherock.artifactory.config.ShieldsIOProperties;
+
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.client.BlockingHttpClient;
 import io.micronaut.http.client.exceptions.HttpClientResponseException;
 import io.micronaut.http.uri.UriBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import javax.inject.Singleton;
 
 /**
  * Class to generate the badges
@@ -25,8 +26,8 @@ public class BadgeGenerator {
     private final ShieldsIOProperties config;
 
     /**
-     * Generates a badge with the supplied label and value using
-     * {@code shields.io} or custom logic
+     * Generates a badge with the supplied label and value using {@code shields.io}
+     * or custom logic
      *
      * @param label
      * @param value

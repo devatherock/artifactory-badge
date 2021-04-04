@@ -2,6 +2,7 @@ package io.github.devatherock.artifactory.util
 
 import io.github.devatherock.artifactory.config.ShieldsIOProperties
 import io.github.devatherock.test.TestUtil
+
 import io.micronaut.http.client.BlockingHttpClient
 import spock.lang.Specification
 import spock.lang.Subject

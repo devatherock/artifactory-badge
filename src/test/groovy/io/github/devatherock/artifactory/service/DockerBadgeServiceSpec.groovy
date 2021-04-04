@@ -1,19 +1,20 @@
 package io.github.devatherock.artifactory.service
 
-import com.github.tomakehurst.wiremock.WireMockServer
-import com.github.tomakehurst.wiremock.client.WireMock
+import static com.github.tomakehurst.wiremock.client.WireMock.equalTo
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
+
 import io.github.devatherock.artifactory.config.ArtifactoryProperties
 import io.github.devatherock.artifactory.entities.ArtifactoryFolderInfo
 import io.github.devatherock.artifactory.util.BadgeGenerator
 import io.github.devatherock.test.TestUtil
+
+import com.github.tomakehurst.wiremock.WireMockServer
+import com.github.tomakehurst.wiremock.client.WireMock
 import io.micronaut.http.client.BlockingHttpClient
 import io.micronaut.http.client.HttpClient
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Subject
-
-import static com.github.tomakehurst.wiremock.client.WireMock.equalTo
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
 
 /**
  * Test class for {@link DockerBadgeService}

@@ -1,6 +1,7 @@
 package io.github.devatherock.artifactory.controllers;
 
 import io.github.devatherock.artifactory.service.DockerBadgeService;
+
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.QueryValue;

@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 ### Added
+- Spotless gradle plugin to format code
+
+## [0.3.0] - 2021-04-03
+### Added
 - Support for JSON logs
 
 ### Changed

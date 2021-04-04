@@ -1,9 +1,15 @@
 package io.github.devatherock.artifactory.controllers
 
-import com.github.tomakehurst.wiremock.WireMockServer
-import com.github.tomakehurst.wiremock.client.WireMock
+import static com.github.tomakehurst.wiremock.client.WireMock.equalTo
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
+
+import javax.inject.Inject
+
 import io.github.devatherock.artifactory.service.DockerBadgeService
 import io.github.devatherock.test.TestUtil
+
+import com.github.tomakehurst.wiremock.WireMockServer
+import com.github.tomakehurst.wiremock.client.WireMock
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.annotation.Client
@@ -11,11 +17,6 @@ import io.micronaut.http.uri.UriBuilder
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import spock.lang.Shared
 import spock.lang.Specification
-
-import javax.inject.Inject
-
-import static com.github.tomakehurst.wiremock.client.WireMock.equalTo
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 
 /**
  * Test class for {@link DockerController}

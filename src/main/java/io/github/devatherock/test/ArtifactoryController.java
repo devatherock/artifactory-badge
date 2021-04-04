@@ -1,10 +1,14 @@
 package io.github.devatherock.test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import io.github.devatherock.artifactory.entities.ArtifactoryFileStats;
 import io.github.devatherock.artifactory.entities.ArtifactoryFolderElement;
 import io.github.devatherock.artifactory.entities.ArtifactoryFolderInfo;
 import io.github.devatherock.artifactory.entities.DockerLayer;
 import io.github.devatherock.artifactory.entities.DockerManifest;
+
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
@@ -12,9 +16,6 @@ import io.micronaut.http.annotation.Header;
 import io.micronaut.http.annotation.PathVariable;
 import io.swagger.v3.oas.annotations.Hidden;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Slf4j
 @Hidden

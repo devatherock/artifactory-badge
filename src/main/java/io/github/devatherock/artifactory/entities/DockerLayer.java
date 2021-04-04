@@ -10,5 +10,5 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DockerLayer {
-	private long size;
+    private long size;
 }

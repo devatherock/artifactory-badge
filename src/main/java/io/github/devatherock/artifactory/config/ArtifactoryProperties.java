@@ -1,13 +1,13 @@
 package io.github.devatherock.artifactory.config;
 
+import javax.annotation.PostConstruct;
+import javax.validation.constraints.NotBlank;
+
 import io.micronaut.context.annotation.ConfigurationProperties;
 import io.micronaut.context.annotation.Context;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.annotation.PostConstruct;
-import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter

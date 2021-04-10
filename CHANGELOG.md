@@ -4,6 +4,10 @@
 ### Added
 - Spotless gradle plugin to format code
 
+### Removed
+- Custom environment variables with `LOGGING_LEVEL` prefix and updated documentation to use environment variables 
+with `LOGGER_LEVELS` prefix supported out of the box by micronaut
+
 ## [0.3.0] - 2021-04-03
 ### Added
 - Support for JSON logs

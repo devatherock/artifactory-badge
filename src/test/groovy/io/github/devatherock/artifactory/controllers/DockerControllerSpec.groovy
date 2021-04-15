@@ -87,6 +87,8 @@ class DockerControllerSpec extends Specification {
         WireMock.verify(1,
                 WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/abcdefgh/manifest.json?stats"))
                         .withHeader(DockerBadgeService.HDR_API_KEY, equalTo('dummyKey')))
+        WireMock.verify(0,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/_uploads/manifest.json?stats")))
         WireMock.verify(1, WireMock.getRequestedFor(WireMock.urlPathEqualTo("/static/v1")))
         badge == TestUtil.getCustomBadgeResponse()
     }
@@ -135,6 +137,8 @@ class DockerControllerSpec extends Specification {
         WireMock.verify(1,
                 WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/abcdefgh/manifest.json?stats"))
                         .withHeader(DockerBadgeService.HDR_API_KEY, equalTo('dummyKey')))
+        WireMock.verify(0,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/_uploads/manifest.json?stats")))
         WireMock.verify(1, WireMock.getRequestedFor(WireMock.urlPathEqualTo("/static/v1")))
         badge == 'dummyBadge'
     }
@@ -187,6 +191,8 @@ class DockerControllerSpec extends Specification {
         WireMock.verify(1,
                 WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/abcdefgh/manifest.json?stats"))
                         .withHeader(DockerBadgeService.HDR_API_KEY, equalTo('dummyKey')))
+        WireMock.verify(0,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/_uploads/manifest.json?stats")))
         WireMock.verify(1, WireMock.getRequestedFor(WireMock.urlPathEqualTo("/static/v1")))
         badge == 'dummyBadge'
         cachedBadge == badge

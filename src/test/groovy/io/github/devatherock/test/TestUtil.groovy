@@ -24,6 +24,10 @@ class TestUtil {
                     "folder": true
                 },
                 {
+                    "uri": "/_uploads",
+                    "folder": true
+                },
+                {
                     "uri": "/latest",
                     "folder": true
                 },

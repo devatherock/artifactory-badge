@@ -308,6 +308,8 @@ class DockerBadgeServiceSpec extends Specification {
         WireMock.verify(1,
                 WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/abcdefgh"))
                         .withHeader(DockerBadgeService.HDR_API_KEY, equalTo('dummyKey')))
+        WireMock.verify(0,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/_uploads")))
         1 * badgeGenerator.generateBadge('version', 'v1.1.0') >> 'dummyBadge'
         badge == 'dummyBadge'
     }
@@ -328,35 +330,11 @@ class DockerBadgeServiceSpec extends Specification {
                 WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}"))
                         .withHeader(DockerBadgeService.HDR_API_KEY, equalTo('dummyKey')))
         WireMock.verify(0,
-                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/1.1.0")))
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/1.1.0-alpha")))
         WireMock.verify(0,
-                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/1.1.2")))
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/1.1.0-beta")))
         1 * badgeGenerator.generateBadge('version', 'v1.1.0-alpha') >> 'dummyBadge'
         badge == 'dummyBadge'
-    }
-
-    void 'test get version badge value'() {
-        expect:
-        dockerBadgeService.getVersionBadgeValue(new ArtifactoryFolderInfo(path: path)) == outputVersion
-
-        where:
-        path                                     | outputVersion
-        'docker/devatherock/simple-slack/1.1.0'  | 'v1.1.0'
-        'docker/devatherock/simple-slack/latest' | 'latest'
-    }
-
-    void 'test format download count'() {
-        expect:
-        dockerBadgeService.formatDownloadCount(downloadCount) == formattedCount
-
-        where:
-        downloadCount     | formattedCount
-        450               | '450'
-        1249              | '1.2k'
-        1251              | '1.3k'
-        1_100_000         | '1.1M'
-        1_100_000_000     | '1.1G'
-        1_100_000_000_000 | '1100G'
     }
 
     void 'test generate not found badge'() {
@@ -366,22 +344,5 @@ class DockerBadgeServiceSpec extends Specification {
         then:
         1 * badgeGenerator.generateBadge('layers', 'Not Found') >> 'dummyBadge'
         badge == 'dummyBadge'
-    }
-
-    void 'test compare versions'() {
-        expect:
-        dockerBadgeService.compareVersions(versionOne, versionTwo, 'major') == expectedResult
-
-        where:
-        versionOne    | versionTwo   | expectedResult
-        '2'           | '1.1'        | 1
-        '1'           | '1.1'        | -1
-        '1.1-alpha'   | '1.1-beta'   | 0
-        '1.1.1-alpha' | '1.1.1-beta' | 0
-        '2.5-alpine'  | '2.5'        | 1
-        '2.5'         | '2.5-alpine' | -1
-        '1.1.1'       | '1.1.2'      | -1
-        '1.1.2'       | '1.1.1'      | 1
-        '1.1.2'       | '1.1.2'      | 0
     }
 }

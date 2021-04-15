@@ -91,6 +91,8 @@ class VersionControllerSpec extends Specification {
         WireMock.verify(1,
                 WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/abcdefgh"))
                         .withHeader(DockerBadgeService.HDR_API_KEY, equalTo('dummyKey')))
+        WireMock.verify(0,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/_uploads")))
         WireMock.verify(1, WireMock.getRequestedFor(WireMock.urlPathEqualTo("/static/v1")))
         badge == 'dummyBadge'
     }
@@ -143,6 +145,8 @@ class VersionControllerSpec extends Specification {
         WireMock.verify(1,
                 WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/abcdefgh"))
                         .withHeader(DockerBadgeService.HDR_API_KEY, equalTo('dummyKey')))
+        WireMock.verify(0,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/_uploads")))
         WireMock.verify(1, WireMock.getRequestedFor(WireMock.urlPathEqualTo("/static/v1")))
         badge == 'dummyBadge'
     }
@@ -199,6 +203,8 @@ class VersionControllerSpec extends Specification {
         WireMock.verify(1,
                 WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/abcdefgh"))
                         .withHeader(DockerBadgeService.HDR_API_KEY, equalTo('dummyKey')))
+        WireMock.verify(0,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/_uploads")))
         WireMock.verify(1, WireMock.getRequestedFor(WireMock.urlPathEqualTo("/static/v1")))
         badge == 'dummyBadge'
         cachedBadge == badge
@@ -237,6 +243,8 @@ class VersionControllerSpec extends Specification {
                 WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/latest")))
         WireMock.verify(0,
                 WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/abcdefgh")))
+        WireMock.verify(0,
+                WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/_uploads")))
         WireMock.verify(1, WireMock.getRequestedFor(WireMock.urlPathEqualTo("/static/v1")))
         badge == 'dummyBadge'
     }

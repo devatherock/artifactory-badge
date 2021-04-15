@@ -4,6 +4,9 @@
 ### Added
 - Spotless gradle plugin to format code
 
+### Changed
+- [#40](https://github.com/devatherock/artifactory-badge/issues/40): To not treat `_uploads` subfolder as a docker tag
+
 ### Removed
 - Custom environment variables with `LOGGING_LEVEL` prefix and updated documentation to use environment variables 
 with `LOGGER_LEVELS` prefix supported out of the box by micronaut

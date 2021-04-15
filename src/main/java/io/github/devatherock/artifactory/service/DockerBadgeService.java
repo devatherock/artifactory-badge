@@ -1,10 +1,7 @@
 package io.github.devatherock.artifactory.service;
 
-import java.text.DecimalFormat;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 import javax.inject.Singleton;
@@ -41,8 +38,6 @@ public class DockerBadgeService {
     private static final double BYTES_IN_MB = 1024d * 1024;
     private static final String FILE_NAME_MANIFEST = "/manifest.json";
     private static final String HDR_API_KEY = "X-JFrog-Art-Api";
-    private static final double PULLS_REDUCER = 1000;
-    private static final int MAX_REDUCTIONS = 3;
 
     /**
      * Constant for sort by semantic version
@@ -53,18 +48,6 @@ public class DockerBadgeService {
      */
     private static final String VERSION_PART_MAJOR = "major";
     /**
-     * Minor version part of a semantic version
-     */
-    private static final String VERSION_PART_MINOR = "minor";
-    /**
-     * Patch version part of a semantic version
-     */
-    private static final String VERSION_PART_PATCH = "patch";
-    /**
-     * Map containing suffixes for download count
-     */
-    private static final Map<Integer, String> PULLS_SUFFIX = new HashMap<>();
-    /**
      * Formatter to parse dates like {@code 2020-10-01T00:00:00.000Z}
      */
     private static final DateTimeFormatter MODIFIED_TIME_PARSER = DateTimeFormatter
@@ -74,17 +57,6 @@ public class DockerBadgeService {
      */
     private static final Pattern PTRN_NUMERIC_VERSION = Pattern.compile(
             "^(0|[1-9][0-9]*)(\\.(0|[1-9][0-9]*))*(\\-[0-9A-Za-z-]+(\\.[0-9A-Za-z-]+)*)?(\\+[0-9A-Za-z-]+(\\.[0-9A-Za-z-]+)*)?$");
-    /**
-     * Pattern to match numbers
-     */
-    private static final Pattern PTRN_NUMBER = Pattern.compile("^[0-9]+$");
-
-    static {
-        PULLS_SUFFIX.put(0, "");
-        PULLS_SUFFIX.put(1, "k");
-        PULLS_SUFFIX.put(2, "M");
-        PULLS_SUFFIX.put(3, "G");
-    }
 
     private final BlockingHttpClient artifactoryClient;
     private final BadgeGenerator badgeGenerator;
@@ -100,7 +72,8 @@ public class DockerBadgeService {
                     .reduce((totalSize, currentLayerSize) -> totalSize + currentLayerSize).get() / BYTES_IN_MB;
 
             LOGGER.info("Size of {}/{}: {} MB", packageName, tag, imageSize);
-            return badgeGenerator.generateBadge(badgeLabel, String.format("%s MB", formatDecimal(imageSize, "0.##")));
+            return badgeGenerator.generateBadge(badgeLabel,
+                    String.format("%s MB", DockerBadgeServiceHelper.formatDecimal(imageSize, "0.##")));
         } else {
             return generateNotFoundBadge(badgeLabel);
         }
@@ -128,7 +101,7 @@ public class DockerBadgeService {
             long downloadCount = 0;
 
             for (ArtifactoryFolderElement child : folderInfo.getChildren()) {
-                if (child.isFolder()) {
+                if (isTag(child)) {
                     ArtifactoryFileStats fileStats = getManifestStats(packageName, child.getUri());
 
                     if (null != fileStats) {
@@ -137,7 +110,8 @@ public class DockerBadgeService {
                 }
             }
             LOGGER.info("Download count of {}: {}", packageName, downloadCount);
-            return badgeGenerator.generateBadge(badgeLabel, formatDownloadCount(downloadCount));
+            return badgeGenerator.generateBadge(badgeLabel,
+                    DockerBadgeServiceHelper.formatDownloadCount(downloadCount));
         } else {
             return generateNotFoundBadge(badgeLabel);
         }
@@ -160,7 +134,7 @@ public class DockerBadgeService {
             ArtifactoryFolderInfo latestVersion = null;
 
             for (ArtifactoryFolderElement child : folderInfo.getChildren()) {
-                if (child.isFolder()) {
+                if (isTag(child)) {
                     if (SORT_TYPE_SEMVER.equals(sortType)) {
                         // Substring to remove the leading slash
                         String currentVersion = child.getUri().substring(1);
@@ -170,7 +144,8 @@ public class DockerBadgeService {
                                 latestVersion = ArtifactoryFolderInfo.builder().path(child.getUri()).build();
                             } else {
                                 // Substring to remove the leading slash
-                                int result = compareVersions(latestVersion.getPath().substring(1), currentVersion,
+                                int result = DockerBadgeServiceHelper.compareVersions(
+                                        latestVersion.getPath().substring(1), currentVersion,
                                         VERSION_PART_MAJOR);
                                 if (result == -1) {
                                     latestVersion = ArtifactoryFolderInfo.builder().path(child.getUri()).build();
@@ -178,6 +153,8 @@ public class DockerBadgeService {
                             }
                         }
                     } else {
+                        // Find the modified time of each subfolder - each subfolder corresponds to a
+                        // tag
                         ArtifactoryFolderInfo currentVersion = getArtifactoryFolderInfo(packageName + child.getUri());
 
                         if (null == latestVersion || (null != currentVersion
@@ -192,7 +169,8 @@ public class DockerBadgeService {
 
             if (null != latestVersion) {
                 LOGGER.info("Latest version of {}: {}", packageName, latestVersion.getPath());
-                return badgeGenerator.generateBadge(badgeLabel, getVersionBadgeValue(latestVersion));
+                return badgeGenerator.generateBadge(badgeLabel,
+                        DockerBadgeServiceHelper.getVersionBadgeValue(latestVersion));
             } else {
                 return generateNotFoundBadge(badgeLabel);
             }
@@ -280,110 +258,12 @@ public class DockerBadgeService {
     }
 
     /**
-     * Compares two versions
-     *
-     * @param versionOne
-     * @param versionTwo
-     * @param versionPartType
-     * @return {@literal -1} if {@code versionTwo} greater than {@code versionOne},
-     *         {@literal 1} otherwise
+     * Checks if the supplied artifactory folder content corresponds to a tag
+     * 
+     * @param child
+     * @return a flag
      */
-    private int compareVersions(String versionOne, String versionTwo, String versionPartType) {
-        int result = 0;
-
-        int versionPartEndOne = getVersionPartEndIndex(versionOne);
-        String versionPartOneText = versionOne.substring(0,
-                versionPartEndOne != -1 ? versionPartEndOne : versionOne.length());
-        long versionPartOne = readVersionAsNumber(versionPartOneText);
-        int versionPartEndTwo = getVersionPartEndIndex(versionTwo);
-        String versionPartTwoText = versionTwo.substring(0,
-                versionPartEndTwo != -1 ? versionPartEndTwo : versionTwo.length());
-        long versionPartTwo = readVersionAsNumber(versionPartTwoText);
-
-        if (versionPartOne > versionPartTwo) {
-            result = 1;
-        } else if (versionPartOne < versionPartTwo) {
-            result = -1;
-        } else {
-            if ((versionPartOneText.length() + 1) >= versionOne.length()) {
-                if ((versionPartTwoText.length() + 1) < versionTwo.length()) {
-                    result = -1;
-                }
-            } else if ((versionPartTwoText.length() + 1) < versionTwo.length()) {
-                if (!VERSION_PART_PATCH.equals(versionPartType)) {
-                    result = compareVersions(versionOne.substring(versionPartEndOne + 1),
-                            versionTwo.substring(versionPartEndTwo + 1),
-                            VERSION_PART_MAJOR.equals(versionPartType) ? VERSION_PART_MINOR : VERSION_PART_PATCH);
-                }
-            } else {
-                result = 1;
-            }
-        }
-
-        return result;
-    }
-
-    /**
-     * Returns the index at which the first version part ends
-     *
-     * @param version
-     * @return the index
-     */
-    private int getVersionPartEndIndex(String version) {
-        return version.indexOf('.') != -1 ? version.indexOf('.') : version.indexOf('-');
-    }
-
-    /**
-     * Converts version string into a number
-     *
-     * @param version
-     * @return the version as number
-     */
-    private long readVersionAsNumber(String version) {
-        return PTRN_NUMBER.matcher(version).matches() ? Long.parseLong(version) : 0;
-    }
-
-    /**
-     * Returns the formatted value to be displayed in the version badge
-     *
-     * @param version
-     * @return the version badge value
-     */
-    private String getVersionBadgeValue(ArtifactoryFolderInfo version) {
-        String versionValue = version.getPath().substring(version.getPath().lastIndexOf('/') + 1);
-
-        // Append v prefix if version is numeric or a semantic version
-        return PTRN_NUMERIC_VERSION.matcher(versionValue).matches() ? 'v' + versionValue : versionValue;
-    }
-
-    /**
-     * Formats a decimal number into a string
-     *
-     * @param inputDecimal the decimal number to format
-     * @param format       the pattern to which to format to
-     * @return a formatted string
-     */
-    private String formatDecimal(double inputDecimal, String format) {
-        DecimalFormat decimalFormat = new DecimalFormat(format);
-        decimalFormat.setDecimalSeparatorAlwaysShown(false);
-        return decimalFormat.format(inputDecimal);
-    }
-
-    /**
-     * Formats the download count with a suffix
-     *
-     * @param downloadCount number of downloads
-     * @return a formatted string
-     */
-    private String formatDownloadCount(long downloadCount) {
-        double reducedCount = downloadCount;
-        int reductions = 0;
-
-        while (reducedCount > PULLS_REDUCER && reductions < MAX_REDUCTIONS) {
-            reductions++;
-            reducedCount = reducedCount / PULLS_REDUCER;
-        }
-
-        return formatDecimal(reducedCount, "0.#") + PULLS_SUFFIX.get(reductions);
+    private boolean isTag(ArtifactoryFolderElement child) {
+        return child.isFolder() && !artifactoryConfig.getExcludedFolders().contains(child.getUri());
     }
 }

@@ -24,10 +24,11 @@ docker run --rm \
 |---------------------------------------|--------------|------------------|-----------------------------------------------------------------------------------|
 | ARTIFACTORY_URL                       |   true       |   (None)         |   The JFrog artifactory URL that hosts the docker registry                        |
 | ARTIFACTORY_API_KEY                   |   true       |   (None)         |   API key for interacting with artifactory's REST API                             |
-| ARTIFACTORY_BADGE_SHIELDS_IO_ENABLED  |   false      |   true           |   Indicates if <a href="https://shields.io">shields.io</a> should be used to generate the badge  |
-| LOGGING_LEVEL_ROOT                    |   false      |   INFO           |   [SLF4J](http://www.slf4j.org/api/org/apache/commons/logging/Log.html) log level, for all(framework and custom) code  |
-| LOGGING_LEVEL_IO_GITHUB_DEVATHEROCK   |   false      |   INFO           |   [SLF4J](http://www.slf4j.org/api/org/apache/commons/logging/Log.html) log level, for custom code  |
-| MICRONAUT_ENVIRONMENTS                |   false      |   (None)         |   Setting the value to `mock` will mock the calls to the artifactory. Only for testing purposes  |
+| ARTIFACTORY_EXCLUDED_FOLDERS          |   false      |   /_uploads      |   Subfolders to be not treated as docker tags                                     |
+| ARTIFACTORY_BADGE_SHIELDS_IO_ENABLED  |   false      |   true           |   Indicates if <a href="https://shields.io">shields.io</Subfolders to be not treated as docker tagsa> should be used to generate the badge  |
+| LOGGER_LEVELS_ROOT                    |   false      |   INFO           |   [SLF4J](http://www.slf4j.org/api/org/apache/commons/logging/Log.html) log level, for all(framework and custom) code  |
+| LOGGER_LEVELS_IO_GITHUB_DEVATHEROCK   |   false      |   INFO           |   [SLF4J](http://www.slf4j.org/api/org/apache/commons/logging/Log.html) log level, for custom code  |
+| MICRONAUT_ENVIRONMENTS                |   false      |   (None)         |   Setting the value to `local` will mock the calls to the artifactory. Only for testing purposes  |
 | MICRONAUT_SERVER_PORT                 |   false      |   8080           |   Port in which the app listens on                                                |
 | JAVA_OPTS                             |   false      |   (None)         |   Additional JVM arguments to be passed to the container's java process           |
 

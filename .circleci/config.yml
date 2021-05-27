@@ -80,20 +80,6 @@ jobs:
           key: v1-dependencies-{{ checksum "build.gradle" }}
       - store_test_results:
           path: build/test-results
-          
-  docker_readme_update:
-    docker:
-    - image: peterevans/dockerhub-description:2.4.2
-      auth:
-        username: $DOCKERHUB_USERNAME
-        password: $DOCKERHUB_PASSWORD
-    <<: *resource_class
-    environment:
-      DOCKERHUB_REPOSITORY: "devatherock/artifactory-badge"
-      README_FILEPATH: "./README.md"
-    steps:
-      - checkout
-      - run: sh /entrypoint.sh
   
   publish_release:
     executor: docker-executor
@@ -143,17 +129,12 @@ workflows:
           tag: "${CIRCLE_SHA1:0:8},latest"
           use-remote-docker: true
           docker-username: DOCKER_USERNAME
-      - docker_readme_update:
-          context:
-            - docker-readme-credentials
-          requires:
-            - publish
       - notify:
           context:
             - docker-credentials
             - slack-webhook
           requires:
-            - docker_readme_update
+            - publish
   release:
     jobs:
       - publish_release:

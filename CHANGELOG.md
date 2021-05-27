@@ -3,7 +3,6 @@
 ## [Unreleased]
 ### Added
 - Spotless gradle plugin to format code
-- Readme for the docker image on docker hub
 
 ### Changed
 - [#40](https://github.com/devatherock/artifactory-badge/issues/40): To not treat `_uploads` subfolder as a docker tag

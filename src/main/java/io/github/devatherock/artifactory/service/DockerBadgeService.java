@@ -1,7 +1,6 @@
 package io.github.devatherock.artifactory.service;
 
 import java.time.Instant;
-import java.time.format.DateTimeFormatter;
 import java.util.regex.Pattern;
 
 import javax.inject.Singleton;
@@ -47,11 +46,6 @@ public class DockerBadgeService {
      * Major version part of a semantic version
      */
     private static final String VERSION_PART_MAJOR = "major";
-    /**
-     * Formatter to parse dates like {@code 2020-10-01T00:00:00.000Z}
-     */
-    private static final DateTimeFormatter MODIFIED_TIME_PARSER = DateTimeFormatter
-            .ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
     /**
      * Pattern to match versions like {@code 1}, {@code 1.2} and {@code 1.2.2}
      */
@@ -158,9 +152,12 @@ public class DockerBadgeService {
                         ArtifactoryFolderInfo currentVersion = getArtifactoryFolderInfo(packageName + child.getUri());
 
                         if (null == latestVersion || (null != currentVersion
-                                && Instant.from(MODIFIED_TIME_PARSER.parse(currentVersion.getLastModified())).compareTo(
-                                        Instant.from(
-                                                MODIFIED_TIME_PARSER.parse(latestVersion.getLastModified()))) > 0)) {
+                                && Instant
+                                        .from(artifactoryConfig.getDateParser().parse(currentVersion.getLastModified()))
+                                        .compareTo(
+                                                Instant.from(
+                                                        artifactoryConfig.getDateParser()
+                                                                .parse(latestVersion.getLastModified()))) > 0)) {
                             latestVersion = currentVersion;
                         }
                     }

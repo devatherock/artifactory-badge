@@ -25,6 +25,7 @@ docker run --rm \
 | ARTIFACTORY_URL                       |   true       |   (None)         |   The JFrog artifactory URL that hosts the docker registry                        |
 | ARTIFACTORY_API_KEY                   |   true       |   (None)         |   API key for interacting with artifactory's REST API                             |
 | ARTIFACTORY_EXCLUDED_FOLDERS          |   false      |   /_uploads      |   Subfolders to be not treated as docker tags                                     |
+| ARTIFACTORY_DATE_FORMAT               |   false      |   yyyy-MM-dd'T'HH:mm:ss.SSSXXX |   Date format to parse dates in artifactory API responses           |
 | ARTIFACTORY_BADGE_SHIELDS_IO_ENABLED  |   false      |   true           |   Indicates if <a href="https://shields.io">shields.io</a> should be used to generate the badge  |
 | LOGGER_LEVELS_ROOT                    |   false      |   INFO           |   [SLF4J](http://www.slf4j.org/api/org/apache/commons/logging/Log.html) log level, for all(framework and custom) code  |
 | LOGGER_LEVELS_IO_GITHUB_DEVATHEROCK   |   false      |   INFO           |   [SLF4J](http://www.slf4j.org/api/org/apache/commons/logging/Log.html) log level, for custom code  |

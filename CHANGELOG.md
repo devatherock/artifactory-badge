@@ -6,6 +6,7 @@
 
 ### Changed
 - [#40](https://github.com/devatherock/artifactory-badge/issues/40): To not treat `_uploads` subfolder as a docker tag
+- [#98](https://github.com/devatherock/artifactory-badge/issues/98): Date format used to parse dates in API responses
 
 ### Removed
 - Custom environment variables with `LOGGING_LEVEL` prefix and updated documentation to use environment variables 

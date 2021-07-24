@@ -57,7 +57,7 @@ class VersionControllerSpec extends Specification {
                         TestUtil.getFoldersResponse('/devatherock/simple-slack/1.1.0', '2020-10-08T00:00:00.000Z'))))
         WireMock.givenThat(WireMock.get("/artifactory/api/storage/${packageName}/1.1.2")
                 .willReturn(WireMock.okJson(
-                        TestUtil.getFoldersResponse('/devatherock/simple-slack/1.1.2', '2020-10-15T00:00:00.000Z'))))
+                        TestUtil.getFoldersResponse('/devatherock/simple-slack/1.1.2', '2020-10-15T00:00:00.000-06:00'))))
         WireMock.givenThat(WireMock.get("/artifactory/api/storage/${packageName}/latest")
                 .willReturn(WireMock.okJson(
                         TestUtil.getFoldersResponse('/devatherock/simple-slack/latest', '2020-10-01T00:00:00.000Z'))))
@@ -110,7 +110,7 @@ class VersionControllerSpec extends Specification {
                         TestUtil.getFoldersResponse('/devatherock/simple-slack/1.1.0', '2020-10-08T00:00:00.000Z'))))
         WireMock.givenThat(WireMock.get("/artifactory/api/storage/${packageName}/1.1.2")
                 .willReturn(WireMock.okJson(
-                        TestUtil.getFoldersResponse('/devatherock/simple-slack/1.1.2', '2020-10-15T00:00:00.000Z'))))
+                        TestUtil.getFoldersResponse('/devatherock/simple-slack/1.1.2', '2020-10-15T00:00:00.000-06:00'))))
         WireMock.givenThat(WireMock.get("/artifactory/api/storage/${packageName}/latest")
                 .willReturn(WireMock.okJson(
                         TestUtil.getFoldersResponse('/devatherock/simple-slack/latest', '2020-10-01T00:00:00.000Z'))))
@@ -164,7 +164,7 @@ class VersionControllerSpec extends Specification {
                         TestUtil.getFoldersResponse('/devatherock/simple-slack/1.1.0', '2020-10-08T00:00:00.000Z'))))
         WireMock.givenThat(WireMock.get("/artifactory/api/storage/${packageName}/1.1.2")
                 .willReturn(WireMock.okJson(
-                        TestUtil.getFoldersResponse('/devatherock/simple-slack/1.1.2', '2020-10-15T00:00:00.000Z'))))
+                        TestUtil.getFoldersResponse('/devatherock/simple-slack/1.1.2', '2020-10-15T00:00:00.000-06:00'))))
         WireMock.givenThat(WireMock.get("/artifactory/api/storage/${packageName}/latest")
                 .willReturn(WireMock.okJson(
                         TestUtil.getFoldersResponse('/devatherock/simple-slack/latest', '2020-10-01T00:00:00.000Z'))))

@@ -1,5 +1,6 @@
 package io.github.devatherock.artifactory.config;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -36,11 +37,20 @@ public class ArtifactoryProperties {
     @NotBlank(message = "artifactory.api-key not specified")
     private String apiKey;
 
+    /**
+     * Date format to parse dates in artifactory API responses. Parses dates like
+     * {@code 2020-10-01T00:00:00.000Z} and {@code 2020-10-01T00:00:00.000-06:00}
+     */
+    private String dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
+
     @Setter(AccessLevel.NONE)
     private String urlPrefix;
 
     @Setter(AccessLevel.NONE)
     private String storageUrlPrefix;
+
+    @Setter(AccessLevel.NONE)
+    private DateTimeFormatter dateParser;
 
     /**
      * Subfolders to be not treated as docker tags
@@ -51,5 +61,6 @@ public class ArtifactoryProperties {
     public void init() {
         urlPrefix = url + "/artifactory/";
         storageUrlPrefix = urlPrefix + "api/storage/";
+        dateParser = DateTimeFormatter.ofPattern(dateFormat);
     }
 }

@@ -1,6 +1,10 @@
 # Changelog
 
 ## [Unreleased]
+### Changed
+- chore(deps): update plugin io.micronaut.application to v2.0.5
+
+## [0.4.0] - 2021-07-24
 ### Added
 - Spotless gradle plugin to format code
 

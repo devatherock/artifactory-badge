@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Changed
 - chore(deps): update plugin io.micronaut.application to v2.0.5
+- chore: Added changelog-updater for creating missed changelog entries
 
 ## [0.4.0] - 2021-07-24
 ### Added

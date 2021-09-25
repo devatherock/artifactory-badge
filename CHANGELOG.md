@@ -5,6 +5,7 @@
 - chore(deps): update plugin io.micronaut.application to v2.0.5
 - chore: Added changelog-updater for creating missed changelog entries
 - chore(deps): update plugin com.diffplug.spotless to v5.15.1
+- chore(deps): update plugin io.micronaut.application to v2.0.6
 
 ## [0.4.0] - 2021-07-24
 ### Added

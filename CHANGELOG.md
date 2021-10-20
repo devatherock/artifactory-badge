@@ -8,6 +8,7 @@
 - chore(deps): update plugin io.micronaut.application to v2.0.6
 - chore(deps): update plugin com.diffplug.spotless to v5.15.2
 - chore(deps): update dependency org.projectlombok:lombok to v1.18.22
+- chore(deps): update plugin com.diffplug.spotless to v5.17.0
 
 ## [0.4.0] - 2021-07-24
 ### Added

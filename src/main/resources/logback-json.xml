@@ -6,5 +6,4 @@
     <root level="INFO">
         <appender-ref ref="STDOUT" />
     </root>
-    <logger name="io.micronaut.http.server.netty.NettyHttpServer" level="TRACE" />
 </configuration>

@@ -7,19 +7,8 @@
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
-    
-    <appender name="JSON" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
-    </appender>
 
     <root level="INFO">
-    	<if condition='property("MICRONAUT_ENVIRONMENTS").contains("local")'>
-    		<then>	
-        		<appender-ref ref="STDOUT" />
-        	</then>
-        	<else>
-       			<appender-ref ref="JSON" />
-       		</else>
-       	</if>
+		<appender-ref ref="STDOUT" />
     </root>
 </configuration>

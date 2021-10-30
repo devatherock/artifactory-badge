@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [0.5.0] - 2021-10-29
 ### Added
 - [#107](https://github.com/devatherock/artifactory-badge/issues/107): `janino` to have conditions in logging config
 - `dependencycheck` gradle plugin to detect vulnerable dependencies

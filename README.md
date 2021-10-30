@@ -15,7 +15,7 @@ docker run --rm \
   -p 8080:8080 \
   -e ARTIFACTORY_URL=https://some/url \
   -e ARTIFACTORY_API_KEY=xyz \
-  devatherock/artifactory-badge:latest
+  devatherock/artifactory-badge:0.5.0
 ```
 
 ### Configurable properties

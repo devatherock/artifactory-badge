@@ -43,7 +43,9 @@ logger:
 | MICRONAUT_CONFIG_FILES                |   true       |   (None)         |   Path to YAML config files. The YAML files can be used to specify complex, object and array properties  |
 | JAVA_OPTS                             |   false      |   (None)         |   Additional JVM arguments to be passed to the container's java process           |
 
-### Endpoints
+### API spec
+When the app is running, detailed API documentation can be accessed at `{host}/swagger-ui` or `{host}/swagger/artifactory-badge-{version}.yml`. The available endpoints are listed below for reference:
+
 - `/docker/pulls?package=path/to/package` - Generates download count badge
 - `/docker/image-size?package=path/to/package` - Generates docker image size badge
 - `/docker/layers?package=path/to/package` - Generates docker image layers count badge

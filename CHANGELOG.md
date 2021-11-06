@@ -5,6 +5,7 @@
 - chore(deps): update plugin com.diffplug.spotless to v5.17.1
 - chore(deps): update plugin io.micronaut.application to v2.0.8
 - chore(deps): update dependency io.netty:netty-all to v4.1.70.final
+- chore(deps): update docker orb to v2
 
 ## [0.5.0] - 2021-10-29
 ### Added

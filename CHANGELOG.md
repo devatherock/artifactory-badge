@@ -7,6 +7,7 @@
 - chore(deps): update dependency io.netty:netty-all to v4.1.70.final
 - chore(deps): update docker orb to v2
 - chore: Set renovate's email for changelog-updater plugin
+- chore(deps): update dependency ch.qos.logback:logback-classic to v1.2.7
 
 ## [0.5.0] - 2021-10-29
 ### Added

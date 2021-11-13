@@ -9,6 +9,7 @@
 - chore: Set renovate's email for changelog-updater plugin
 - chore(deps): update dependency ch.qos.logback:logback-classic to v1.2.7
 - chore(deps): update docker orb to v2.0.1
+- chore(deps): update plugin org.owasp.dependencycheck to v6.5.0.1
 
 ## [0.5.0] - 2021-10-29
 ### Added

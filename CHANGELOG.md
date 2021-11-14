@@ -11,6 +11,7 @@
 - chore(deps): update docker orb to v2.0.1
 - chore(deps): update plugin org.owasp.dependencycheck to v6.5.0.1
 - chore(deps): update plugin com.diffplug.spotless to v6
+- chore(deps): update dependency net.logstash.logback:logstash-logback-encoder to v7
 
 ## [0.5.0] - 2021-10-29
 ### Added

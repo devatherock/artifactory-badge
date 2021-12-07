@@ -14,6 +14,7 @@
 - chore(deps): update dependency net.logstash.logback:logstash-logback-encoder to v7
 - chore(deps): update dependency net.logstash.logback:logstash-logback-encoder to v7.0.1
 - chore(deps): update plugin com.diffplug.spotless to v6.0.1
+- chore(deps): update plugin com.diffplug.spotless to v6.0.4
 
 ## [0.5.0] - 2021-10-29
 ### Added

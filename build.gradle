@@ -50,7 +50,7 @@ dependencies {
 
     implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '7.0.1'
     implementation group: 'org.codehaus.janino', name: 'janino', version: '3.1.6'
-    implementation group: 'io.netty', name: 'netty-all', version: '4.1.70.Final'
+    implementation group: 'io.netty', name: 'netty-all', version: '4.1.73.Final'
 
     runtimeOnly "ch.qos.logback:logback-classic:1.2.7"
 

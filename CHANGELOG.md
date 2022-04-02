@@ -10,6 +10,7 @@
 - chore(deps): update plugin com.diffplug.spotless to v6.0.1
 - chore(deps): updated logback to `1.2.10`
 - Upgraded micronaut to `3.4.1`
+- chore(deps): update dependency ch.qos.logback:logback-classic to v1.2.11
 
 ## [0.5.0] - 2021-10-29
 ### Added

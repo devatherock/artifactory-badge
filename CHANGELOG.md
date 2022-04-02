@@ -2,20 +2,14 @@
 
 ## [Unreleased]
 ### Changed
-- chore(deps): update plugin com.diffplug.spotless to v5.17.1
 - chore(deps): update plugin io.micronaut.application to v2.0.8
-- chore(deps): update dependency io.netty:netty-all to v4.1.70.final
-- chore(deps): update docker orb to v2
 - chore: Set renovate's email for changelog-updater plugin
-- chore(deps): update dependency ch.qos.logback:logback-classic to v1.2.7
 - chore(deps): update docker orb to v2.0.1
-- chore(deps): update plugin org.owasp.dependencycheck to v6.5.0.1
-- chore(deps): update plugin com.diffplug.spotless to v6
-- chore(deps): update dependency net.logstash.logback:logstash-logback-encoder to v7
+- chore(deps): update plugin org.owasp.dependencycheck to 7.0.3
 - chore(deps): update dependency net.logstash.logback:logstash-logback-encoder to v7.0.1
 - chore(deps): update plugin com.diffplug.spotless to v6.0.1
-- chore(deps): update dependency io.netty:netty-all to v4.1.74.final
 - chore(deps): updated logback to `1.2.10`
+- Upgraded micronaut to `3.4.1`
 
 ## [0.5.0] - 2021-10-29
 ### Added

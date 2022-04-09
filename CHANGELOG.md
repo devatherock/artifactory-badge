@@ -13,6 +13,7 @@
 - chore(deps): update dependency ch.qos.logback:logback-classic to v1.2.11
 - chore(deps): update dependency gradle to v6.9.2
 - chore(deps): update docker orb to v2.0.3
+- chore(deps): update plugin org.owasp.dependencycheck to v7.0.4.1
 
 ## [0.5.0] - 2021-10-29
 ### Added

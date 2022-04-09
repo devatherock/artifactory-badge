@@ -12,6 +12,7 @@
 - Upgraded micronaut to `3.4.1`
 - chore(deps): update dependency ch.qos.logback:logback-classic to v1.2.11
 - chore(deps): update dependency gradle to v6.9.2
+- chore(deps): update docker orb to v2.0.3
 
 ## [0.5.0] - 2021-10-29
 ### Added

@@ -15,6 +15,7 @@
 - chore(deps): update docker orb to v2.0.3
 - chore(deps): update plugin org.owasp.dependencycheck to v7.0.4.1
 - chore(deps): update dependency net.logstash.logback:logstash-logback-encoder to v7.1
+- chore(deps): update dependency io.micronaut:micronaut-bom to v3.4.2
 
 ## [0.5.0] - 2021-10-29
 ### Added

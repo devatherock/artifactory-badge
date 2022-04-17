@@ -18,6 +18,7 @@
 - chore(deps): update dependency io.micronaut:micronaut-bom to v3.4.2
 - chore(deps): update dependency net.logstash.logback:logstash-logback-encoder to v7.1.1
 - chore(deps): update dependency org.spockframework:spock-core to v2.1-groovy-3.0
+- chore(deps): update plugin com.diffplug.spotless to v6.4.2
 
 ## [0.5.0] - 2021-10-29
 ### Added

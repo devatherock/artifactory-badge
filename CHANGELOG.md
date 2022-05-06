@@ -20,6 +20,7 @@
 - chore(deps): update dependency org.spockframework:spock-core to v2.1-groovy-3.0
 - chore(deps): update plugin com.diffplug.spotless to v6.4.2
 - chore(deps): update dependency cimg/openjdk to v17
+- chore: Used custom ssh key to push to github
 
 ## [0.5.0] - 2021-10-29
 ### Added

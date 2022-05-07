@@ -24,6 +24,7 @@
 - chore(deps): update dependency io.micronaut:micronaut-bom to v3.4.3
 - chore(deps): update dependency org.codehaus.janino:janino to v3.1.7
 - chore(deps): update dependency org.projectlombok:lombok to v1.18.24
+- chore(deps): update docker orb to v2.1.1
 
 ## [0.5.0] - 2021-10-29
 ### Added

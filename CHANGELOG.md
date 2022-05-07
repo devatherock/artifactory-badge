@@ -21,6 +21,7 @@
 - chore(deps): update plugin com.diffplug.spotless to v6.4.2
 - chore(deps): update dependency cimg/openjdk to v17
 - chore: Used custom ssh key to push to github
+- chore(deps): update dependency io.micronaut:micronaut-bom to v3.4.3
 
 ## [0.5.0] - 2021-10-29
 ### Added

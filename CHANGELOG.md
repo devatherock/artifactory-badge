@@ -22,6 +22,7 @@
 - chore(deps): update dependency cimg/openjdk to v17
 - chore: Used custom ssh key to push to github
 - chore(deps): update dependency io.micronaut:micronaut-bom to v3.4.3
+- chore(deps): update dependency org.codehaus.janino:janino to v3.1.7
 
 ## [0.5.0] - 2021-10-29
 ### Added

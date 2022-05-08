@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Added
 - [#51](https://github.com/devatherock/artifactory-badge/issues/51): Integration tests
+- [#14](https://github.com/devatherock/artifactory-badge/issues/14): Used native binary in docker image
 
 ### Changed
 - chore(deps): update plugin io.micronaut.application to v2.0.8

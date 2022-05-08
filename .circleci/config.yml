@@ -152,7 +152,7 @@ workflows:
               only: master
       - docker/publish:
           name: publish
-          executor: docker-executor
+          executor: jdk-executor
           context:
             - docker-credentials
           requires:

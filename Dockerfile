@@ -7,7 +7,7 @@ RUN native-image --no-server -cp build/libs/*-all.jar
 
 
 
-FROM frolvlad/alpine-glibc
+FROM frolvlad/alpine-glibc:alpine-3.12
 
 LABEL maintainer="devatherock@gmail.com"
 LABEL io.github.devatherock.version="0.6.0"

@@ -14,21 +14,19 @@ import io.micronaut.http.HttpRequest
 import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.annotation.Client
 import io.micronaut.http.uri.UriBuilder
-import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import spock.lang.Shared
 import spock.lang.Specification
 
 /**
  * Test class for {@link VersionController}
  */
-@MicronautTest(propertySources = 'classpath:application-test.yml')
-class VersionControllerSpec extends Specification {
+abstract class VersionControllerSpec extends Specification {
 
     @Shared
     WireMockServer mockServer = new WireMockServer(8081)
 
     @Inject
-    @Client('/')
+    @Client('${test.server.url}')
     HttpClient httpClient
 
     void setupSpec() {

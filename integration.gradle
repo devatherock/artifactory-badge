@@ -1,0 +1,24 @@
+configurations {
+    integrationTestCompile.extendsFrom testCompile
+}
+
+sourceSets {
+    integrationTest {
+        groovy {
+            compileClasspath += project.configurations.testCompileClasspath + main.output + test.output
+            runtimeClasspath += project.configurations.testRuntimeClasspath + main.output + test.output
+            srcDirs = [
+                "$projectDir/src/integrationTest/groovy"
+            ]
+        }
+        resources.srcDir file('src/integrationTest/resources')
+    }
+}
+
+task integrationTest(type: Test) {
+    testClassesDirs = project.sourceSets.integrationTest.output.classesDirs
+    classpath = project.sourceSets.integrationTest.runtimeClasspath
+    systemProperties([
+        'micronaut.env.deduction': 'false'
+    ])
+}

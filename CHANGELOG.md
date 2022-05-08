@@ -1,6 +1,9 @@
 # Changelog
 
 ## [Unreleased]
+### Added
+- [#51](https://github.com/devatherock/artifactory-badge/issues/51): Integration tests
+
 ### Changed
 - chore(deps): update plugin io.micronaut.application to v2.0.8
 - chore: Set renovate's email for changelog-updater plugin

@@ -6,3 +6,7 @@ artifactory:
       url: http://localhost:8081
 micronaut:
   http.client.read-timeout: 30
+  server.port: 8091
+test:
+  server:
+    url: http://localhost:8091

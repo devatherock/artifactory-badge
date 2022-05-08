@@ -6,7 +6,7 @@ slack_image: &slack_image
         password: $DOCKER_PASSWORD
 
 orbs:
-  docker: circleci/docker@2.1.1
+  docker: circleci/docker@2.0.3
 
 work_directory: &work_directory
   working_directory: ~/artifactory-badge
@@ -97,6 +97,10 @@ jobs:
             - build
       - store_test_results:
           path: build/test-results
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: v1-dependencies-{{ checksum "build.gradle" }}
           
   integration_test:
     machine:
@@ -105,18 +109,10 @@ jobs:
       - checkout
       - attach_workspace:
           at: ~/artifactory-badge
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "build.gradle" }}
-            - v1-dependencies-
       - run: |
           make integration-test
       - store_test_results:
           path: build/test-results
-      - save_cache:
-          paths:
-            - ~/.gradle
-          key: v1-dependencies-{{ checksum "build.gradle" }}
   
   publish_release:
     executor: docker-executor

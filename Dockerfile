@@ -1,4 +1,20 @@
-FROM adoptopenjdk/openjdk11-openj9:jre-11.0.8_10_openj9-0.21.0-alpine
-COPY build/libs/artifactory-badge-*-all.jar artifactory-badge.jar
+FROM devatherock/graalvm:ol7-java11-20.3.4-1 as graalvm
+
+COPY . /home/app/micronaut-graal-app
+WORKDIR /home/app/micronaut-graal-app
+
+RUN native-image --no-server -cp build/libs/*-all.jar
+
+
+
+FROM frolvlad/alpine-glibc
+
+LABEL maintainer="devatherock@gmail.com"
+LABEL io.github.devatherock.version="0.6.0"
+
 EXPOSE 8080
-CMD java -Dcom.sun.management.jmxremote -noverify ${JAVA_OPTS} -jar artifactory-badge.jar
+RUN apk update \
+		&& apk add --no-cache libstdc++ dumb-init
+
+COPY --from=graalvm /home/app/micronaut-graal-app/micronautgraalapp /micronaut-graal-app/micronautgraalapp
+ENTRYPOINT ["dumb-init", "--", "/micronaut-graal-app/micronautgraalapp"]

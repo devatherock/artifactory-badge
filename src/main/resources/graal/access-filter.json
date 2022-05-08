@@ -4,16 +4,25 @@
     {"excludeClasses": "io.github.devatherock.artifactory.config.ArtifactoryPropertiesSpec"},
     {"excludeClasses": "io.github.devatherock.artifactory.config.ShieldsIOPropertiesSpec"},
     {"excludeClasses": "io.github.devatherock.artifactory.controllers.DockerControllerSpec"},
+    {"excludeClasses": "io.github.devatherock.artifactory.controllers.DockerControllerTestSpec"},
     {"excludeClasses": "io.github.devatherock.artifactory.controllers.VersionControllerSpec"},
+    {"excludeClasses": "io.github.devatherock.artifactory.controllers.VersionControllerTestSpec"},
     {"excludeClasses": "io.github.devatherock.artifactory.service.DockerBadgeServiceSpec"},
+    {"excludeClasses": "io.github.devatherock.artifactory.service.DockerBadgeServiceHelperSpec"},
     {"excludeClasses": "io.github.devatherock.artifactory.util.BadgeGeneratorSpec"},
+    {"excludeClasses": "java.lang.Class"},
     {"excludeClasses": "io.github.devatherock.test.TestUtil"},
+    {"excludeClasses": "io.micronaut.test.**"},
     {"excludeClasses": "org.spockframework.**"},
     {"excludeClasses": "org.gradle.**"},
     {"excludeClasses": "net.sf.cglib.**"},
     {"excludeClasses": "org.codehaus.groovy.**"},
+    {"excludeClasses": "groovy.lang.**"},
     {"excludeClasses": "spock.**"},
     {"excludeClasses": "org.hamcrest.**"},
-    {"excludeClasses": "org.objenesis.**"}
+    {"excludeClasses": "org.objenesis.**"},
+    {"excludeClasses": "net.bytebuddy.**"},
+    {"excludeClasses": "com.github.tomakehurst.wiremock.**"},
+    {"excludeClasses": "org.eclipse.jetty.**"}
   ]
 }

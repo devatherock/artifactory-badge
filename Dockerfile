@@ -10,7 +10,7 @@ RUN native-image --no-server -cp build/libs/*-all.jar
 FROM frolvlad/alpine-glibc:alpine-3.12
 
 LABEL maintainer="devatherock@gmail.com"
-LABEL io.github.devatherock.version="0.6.0"
+LABEL io.github.devatherock.version="1.0.0"
 
 EXPOSE 8080
 RUN apk update \

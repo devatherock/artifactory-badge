@@ -41,7 +41,7 @@ logger:
 | MICRONAUT_ENVIRONMENTS                |   false      |   (None)         |   Setting the value to `local` will mock the calls to the artifactory. Only for testing purposes  |
 | MICRONAUT_SERVER_PORT                 |   false      |   8080           |   Port in which the app listens on                                                |
 | MICRONAUT_CONFIG_FILES                |   true       |   (None)         |   Path to YAML config files. The YAML files can be used to specify complex, object and array properties  |
-| JAVA_OPTS                             |   false      |   (None)         |   Additional JVM arguments to be passed to the container's java process           |
+| LOGBACK_CONFIGURATION_FILE            |   false      |   (None)         |   Path to logback configuration file           |
 
 ### API spec
 When the app is running, detailed API documentation can be accessed at `{host}/swagger-ui` or `{host}/swagger/artifactory-badge-{version}.yml`. The available endpoints are listed below for reference:
@@ -79,7 +79,7 @@ When the app is running, detailed API documentation can be accessed at `{host}/s
 - Set the environment variable `LOGGER_LEVELS_ROOT` to `DEBUG` to enable all debug logs - custom and framework
 - Set the environment variable `LOGGER_LEVELS_IO_GITHUB_DEVATHEROCK` to `DEBUG` to enable debug logs only in custom code
 - For fine-grained logging control, supply a custom [logback.xml](http://logback.qos.ch/manual/configuration.html) file
-and set the environment variable `JAVA_OPTS` to `-Dlogback.configurationFile=/path/to/custom/logback.xml`
+and set the environment variable `LOGBACK_CONFIGURATION_FILE` to `/path/to/custom/logback.xml`
 
 ### JSON logs
-Refer [logstash-logback-encoder](https://github.com/logstash/logstash-logback-encoder) documentation to customize the field names and formats in the log. To output logs as JSON, set the environment variable `JAVA_OPTS` to `-Dlogback.configurationFile=logback-json.xml`
+Refer [logstash-logback-encoder](https://github.com/logstash/logstash-logback-encoder) documentation to customize the field names and formats in the log. To output logs as JSON, set the environment variable `LOGBACK_CONFIGURATION_FILE` to `logback-json.xml`

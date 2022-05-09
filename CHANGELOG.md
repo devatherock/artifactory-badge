@@ -4,25 +4,15 @@
 ### Added
 - [#51](https://github.com/devatherock/artifactory-badge/issues/51): Integration tests
 - [#14](https://github.com/devatherock/artifactory-badge/issues/14): Used native binary in docker image
+- [#159](https://github.com/devatherock/artifactory-badge/issues/159): Environment variable to accept logback config path. Needed as it wasn't clear how to set the JVM arg `logback.configurationFile` with the graalvm binary
 
 ### Changed
 - chore(deps): update plugin io.micronaut.application to v2.0.8
 - chore: Set renovate's email for changelog-updater plugin
-- chore(deps): update docker orb to v2.0.1
-- chore(deps): update plugin org.owasp.dependencycheck to 7.0.3
-- chore(deps): update dependency net.logstash.logback:logstash-logback-encoder to v7.0.1
-- chore(deps): update plugin com.diffplug.spotless to v6.0.1
-- chore(deps): updated logback to `1.2.10`
-- Upgraded micronaut to `3.4.1`
 - chore(deps): update dependency ch.qos.logback:logback-classic to v1.2.11
 - chore(deps): update dependency gradle to v6.9.2
-- chore(deps): update docker orb to v2.0.3
-- chore(deps): update plugin org.owasp.dependencycheck to v7.0.4.1
-- chore(deps): update dependency net.logstash.logback:logstash-logback-encoder to v7.1
-- chore(deps): update dependency io.micronaut:micronaut-bom to v3.4.2
 - chore(deps): update dependency net.logstash.logback:logstash-logback-encoder to v7.1.1
 - chore(deps): update dependency org.spockframework:spock-core to v2.1-groovy-3.0
-- chore(deps): update plugin com.diffplug.spotless to v6.4.2
 - chore(deps): update dependency cimg/openjdk to v17
 - chore: Used custom ssh key to push to github
 - chore(deps): update dependency io.micronaut:micronaut-bom to v3.4.3

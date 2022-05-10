@@ -1,6 +1,10 @@
 # Changelog
 
 ## [Unreleased]
+### Changed
+- Used integration test config from `gradle-includes`
+
+## [1.0.0] - 2022-05-08
 ### Added
 - [#51](https://github.com/devatherock/artifactory-badge/issues/51): Integration tests
 - [#14](https://github.com/devatherock/artifactory-badge/issues/14): Used native binary in docker image

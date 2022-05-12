@@ -1,6 +1,9 @@
 # Changelog
 
 ## [Unreleased]
+### Added
+- Support for reading logback config from local or remote file
+
 ### Changed
 - Used integration test config from `gradle-includes`
 

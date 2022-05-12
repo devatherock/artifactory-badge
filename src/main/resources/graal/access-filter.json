@@ -1,5 +1,6 @@
 {
   "rules": [
+  	{"excludeClasses": "io.github.devatherock.logback.LogbackConfigInitializerSpec"},
     {"excludeClasses": "io.github.devatherock.artifactory.config.AppConfigSpec"},
     {"excludeClasses": "io.github.devatherock.artifactory.config.ArtifactoryPropertiesSpec"},
     {"excludeClasses": "io.github.devatherock.artifactory.config.ShieldsIOPropertiesSpec"},

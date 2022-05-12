@@ -101,6 +101,14 @@ ext.jacoco = [
     exclusions: [
         'io/github/devatherock/Application.class',
         'io/github/devatherock/test/ArtifactoryController.class'
+    ],
+    coverageThresholds: [
+        'io.github.devatherock.logback.LogbackConfigInitializer': [
+            'BRANCH': 0.75,
+            'COMPLEXITY': 0.62,
+            'INSTRUCTION': 0.89,
+            'LINE': 0.88
+        ]
     ]
 ]
 apply from: 'https://raw.githubusercontent.com/devatherock/gradle-includes/master/integration.gradle'

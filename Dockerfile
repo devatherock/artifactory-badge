@@ -1,9 +1,9 @@
-FROM devatherock/graalvm:ol7-java11-20.3.4-1 as graalvm
+FROM ghcr.io/graalvm/native-image:ol8-java11-22.1.0 as graalvm
 
 COPY . /home/app/micronaut-graal-app
 WORKDIR /home/app/micronaut-graal-app
 
-RUN native-image --no-server -cp build/libs/*-all.jar
+RUN native-image -cp build/libs/*-all.jar
 
 
 

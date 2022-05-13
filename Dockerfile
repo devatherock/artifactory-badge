@@ -16,5 +16,7 @@ EXPOSE 8080
 RUN apk update \
 		&& apk add --no-cache libstdc++ dumb-init
 
-COPY --from=graalvm /home/app/micronaut-graal-app/micronautgraalapp /micronaut-graal-app/micronautgraalapp
-ENTRYPOINT ["dumb-init", "--", "/micronaut-graal-app/micronautgraalapp"]
+COPY --from=graalvm /home/app/micronaut-graal-app/micronautgraalapp /micronaut-graal-app/
+
+ENTRYPOINT ["dumb-init", "--"]
+CMD ["sh", "-c", "/micronaut-graal-app/micronautgraalapp ${JAVA_OPTS}"]

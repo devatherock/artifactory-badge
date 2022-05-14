@@ -1,6 +1,9 @@
 # Changelog
 
 ## [Unreleased]
+### Added
+- [#167](https://github.com/devatherock/artifactory-badge/issues/167): Tests for `ArtifactoryController`
+
 ### Changed
 - [#163](https://github.com/devatherock/artifactory-badge/issues/163): Used distroless base docker image
 

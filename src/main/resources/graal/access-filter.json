@@ -1,5 +1,6 @@
 {
   "rules": [
+    {"excludeClasses": "java.lang.Class"},
   	{"excludeClasses": "io.github.devatherock.logback.LogbackConfigInitializerSpec"},
     {"excludeClasses": "io.github.devatherock.artifactory.config.AppConfigSpec"},
     {"excludeClasses": "io.github.devatherock.artifactory.config.ArtifactoryPropertiesSpec"},
@@ -11,8 +12,8 @@
     {"excludeClasses": "io.github.devatherock.artifactory.service.DockerBadgeServiceSpec"},
     {"excludeClasses": "io.github.devatherock.artifactory.service.DockerBadgeServiceHelperSpec"},
     {"excludeClasses": "io.github.devatherock.artifactory.util.BadgeGeneratorSpec"},
-    {"excludeClasses": "java.lang.Class"},
     {"excludeClasses": "io.github.devatherock.test.TestUtil"},
+    {"excludeClasses": "io.github.devatherock.test.ArtifactoryControllerSpec"},
     {"excludeClasses": "io.micronaut.test.**"},
     {"excludeClasses": "org.spockframework.**"},
     {"excludeClasses": "org.gradle.**"},

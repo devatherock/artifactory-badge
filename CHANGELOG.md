@@ -1,6 +1,10 @@
 # Changelog
 
 ## [Unreleased]
+### Changed
+- chore(deps): update plugin com.diffplug.spotless to v6.6.1
+
+## [1.1.0] - 2022-05-13
 ### Added
 - Support for reading logback config from local or remote file
 

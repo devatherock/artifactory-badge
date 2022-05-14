@@ -99,8 +99,7 @@ run {
 
 ext.jacoco = [
     exclusions: [
-        'io/github/devatherock/Application.class',
-        'io/github/devatherock/test/ArtifactoryController.class'
+        'io/github/devatherock/Application.class'
     ],
     coverageThresholds: [
         'io.github.devatherock.logback.LogbackConfigInitializer': [

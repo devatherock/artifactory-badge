@@ -1,6 +1,10 @@
 # Changelog
 
 ## [Unreleased]
+### Changed
+- [#163](https://github.com/devatherock/artifactory-badge/issues/163): Used distroless base docker image
+
+## [1.1.0] - 2022-05-12
 ### Added
 - Support for reading logback config from local or remote file
 

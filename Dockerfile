@@ -7,14 +7,12 @@ RUN native-image -cp build/libs/*-all.jar
 
 
 
-FROM frolvlad/alpine-glibc:alpine-3.12
+FROM gcr.io/distroless/base-debian11
 
 LABEL maintainer="devatherock@gmail.com"
-LABEL io.github.devatherock.version="1.0.0"
+LABEL io.github.devatherock.version="1.2.0"
 
 EXPOSE 8080
-RUN apk update \
-		&& apk add --no-cache libstdc++ dumb-init
 
 COPY --from=graalvm /home/app/micronaut-graal-app/micronautgraalapp /micronaut-graal-app/micronautgraalapp
-ENTRYPOINT ["dumb-init", "--", "/micronaut-graal-app/micronautgraalapp"]
+ENTRYPOINT ["/micronaut-graal-app/micronautgraalapp"]

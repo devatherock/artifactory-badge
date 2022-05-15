@@ -5,6 +5,6 @@ import io.micronaut.test.extensions.spock.annotation.MicronautTest
 /**
  * Unit test for {@link VersionController}
  */
-@MicronautTest(startApplication = true)
+@MicronautTest
 class VersionControllerTestSpec extends VersionControllerSpec {
 }

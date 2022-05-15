@@ -6,6 +6,7 @@
 
 ### Changed
 - [#163](https://github.com/devatherock/artifactory-badge/issues/163): Used distroless base docker image
+- [#169](https://github.com/devatherock/artifactory-badge/issues/169): Fixed badge generation timeout due to missing reflection config for `io.netty.handler.ssl.SslHandler`
 
 ## [1.1.0] - 2022-05-12
 ### Added

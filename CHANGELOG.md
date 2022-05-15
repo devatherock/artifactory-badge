@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 ### Added
+- Tests for framework provided endpoints like `/health`
+
+## [1.2.0] - 2022-05-15
+### Added
 - [#167](https://github.com/devatherock/artifactory-badge/issues/167): Tests for `ArtifactoryController`
 
 ### Changed

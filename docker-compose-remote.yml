@@ -7,7 +7,6 @@ services:
     environment:
       - ARTIFACTORY_URL=http://localhost:8081
       - ARTIFACTORY_API_KEY=dummyKey
-      - ARTIFACTORY_BADGE_SHIELDS_IO_URL=http://localhost:8081
-      - LOGBACK_CONFIGURATION_FILE=logback-json.xml
+      - LOGBACK_CONFIGURATION_FILE=https://raw.githubusercontent.com/devatherock/artifactory-badge/master/src/main/resources/logback-json.xml
     ports:
       - "8080:8080"

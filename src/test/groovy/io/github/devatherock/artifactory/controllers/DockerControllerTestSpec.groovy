@@ -5,6 +5,6 @@ import io.micronaut.test.extensions.spock.annotation.MicronautTest
 /**
  * Unit test for {@link DockerController}
  */
-@MicronautTest(startApplication = true)
+@MicronautTest
 class DockerControllerTestSpec extends DockerControllerSpec {
 }

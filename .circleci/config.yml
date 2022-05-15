@@ -117,7 +117,7 @@ jobs:
       - attach_workspace:
           at: ~/artifactory-badge
       - run: |
-          make integration-test
+          make integration-test remote-integration-test
       - store_test_results:
           path: build/test-results
   

@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Added
 - Tests for framework provided endpoints like `/health`
+- `yaml-validator` to CI pipeline
 
 ## [1.2.0] - 2022-05-15
 ### Added

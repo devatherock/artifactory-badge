@@ -5,6 +5,9 @@
 - Tests for framework provided endpoints like `/health`
 - `yaml-validator` to CI pipeline
 
+### Changed
+- chore(deps): update dependency io.micronaut:micronaut-bom to v3.4.4
+
 ## [1.2.0] - 2022-05-15
 ### Added
 - [#167](https://github.com/devatherock/artifactory-badge/issues/167): Tests for `ArtifactoryController`

@@ -7,6 +7,7 @@
 
 ### Changed
 - chore(deps): update dependency io.micronaut:micronaut-bom to v3.4.4
+- chore(deps): update dependency devatherock/drone-yaml-validator to v2.1.0
 
 ## [1.2.0] - 2022-05-15
 ### Added

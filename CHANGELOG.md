@@ -11,6 +11,7 @@
 - chore(deps): update dependency net.logstash.logback:logstash-logback-encoder to v7.2
 - chore(deps): update dependency io.micronaut:micronaut-bom to v3.5.0
 - chore(deps): update dependency io.micronaut:micronaut-bom to v3.5.1
+- chore(deps): update plugin com.diffplug.spotless to v6.7.1
 
 ## [1.2.0] - 2022-05-15
 ### Added

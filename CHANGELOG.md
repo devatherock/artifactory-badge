@@ -12,6 +12,7 @@
 - chore(deps): update dependency io.micronaut:micronaut-bom to v3.5.0
 - chore(deps): update dependency io.micronaut:micronaut-bom to v3.5.1
 - chore(deps): update plugin org.sonarqube to v3.4.0.2513
+- chore(deps): update plugin com.diffplug.spotless to v6.7.2
 
 ## [1.2.0] - 2022-05-15
 ### Added

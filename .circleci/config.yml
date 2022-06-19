@@ -7,7 +7,7 @@ slack_image: &slack_image
         
 docker_executor_image: &docker_executor_image
   docker:
-    - image: cimg/openjdk:17.0
+    - image: cimg/openjdk:18.0
       auth:
         username: $DOCKER_USERNAME
         password: $DOCKER_PASSWORD

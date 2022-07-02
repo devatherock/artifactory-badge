@@ -15,6 +15,7 @@
 - chore(deps): update plugin org.owasp.dependencycheck to v7.1.1
 - chore(deps): update docker orb to v2.1.2
 - chore(deps): update dependency io.micronaut:micronaut-bom to v3.5.2
+- chore(deps): update plugin com.diffplug.spotless to v6.8.0
 
 ## [1.2.0] - 2022-05-15
 ### Added

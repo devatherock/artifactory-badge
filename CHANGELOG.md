@@ -16,6 +16,7 @@
 - chore(deps): update docker orb to v2.1.2
 - chore(deps): update dependency io.micronaut:micronaut-bom to v3.5.2
 - chore(deps): update dependency io.micronaut:micronaut-bom to v3.5.3
+- fix(deps): update dependency io.micronaut:micronaut-bom to v3.5.4
 
 ## [1.2.0] - 2022-05-15
 ### Added

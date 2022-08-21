@@ -19,6 +19,7 @@
 - fix(deps): update dependency io.micronaut:micronaut-bom to v3.5.4
 - fix(deps): update dependency org.objenesis:objenesis to v3.3
 - fix(deps): update dependency io.micronaut:micronaut-bom to v3.6.1
+- chore(deps): update plugin org.owasp.dependencycheck to v7.1.2
 
 ## [1.2.0] - 2022-05-15
 ### Added

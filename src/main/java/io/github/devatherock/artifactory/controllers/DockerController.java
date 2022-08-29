@@ -41,8 +41,8 @@ public class DockerController {
     @Get(value = "/pulls", produces = CONTENT_TYPE_BADGE)
     @Operation(summary = "getImagePullCount", description = "Generates the docker pulls badge", responses = @ApiResponse(description = "An XML representing the SVG docker pulls badge", content = @Content(mediaType = CONTENT_TYPE_BADGE, schema = @Schema(implementation = String.class))))
     public String getImagePullCount(
-            @Parameter(in = ParameterIn.QUERY, description = ApiSpecConstants.API_DESC_PARAM_PACKAGE, example = ApiSpecConstants.EXAMPLE_PARAM_PACKAGE) @QueryValue("package") String packageName,
-            @Parameter(in = ParameterIn.QUERY, description = ApiSpecConstants.API_DESC_PARAM_LABEL) @QueryValue(value = "label", defaultValue = "docker pulls") String badgeLabel) {
+                                    @Parameter(in = ParameterIn.QUERY, description = ApiSpecConstants.API_DESC_PARAM_PACKAGE, example = ApiSpecConstants.EXAMPLE_PARAM_PACKAGE) @QueryValue("package") String packageName,
+                                    @Parameter(in = ParameterIn.QUERY, description = ApiSpecConstants.API_DESC_PARAM_LABEL) @QueryValue(value = "label", defaultValue = "docker pulls") String badgeLabel) {
         LOGGER.debug("In getImagePullCount");
         return badgeService.getPullsCountBadge(packageName, badgeLabel);
     }
@@ -58,9 +58,9 @@ public class DockerController {
     @Get(uris = { "/image-size", "image_size" }, produces = CONTENT_TYPE_BADGE)
     @Operation(summary = "getImageSize", description = "Generates the image size badge", responses = @ApiResponse(description = "An XML representing the SVG image size badge", content = @Content(mediaType = CONTENT_TYPE_BADGE, schema = @Schema(implementation = String.class))))
     public String getImageSize(
-            @Parameter(in = ParameterIn.QUERY, description = ApiSpecConstants.API_DESC_PARAM_PACKAGE, example = ApiSpecConstants.EXAMPLE_PARAM_PACKAGE) @QueryValue("package") String packageName,
-            @Parameter(in = ParameterIn.QUERY, description = ApiSpecConstants.API_DESC_PARAM_TAG) @QueryValue(defaultValue = "latest") String tag,
-            @Parameter(in = ParameterIn.QUERY, description = ApiSpecConstants.API_DESC_PARAM_LABEL) @QueryValue(value = "label", defaultValue = "image size") String badgeLabel) {
+                               @Parameter(in = ParameterIn.QUERY, description = ApiSpecConstants.API_DESC_PARAM_PACKAGE, example = ApiSpecConstants.EXAMPLE_PARAM_PACKAGE) @QueryValue("package") String packageName,
+                               @Parameter(in = ParameterIn.QUERY, description = ApiSpecConstants.API_DESC_PARAM_TAG) @QueryValue(defaultValue = "latest") String tag,
+                               @Parameter(in = ParameterIn.QUERY, description = ApiSpecConstants.API_DESC_PARAM_LABEL) @QueryValue(value = "label", defaultValue = "image size") String badgeLabel) {
         LOGGER.debug("In getImageSize");
         return badgeService.getImageSizeBadge(packageName, tag, badgeLabel);
     }
@@ -76,9 +76,9 @@ public class DockerController {
     @Get(value = "/layers", produces = CONTENT_TYPE_BADGE)
     @Operation(summary = "getImageLayers", description = "Generates the layers badge", responses = @ApiResponse(description = "An XML representing the SVG layers badge", content = @Content(mediaType = CONTENT_TYPE_BADGE, schema = @Schema(implementation = String.class))))
     public String getImageLayers(
-            @Parameter(in = ParameterIn.QUERY, description = ApiSpecConstants.API_DESC_PARAM_PACKAGE, example = ApiSpecConstants.EXAMPLE_PARAM_PACKAGE) @QueryValue("package") String packageName,
-            @Parameter(in = ParameterIn.QUERY, description = ApiSpecConstants.API_DESC_PARAM_TAG) @QueryValue(defaultValue = "latest") String tag,
-            @Parameter(in = ParameterIn.QUERY, description = ApiSpecConstants.API_DESC_PARAM_LABEL) @QueryValue(value = "label", defaultValue = "layers") String badgeLabel) {
+                                 @Parameter(in = ParameterIn.QUERY, description = ApiSpecConstants.API_DESC_PARAM_PACKAGE, example = ApiSpecConstants.EXAMPLE_PARAM_PACKAGE) @QueryValue("package") String packageName,
+                                 @Parameter(in = ParameterIn.QUERY, description = ApiSpecConstants.API_DESC_PARAM_TAG) @QueryValue(defaultValue = "latest") String tag,
+                                 @Parameter(in = ParameterIn.QUERY, description = ApiSpecConstants.API_DESC_PARAM_LABEL) @QueryValue(value = "label", defaultValue = "layers") String badgeLabel) {
         LOGGER.debug("In getImageLayers");
         return badgeService.getImageLayersBadge(packageName, tag, badgeLabel);
     }

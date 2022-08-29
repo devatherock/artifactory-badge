@@ -8,5 +8,3 @@ services:
       - ARTIFACTORY_URL=http://localhost:8081
       - ARTIFACTORY_API_KEY=dummyKey
       - LOGBACK_CONFIGURATION_FILE=https://raw.githubusercontent.com/devatherock/artifactory-badge/master/src/main/resources/logback-json.xml
-    ports:
-      - "8080:8080"

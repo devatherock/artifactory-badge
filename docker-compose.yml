@@ -3,10 +3,9 @@ services:
 
   artifactory-badge:
     image: devatherock/artifactory-badge:latest
+    network_mode: "host"
     environment:
       - ARTIFACTORY_URL=http://localhost:8081
       - ARTIFACTORY_API_KEY=dummyKey
       - ARTIFACTORY_BADGE_SHIELDS_IO_URL=http://localhost:8081
       - LOGBACK_CONFIGURATION_FILE=logback-json.xml
-    ports:
-      - "8080:8080"

@@ -1,12 +1,19 @@
 package io.github.devatherock.artifactory.controllers;
 
 import io.github.devatherock.artifactory.service.DockerBadgeService;
+import io.github.devatherock.artifactory.util.ApiSpecConstants;
 
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.QueryValue;
 import io.micronaut.scheduling.TaskExecutors;
 import io.micronaut.scheduling.annotation.ExecuteOn;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,7 +32,7 @@ public class VersionController {
     private final DockerBadgeService badgeService;
 
     /**
-     * Generates the {@code version} badge
+     * Generates the version badge
      * 
      * @param packageName
      * @param badgeLabel
@@ -33,9 +40,11 @@ public class VersionController {
      * @return the version badge
      */
     @Get(value = "/version", produces = CONTENT_TYPE_BADGE)
-    public String getLatestVersion(@QueryValue("package") String packageName,
-                                   @QueryValue(value = "label", defaultValue = "version") String badgeLabel,
-                                   @QueryValue(value = "sort", defaultValue = "date") String sortType) {
+    @Operation(description = "Generates the version badge", responses = @ApiResponse(description = "An XML representing the SVG version badge", content = @Content(mediaType = CONTENT_TYPE_BADGE, schema = @Schema(implementation = String.class))))
+    public String getLatestVersion(
+                                   @Parameter(in = ParameterIn.QUERY, description = ApiSpecConstants.API_DESC_PARAM_PACKAGE, example = ApiSpecConstants.EXAMPLE_PARAM_PACKAGE) @QueryValue("package") String packageName,
+                                   @Parameter(in = ParameterIn.QUERY, description = ApiSpecConstants.API_DESC_PARAM_LABEL) @QueryValue(value = "label", defaultValue = "version") String badgeLabel,
+                                   @Parameter(in = ParameterIn.QUERY, description = "The attribute based on which to determine the latest version") @QueryValue(value = "sort", defaultValue = "date") String sortType) {
         LOGGER.debug("In getLatestVersion");
         return badgeService.getLatestVersionBadge(packageName, badgeLabel, sortType);
     }

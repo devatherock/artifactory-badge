@@ -40,7 +40,7 @@ public class VersionController {
      * @return the version badge
      */
     @Get(value = "/version", produces = CONTENT_TYPE_BADGE)
-    @Operation(description = "Generates the version badge", responses = @ApiResponse(description = "An XML representing the SVG version badge", content = @Content(mediaType = CONTENT_TYPE_BADGE, schema = @Schema(implementation = String.class))))
+    @Operation(summary = "getLatestVersion", description = "Generates the version badge", responses = @ApiResponse(description = "An XML representing the SVG version badge", content = @Content(mediaType = CONTENT_TYPE_BADGE, schema = @Schema(implementation = String.class))))
     public String getLatestVersion(
                                    @Parameter(in = ParameterIn.QUERY, description = ApiSpecConstants.API_DESC_PARAM_PACKAGE, example = ApiSpecConstants.EXAMPLE_PARAM_PACKAGE) @QueryValue("package") String packageName,
                                    @Parameter(in = ParameterIn.QUERY, description = ApiSpecConstants.API_DESC_PARAM_LABEL) @QueryValue(value = "label", defaultValue = "version") String badgeLabel,

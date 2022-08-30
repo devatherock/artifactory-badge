@@ -21,6 +21,7 @@
 - fix(deps): update dependency io.micronaut:micronaut-bom to v3.6.1
 - chore(deps): update plugin org.owasp.dependencycheck to v7.1.2
 - Improved the API spec using additional annotations
+- chore(deps): update docker orb to v2.1.3
 
 ## [1.2.0] - 2022-05-15
 ### Added

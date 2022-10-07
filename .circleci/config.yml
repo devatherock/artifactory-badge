@@ -13,7 +13,7 @@ docker_executor_image: &docker_executor_image
         password: $DOCKER_PASSWORD
 
 orbs:
-  docker: circleci/docker@2.1.3
+  docker: circleci/docker@2.1.4
 
 work_directory: &work_directory
   working_directory: ~/artifactory-badge

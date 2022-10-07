@@ -22,6 +22,7 @@
 - chore(deps): update plugin org.owasp.dependencycheck to v7.1.2
 - Improved the API spec using additional annotations
 - chore(deps): update docker orb to v2.1.3
+- feat: Updated changelog updater user
 
 ## [1.2.0] - 2022-05-15
 ### Added

@@ -23,6 +23,7 @@
 - Improved the API spec using additional annotations
 - chore(deps): update docker orb to v2.1.3
 - feat: Updated changelog updater user
+- chore(deps): update docker orb to v2.1.4
 
 ## [1.2.0] - 2022-05-15
 ### Added

@@ -25,6 +25,7 @@
 - feat: Updated changelog updater user
 - chore(deps): update docker orb to v2.1.4
 - chore(deps): update dependency gradle to v6.9.3
+- fix(deps): update dependency io.micronaut:micronaut-bom to v3.7.3
 
 ## [1.2.0] - 2022-05-15
 ### Added

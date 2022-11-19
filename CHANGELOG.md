@@ -29,6 +29,7 @@
 - fix(deps): update dependency org.codehaus.janino:janino to v3.1.8
 - fix(deps): update dependency io.micronaut:micronaut-bom to v3.7.4
 - fix(deps): update dependency org.codehaus.janino:janino to v3.1.9
+- chore(deps): update plugin com.diffplug.spotless to v6.11.0
 
 ## [1.2.0] - 2022-05-15
 ### Added

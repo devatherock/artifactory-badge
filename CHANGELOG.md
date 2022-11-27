@@ -33,6 +33,7 @@
 - chore(deps): update plugin org.sonarqube to v3.5.0.2730
 - fix(deps): update dependency com.fasterxml.jackson.core:jackson-databind to v2.14.1
 - fix(deps): update dependency ch.qos.logback:logback-classic to v1.4.5
+- fix(deps): update dependency org.spockframework:spock-core to v2.3-groovy-4.0
 
 ## [1.2.0] - 2022-05-15
 ### Added

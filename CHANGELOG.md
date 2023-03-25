@@ -34,6 +34,7 @@
 - fix(deps): update dependency com.fasterxml.jackson.core:jackson-databind to v2.14.1
 - fix(deps): update dependency ch.qos.logback:logback-classic to v1.4.5
 - chore(deps): update plugin org.owasp.dependencycheck to v7.4.4
+- chore(deps): update dependency gradle to v6.9.4
 
 ## [1.2.0] - 2022-05-15
 ### Added

@@ -38,6 +38,7 @@
 - chore(deps): update plugin com.github.kt3k.coveralls to v2.12.2
 - fix(deps): update dependency ch.qos.logback:logback-classic to v1.4.6
 - fix(deps): update dependency io.micronaut:micronaut-bom to v3.8.8
+- fix(deps): update dependency org.jsoup:jsoup to v1.15.4
 
 ## [1.2.0] - 2022-05-15
 ### Added

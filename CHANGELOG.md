@@ -37,6 +37,7 @@
 - chore(deps): update dependency gradle to v6.9.4
 - chore(deps): update plugin com.github.kt3k.coveralls to v2.12.2
 - fix(deps): update dependency ch.qos.logback:logback-classic to v1.4.6
+- fix(deps): update dependency io.micronaut:micronaut-bom to v3.8.8
 
 ## [1.2.0] - 2022-05-15
 ### Added

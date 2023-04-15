@@ -44,6 +44,7 @@
 - chore(deps): update plugin org.owasp.dependencycheck to v8.2.1
 - fix(deps): update dependency io.micronaut:micronaut-bom to v3.8.9
 - fix(deps): update dependency net.logstash.logback:logstash-logback-encoder to v7.3
+- fix(deps): update dependency org.spockframework:spock-core to v2.3-groovy-4.0
 
 ## [1.2.0] - 2022-05-15
 ### Added

@@ -42,6 +42,7 @@
 - fix(deps): update dependency org.projectlombok:lombok to v1.18.26
 - chore(deps): update docker orb to v2.2.0
 - chore(deps): update plugin org.owasp.dependencycheck to v8.2.1
+- fix(deps): update dependency io.micronaut:micronaut-bom to v3.8.9
 
 ## [1.2.0] - 2022-05-15
 ### Added

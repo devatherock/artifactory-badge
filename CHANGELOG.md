@@ -45,6 +45,7 @@
 - fix(deps): update dependency io.micronaut:micronaut-bom to v3.8.9
 - fix(deps): update dependency net.logstash.logback:logstash-logback-encoder to v7.3
 - chore(deps): update plugin org.sonarqube to v4
+- fix(deps): update dependency ch.qos.logback:logback-classic to v1.4.7
 
 ## [1.2.0] - 2022-05-15
 ### Added

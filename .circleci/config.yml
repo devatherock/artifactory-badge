@@ -36,7 +36,7 @@ pr_filter: &pr_filter
 executors:
   jdk-executor:
     docker:
-      - image: devatherock/graalvm:ol8-java11-22.1.0-2
+      - image: devatherock/graalvm:ol8-java17-22.3.2-1
         auth:
           username: $DOCKER_USERNAME
           password: $DOCKER_PASSWORD
@@ -88,6 +88,7 @@ jobs:
     executor: jdk-executor
     steps:
       - checkout
+      - setup_remote_docker
       - attach_workspace:
           at: ~/artifactory-badge
       - restore_cache:
@@ -95,6 +96,7 @@ jobs:
             - v1-dependencies-{{ checksum "build.gradle" }}
             - v1-dependencies
       - run: |
+          docker pull gcr.io/distroless/base-debian11
           ./gradlew check sonarqube -Dsonar.login=$SONAR_TOKEN -Dgraalvm=true
       - store_test_results:
           path: build/test-results

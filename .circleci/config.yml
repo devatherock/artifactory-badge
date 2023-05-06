@@ -85,7 +85,7 @@ jobs:
       - run: sh /scripts/entry-point.sh
 
   test:
-    executor: jdk-executor
+    executor: docker-executor
     steps:
       - checkout
       - setup_remote_docker
@@ -97,7 +97,7 @@ jobs:
             - v1-dependencies
       - run: |
           docker pull gcr.io/distroless/base-debian11
-          ./gradlew check sonarqube -Dsonar.login=$SONAR_TOKEN -Dgraalvm=true
+          ./gradlew check sonarqube -Dsonar.login=$SONAR_TOKEN
       - store_test_results:
           path: build/test-results
   build:

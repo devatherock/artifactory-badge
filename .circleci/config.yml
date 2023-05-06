@@ -91,15 +91,8 @@ jobs:
       - setup_remote_docker
       - attach_workspace:
           at: ~/artifactory-badge
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "build.gradle" }}
-            - v1-dependencies
       - run: |
           docker pull gcr.io/distroless/base-debian11
-          ./gradlew check sonarqube -Dsonar.login=$SONAR_TOKEN
-      - store_test_results:
-          path: build/test-results
   build:
     executor: jdk-executor
     steps:

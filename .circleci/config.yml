@@ -127,6 +127,19 @@ jobs:
           make integration-test remote-integration-test
       - store_test_results:
           path: build/test-results
+          
+  publish2:
+    executor: native-image-executor
+    steps:
+      - checkout
+      - setup_remote_docker
+      - attach_workspace:
+          at: ~/artifactory-badge
+      - run: |
+          TAG=${CIRCLE_SHA1:0:8}
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+          docker build -t devatherock/artifactory-badge:$TAG .
+          docker push devatherock/artifactory-badge:$TAG        
   
   publish_release:
     executor: docker-executor
@@ -207,14 +220,7 @@ workflows:
             - publish_release
   pr_check:
     jobs:
-      - docker/publish:
-          name: publish2
-          executor: native-image-executor
+      - publish2:
           context:
             - docker-credentials
-          <<: *pr_filter
-          image: devatherock/artifactory-badge
-          attach-at: ~/artifactory-badge
-          tag: "${CIRCLE_SHA1:0:8}"
-          use-remote-docker: true
-          docker-username: DOCKER_USERNAME      
+          <<: *pr_filter     

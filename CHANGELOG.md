@@ -50,6 +50,7 @@
 - fix(deps): update dependency io.micronaut:micronaut-bom to v3.9.1
 - fix(deps): update dependency org.jsoup:jsoup to v1.16.1
 - chore: Added auth for drone-yaml-validator docker image
+- Used custom `publish` step instead of docker orb, to fix the failing multi-stage build
 
 ## [1.2.0] - 2022-05-15
 ### Added

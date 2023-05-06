@@ -7,10 +7,10 @@ RUN native-image -cp build/libs/*-all.jar
 
 
 
-FROM gcr.io/distroless/base-debian11
+FROM gcr.io/distroless/base-debian11:latest
 
 LABEL maintainer="devatherock@gmail.com"
-LABEL io.github.devatherock.version="1.2.0"
+LABEL io.github.devatherock.version="1.3.0"
 
 EXPOSE 8080
 

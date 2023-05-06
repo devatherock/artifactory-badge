@@ -207,18 +207,12 @@ workflows:
             - publish_release
   pr_check:
     jobs:
-      - build:
-          context:
-            - docker-credentials
-            - sonar-credentials
-          <<: *pr_filter
       - docker/publish:
-          name: publish
+          name: publish2
           executor: native-image-executor
           context:
             - docker-credentials
-          requires:
-            - build
+          <<: *pr_filter
           image: devatherock/artifactory-badge
           attach-at: ~/artifactory-badge
           tag: "${CIRCLE_SHA1:0:8}"

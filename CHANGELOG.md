@@ -22,7 +22,7 @@
 - fix(deps): update dependency io.micronaut:micronaut-bom to v3.9.1
 - fix(deps): update dependency org.jsoup:jsoup to v1.16.1
 - Used custom `publish` step instead of docker orb, to fix the failing multi-stage build
-- Upgraded to gradle 7
+- Upgraded to gradle 7 and Java 17
 
 ## [1.2.0] - 2022-05-15
 ### Added

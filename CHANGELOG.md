@@ -4,53 +4,25 @@
 ### Added
 - Tests for framework provided endpoints like `/health`
 - `yaml-validator` to CI pipeline
+- `jansi` dependency to fix a `ClassNotFoundException` in tests
 
 ### Changed
-- chore(deps): update dependency io.micronaut:micronaut-bom to v3.4.4
-- chore(deps): update dependency devatherock/drone-yaml-validator to v2.1.0
-- chore(deps): update dependency net.logstash.logback:logstash-logback-encoder to v7.2
-- chore(deps): update dependency io.micronaut:micronaut-bom to v3.5.0
-- chore(deps): update dependency io.micronaut:micronaut-bom to v3.5.1
-- chore(deps): update plugin org.sonarqube to v3.4.0.2513
-- chore(deps): update plugin org.owasp.dependencycheck to v7.1.1
-- chore(deps): update docker orb to v2.1.2
-- chore(deps): update dependency io.micronaut:micronaut-bom to v3.5.2
-- chore(deps): update dependency io.micronaut:micronaut-bom to v3.5.3
-- fix(deps): update dependency io.micronaut:micronaut-bom to v3.5.4
 - fix(deps): update dependency org.objenesis:objenesis to v3.3
-- fix(deps): update dependency io.micronaut:micronaut-bom to v3.6.1
-- chore(deps): update plugin org.owasp.dependencycheck to v7.1.2
 - Improved the API spec using additional annotations
-- chore(deps): update docker orb to v2.1.3
 - feat: Updated changelog updater user
-- chore(deps): update docker orb to v2.1.4
-- chore(deps): update dependency gradle to v6.9.3
-- fix(deps): update dependency io.micronaut:micronaut-bom to v3.7.3
-- fix(deps): update dependency org.codehaus.janino:janino to v3.1.8
-- fix(deps): update dependency io.micronaut:micronaut-bom to v3.7.4
 - fix(deps): update dependency org.codehaus.janino:janino to v3.1.9
-- chore(deps): update plugin org.owasp.dependencycheck to v7.3.2
-- chore(deps): update plugin org.sonarqube to v3.5.0.2730
 - fix(deps): update dependency com.fasterxml.jackson.core:jackson-databind to v2.14.1
-- fix(deps): update dependency ch.qos.logback:logback-classic to v1.4.5
-- chore(deps): update plugin org.owasp.dependencycheck to v7.4.4
-- chore(deps): update dependency gradle to v6.9.4
 - chore(deps): update plugin com.github.kt3k.coveralls to v2.12.2
-- fix(deps): update dependency ch.qos.logback:logback-classic to v1.4.6
-- fix(deps): update dependency io.micronaut:micronaut-bom to v3.8.8
-- fix(deps): update dependency org.jsoup:jsoup to v1.15.4
 - fix(deps): update dependency org.projectlombok:lombok to v1.18.26
 - chore(deps): update docker orb to v2.2.0
 - chore(deps): update plugin org.owasp.dependencycheck to v8.2.1
-- fix(deps): update dependency io.micronaut:micronaut-bom to v3.8.9
 - fix(deps): update dependency net.logstash.logback:logstash-logback-encoder to v7.3
 - chore(deps): update plugin org.sonarqube to v4
 - fix(deps): update dependency ch.qos.logback:logback-classic to v1.4.7
-- fix(deps): update dependency io.micronaut:micronaut-bom to v3.9.0
 - fix(deps): update dependency io.micronaut:micronaut-bom to v3.9.1
 - fix(deps): update dependency org.jsoup:jsoup to v1.16.1
-- chore: Added auth for drone-yaml-validator docker image
 - Used custom `publish` step instead of docker orb, to fix the failing multi-stage build
+- Upgraded to gradle 7
 
 ## [1.2.0] - 2022-05-15
 ### Added

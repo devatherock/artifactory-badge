@@ -212,8 +212,6 @@ workflows:
             - docker-credentials
             - sonar-credentials
           <<: *pr_filter
-          requires:
-            - validate_yamls
       - docker/publish:
           name: publish
           executor: native-image-executor

@@ -4,7 +4,6 @@
 ### Added
 - Tests for framework provided endpoints like `/health`
 - `yaml-validator` to CI pipeline
-- `jansi` dependency to fix a `ClassNotFoundException` in tests
 
 ### Changed
 - fix(deps): update dependency org.objenesis:objenesis to v3.3
@@ -23,6 +22,9 @@
 - fix(deps): update dependency org.jsoup:jsoup to v1.16.1
 - Used custom `publish` step instead of docker orb, to fix the failing multi-stage build
 - Upgraded to gradle 7 and Java 17
+
+### Removed
+- `Jansi` as it was preventing the app from running in local
 
 ## [1.2.0] - 2022-05-15
 ### Added

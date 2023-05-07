@@ -1,7 +1,8 @@
 <configuration>
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender" />
+	<appender name="STDOUT"
+		class="ch.qos.logback.core.ConsoleAppender" />
 
-    <root level="INFO">
-        <appender-ref ref="STDOUT" />
-    </root>
+	<root level="INFO">
+		<appender-ref ref="STDOUT" />
+	</root>
 </configuration>

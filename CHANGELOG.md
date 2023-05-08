@@ -22,6 +22,7 @@
 - fix(deps): update dependency org.jsoup:jsoup to v1.16.1
 - Used custom `publish` step instead of docker orb, to fix the failing multi-stage build
 - Upgraded to gradle 7 and Java 17
+- The log pattern
 
 ### Removed
 - `Jansi` as it was preventing the app from running in local

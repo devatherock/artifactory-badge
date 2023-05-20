@@ -23,6 +23,7 @@
 - Used custom `publish` step instead of docker orb, to fix the failing multi-stage build
 - Upgraded to gradle 7 and Java 17
 - The log pattern
+- Fixed codenarc violations
 
 ### Removed
 - `Jansi` as it was preventing the app from running in local

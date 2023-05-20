@@ -4,7 +4,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.equalTo
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
 
 import io.github.devatherock.artifactory.config.ArtifactoryProperties
-import io.github.devatherock.artifactory.entities.ArtifactoryFolderInfo
 import io.github.devatherock.artifactory.util.BadgeGenerator
 import io.github.devatherock.test.TestUtil
 

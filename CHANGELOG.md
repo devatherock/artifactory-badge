@@ -25,6 +25,7 @@
 - Fixed codenarc violations
 - fix(deps): update dependency io.micronaut:micronaut-bom to v3.9.2
 - Updated dockerhub readme in CI pipeline
+- fix(deps): update dependency org.projectlombok:lombok to v1.18.28
 
 ### Removed
 - `Jansi` as it was preventing the app from running in local

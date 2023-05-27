@@ -27,6 +27,7 @@
 - Updated dockerhub readme in CI pipeline
 - fix(deps): update dependency org.projectlombok:lombok to v1.18.28
 - chore(deps): update plugin com.diffplug.spotless to v6.19.0
+- chore(deps): update plugin org.sonarqube to v4.1.0.3113
 
 ### Removed
 - `Jansi` as it was preventing the app from running in local

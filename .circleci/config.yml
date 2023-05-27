@@ -143,6 +143,20 @@ jobs:
           docker build -t devatherock/artifactory-badge:$TAG -t devatherock/artifactory-badge:latest .
           docker push devatherock/artifactory-badge:$TAG
           docker push devatherock/artifactory-badge:latest
+          
+  dockerhub_readme:
+    machine:
+      image: ubuntu-2204:2023.04.2
+    steps:
+      - checkout
+      - run: |
+          docker run -v $PWD:/workspace \
+              -e DOCKERHUB_USERNAME \
+              -e DOCKERHUB_PASSWORD \
+              -e DOCKERHUB_REPOSITORY='devatherock/artifactory-badge' \
+              -e SHORT_DESCRIPTION='Badge generator for docker registries hosted in jfrog artifactory' \
+              -e README_FILEPATH='/workspace/README.md' \
+              peterevans/dockerhub-description:3.4.1
   
   publish_release:
     executor: docker-executor
@@ -190,11 +204,17 @@ workflows:
             - docker-credentials
           requires:
             - build
+      - dockerhub_readme:
+          context:
+            - docker-credentials
+            - dockerhub-readme-credentials
+          requires:
+            - publish
       - integration_test:
           context:
             - docker-credentials
           requires:
-            - publish
+            - dockerhub_readme
       - notify:
           context:
             - docker-credentials

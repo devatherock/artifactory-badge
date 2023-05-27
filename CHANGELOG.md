@@ -18,13 +18,13 @@
 - fix(deps): update dependency net.logstash.logback:logstash-logback-encoder to v7.3
 - chore(deps): update plugin org.sonarqube to v4
 - fix(deps): update dependency ch.qos.logback:logback-classic to v1.4.7
-- fix(deps): update dependency io.micronaut:micronaut-bom to v3.9.1
 - fix(deps): update dependency org.jsoup:jsoup to v1.16.1
 - Used custom `publish` step instead of docker orb, to fix the failing multi-stage build
 - Upgraded to gradle 7 and Java 17
 - The log pattern
 - Fixed codenarc violations
 - fix(deps): update dependency io.micronaut:micronaut-bom to v3.9.2
+- Updated dockerhub readme in CI pipeline
 
 ### Removed
 - `Jansi` as it was preventing the app from running in local

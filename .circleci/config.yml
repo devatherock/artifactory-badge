@@ -140,9 +140,13 @@ jobs:
       - run: |
           TAG=${CIRCLE_SHA1:0:8}
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-          docker build -t devatherock/artifactory-badge:$TAG -t devatherock/artifactory-badge:latest .
-          docker push devatherock/artifactory-badge:$TAG
-          docker push devatherock/artifactory-badge:latest
+          docker buildx create --name rockbuilder \
+            --driver docker-container --use --bootstrap
+          docker buildx build \
+            --platform linux/amd64,linux/arm64 \
+            --push \
+            -t devatherock/artifactory-badge:$TAG \
+            -t devatherock/artifactory-badge:latest .
           
   dockerhub_readme:
     machine:
@@ -169,9 +173,10 @@ jobs:
           TAG=${CIRCLE_TAG#v}
           DEV_TAG=${CIRCLE_SHA1:0:8}
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-          docker pull devatherock/artifactory-badge:$DEV_TAG
-          docker tag devatherock/artifactory-badge:$DEV_TAG devatherock/artifactory-badge:$TAG
-          docker push devatherock/artifactory-badge:$TAG
+          docker buildx create --name rockbuilder \
+            --driver docker-container --use --bootstrap
+          docker buildx imagetools create \
+            -t devatherock/artifactory-badge:$TAG devatherock/artifactory-badge:$DEV_TAG
 
   notify:
     <<: *slack_image

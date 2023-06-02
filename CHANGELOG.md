@@ -12,11 +12,9 @@
 - fix(deps): update dependency org.codehaus.janino:janino to v3.1.9
 - fix(deps): update dependency com.fasterxml.jackson.core:jackson-databind to v2.14.1
 - chore(deps): update plugin com.github.kt3k.coveralls to v2.12.2
-- fix(deps): update dependency org.projectlombok:lombok to v1.18.26
 - chore(deps): update docker orb to v2.2.0
 - chore(deps): update plugin org.owasp.dependencycheck to v8.2.1
 - fix(deps): update dependency net.logstash.logback:logstash-logback-encoder to v7.3
-- chore(deps): update plugin org.sonarqube to v4
 - fix(deps): update dependency ch.qos.logback:logback-classic to v1.4.7
 - fix(deps): update dependency org.jsoup:jsoup to v1.16.1
 - Used custom `publish` step instead of docker orb, to fix the failing multi-stage build
@@ -28,6 +26,7 @@
 - fix(deps): update dependency org.projectlombok:lombok to v1.18.28
 - chore(deps): update plugin com.diffplug.spotless to v6.19.0
 - chore(deps): update plugin org.sonarqube to v4.1.0.3113
+- [#247](https://github.com/devatherock/artifactory-badge/issues/247): Built a multi-arch docker image
 
 ### Removed
 - `Jansi` as it was preventing the app from running in local

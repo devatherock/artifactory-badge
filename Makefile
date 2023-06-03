@@ -10,6 +10,7 @@ remote-integration-test:
 	docker-compose -f docker-compose-remote.yml up &
 	./gradlew integrationTest --tests '*RemoteUrlsIntegrationSpec*'
 	docker-compose down
+build:
+	./gradlew build -Dgraalvm=true
 docker-build:
-	./gradlew clean build -Dgraalvm=true
 	docker build -t devatherock/artifactory-badge:$(DOCKER_TAG) .

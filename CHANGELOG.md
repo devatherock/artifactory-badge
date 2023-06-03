@@ -26,7 +26,7 @@
 - fix(deps): update dependency org.projectlombok:lombok to v1.18.28
 - chore(deps): update plugin com.diffplug.spotless to v6.19.0
 - chore(deps): update plugin org.sonarqube to v4.2.0.3129
-- [#249](https://github.com/devatherock/artifactory-badge/issues/249): Built separate docker images for ARM and x86
+- [#249](https://github.com/devatherock/artifactory-badge/issues/249): Built separate docker images for arm64 and x86
 - [#233](https://github.com/devatherock/artifactory-badge/issues/233): Fixed the error when upgrading graalvm from `22.1.0` to `22.3.2`
 
 ### Removed

@@ -54,6 +54,12 @@ executors:
     machine:
       image: ubuntu-2204:2023.04.2
     resource_class: medium
+    <<: *work_directory
+  arm-executor:
+    machine:
+      image: ubuntu-2004:2022.04.1
+    resource_class: arm.medium
+    <<: *work_directory
 
 version: 2.1
 jobs:
@@ -132,7 +138,7 @@ jobs:
           at: ~/artifactory-badge
       - run: |
           TAG=${CIRCLE_SHA1:0:8}
-          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
           docker build \
             -t devatherock/artifactory-badge:$TAG \
             -t devatherock/artifactory-badge:latest \
@@ -140,16 +146,14 @@ jobs:
           docker image push --all-tags devatherock/artifactory-badge
             
   publish_arm:
-    machine:
-      image: ubuntu-2004:2022.04.1
-    resource_class: arm.medium
+    executor: arm-executor
     steps:
       - checkout
       - attach_workspace:
           at: ~/artifactory-badge
       - run: |
           TAG=${CIRCLE_SHA1:0:8}-arm64
-          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
           docker build \
             -t devatherock/artifactory-badge:$TAG \
             -t devatherock/artifactory-badge:arm64 .
@@ -176,6 +180,17 @@ jobs:
           at: ~/artifactory-badge
       - run: |
           make integration-test remote-integration-test
+      - store_test_results:
+          path: build/test-results
+          
+  integration_test_arm:
+    executor: arm-executor
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/artifactory-badge
+      - run: |
+          make integration-test remote-integration-test docker_tag=arm64
       - store_test_results:
           path: build/test-results
   
@@ -240,8 +255,13 @@ workflows:
             - docker-credentials
             - dockerhub-readme-credentials
           requires:
-            - publish
+            - publish_arm
       - integration_test:
+          context:
+            - docker-credentials
+          requires:
+            - publish      
+      - integration_test_arm:
           context:
             - docker-credentials
           requires:
@@ -252,7 +272,7 @@ workflows:
             - slack-webhook
           requires:
             - integration_test
-            - publish_arm
+            - integration_test_arm
 
   release:
     jobs:

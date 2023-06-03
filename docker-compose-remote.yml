@@ -2,7 +2,7 @@ version: '2'
 services:
 
   artifactory-badge:
-    image: devatherock/artifactory-badge:latest
+    image: devatherock/artifactory-badge:${DOCKER_TAG:-latest}
     network_mode: "host"
     environment:
       - ARTIFACTORY_URL=http://localhost:8081

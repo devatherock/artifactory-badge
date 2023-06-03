@@ -3,7 +3,7 @@ FROM ghcr.io/graalvm/native-image:ol8-java17-22.1.0 as graalvm
 COPY . /home/app/micronaut-graal-app
 WORKDIR /home/app/micronaut-graal-app
 
-RUN native-image --class-path build/libs/*-all.jar io.github.devatherock.Application
+RUN native-image -classpath build/libs/*-all.jar io.github.devatherock.Application
 
 
 

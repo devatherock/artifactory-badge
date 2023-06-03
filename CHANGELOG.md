@@ -28,6 +28,7 @@
 - chore(deps): update plugin org.sonarqube to v4.2.0.3129
 - [#249](https://github.com/devatherock/artifactory-badge/issues/249): Built separate docker images for ARM and x86
 - [#233](https://github.com/devatherock/artifactory-badge/issues/233): Fixed the error when upgrading graalvm from `22.1.0` to `22.3.2`
+- chore(deps): update cimg/openjdk docker tag to v20
 
 ### Removed
 - `Jansi` as it was preventing the app from running in local

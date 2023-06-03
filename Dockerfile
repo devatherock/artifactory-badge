@@ -3,6 +3,7 @@ FROM ghcr.io/graalvm/native-image:ol8-java17-22.3.2 as graalvm
 COPY . /home/app/micronaut-graal-app
 WORKDIR /home/app/micronaut-graal-app
 
+RUN ls -lrt
 RUN native-image -jar build/libs/artifactory-badge-all.jar
 
 

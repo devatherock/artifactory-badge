@@ -27,6 +27,7 @@
 - chore(deps): update plugin com.diffplug.spotless to v6.19.0
 - chore(deps): update plugin org.sonarqube to v4.1.0.3113
 - [#247](https://github.com/devatherock/artifactory-badge/issues/247): Built a multi-arch docker image
+- chore(deps): update plugin org.sonarqube to v4.2.0.3129
 
 ### Removed
 - `Jansi` as it was preventing the app from running in local

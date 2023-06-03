@@ -97,7 +97,6 @@ tasks.withType(JavaCompile){
 }
 
 shadowJar {
-    version = ''
     mergeServiceFiles()
 }
 

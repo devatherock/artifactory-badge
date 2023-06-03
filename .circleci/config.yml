@@ -153,8 +153,7 @@ jobs:
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
           docker build \
             -t devatherock/artifactory-badge:$TAG \
-            -t devatherock/artifactory-badge:arm64 .
-          docker image push --all-tags devatherock/artifactory-badge            
+            -t devatherock/artifactory-badge:arm64 .           
           
   dockerhub_readme:
     executor: machine-executor

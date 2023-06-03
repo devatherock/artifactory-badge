@@ -145,7 +145,6 @@ jobs:
     resource_class: arm.medium
     steps:
       - checkout
-      - setup_remote_docker
       - attach_workspace:
           at: ~/artifactory-badge
       - run: |

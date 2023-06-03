@@ -37,7 +37,7 @@ executors:
         auth:
           username: $DOCKER_USERNAME
           password: $DOCKER_PASSWORD
-    resource_class: medium
+    <<: *resource_class
     <<: *work_directory
     environment:
       # To generate swagger UI
@@ -50,6 +50,10 @@ executors:
     <<: *docker_executor_image
     resource_class: medium
     <<: *work_directory
+  machine-executor:
+    machine:
+      image: ubuntu-2204:2023.04.2
+    resource_class: medium
 
 version: 2.1
 jobs:
@@ -77,6 +81,7 @@ jobs:
           username: $DOCKER_USERNAME
           password: $DOCKER_PASSWORD
     <<: *work_directory
+    <<: *resource_class
     steps:
       - checkout
       - run: sh /scripts/entry-point.sh
@@ -118,18 +123,6 @@ jobs:
             - ~/.gradle
           key: v1-dependencies-{{ checksum "build.gradle" }}
           
-  integration_test:
-    machine:
-      image: ubuntu-2004:202010-01
-    steps:
-      - checkout
-      - attach_workspace:
-          at: ~/artifactory-badge
-      - run: |
-          make integration-test remote-integration-test
-      - store_test_results:
-          path: build/test-results
-          
   publish:
     executor: native-image-executor
     steps:
@@ -140,17 +133,31 @@ jobs:
       - run: |
           TAG=${CIRCLE_SHA1:0:8}
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-          docker buildx create --name rockbuilder \
-            --driver docker-container --use --bootstrap
-          docker buildx build \
-            --platform linux/amd64,linux/arm64 \
-            --push \
+          docker build \
             -t devatherock/artifactory-badge:$TAG \
-            -t devatherock/artifactory-badge:latest .
+            -t devatherock/artifactory-badge:latest \
+            -t devatherock/artifactory-badge:amd64 .
+          docker image push --all-tags devatherock/artifactory-badge
+            
+  publish_arm:
+    machine:
+      image: ubuntu-2004:2022.04.1
+    resource_class: arm.medium
+    steps:
+      - checkout
+      - setup_remote_docker
+      - attach_workspace:
+          at: ~/artifactory-badge
+      - run: |
+          TAG=${CIRCLE_SHA1:0:8}-arm64
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+          docker build \
+            -t devatherock/artifactory-badge:$TAG \
+            -t devatherock/artifactory-badge:arm64 .
+          docker image push --all-tags devatherock/artifactory-badge            
           
   dockerhub_readme:
-    machine:
-      image: ubuntu-2204:2023.04.2
+    executor: machine-executor
     steps:
       - checkout
       - run: |
@@ -161,6 +168,17 @@ jobs:
               -e SHORT_DESCRIPTION='Badge generator for docker registries hosted in jfrog artifactory' \
               -e README_FILEPATH='/workspace/README.md' \
               peterevans/dockerhub-description:3.4.1
+              
+  integration_test:
+    executor: machine-executor
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/artifactory-badge
+      - run: |
+          make integration-test remote-integration-test
+      - store_test_results:
+          path: build/test-results
   
   publish_release:
     executor: docker-executor
@@ -173,10 +191,14 @@ jobs:
           TAG=${CIRCLE_TAG#v}
           DEV_TAG=${CIRCLE_SHA1:0:8}
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-          docker buildx create --name rockbuilder \
-            --driver docker-container --use --bootstrap
-          docker buildx imagetools create \
-            -t devatherock/artifactory-badge:$TAG devatherock/artifactory-badge:$DEV_TAG
+          docker pull devatherock/artifactory-badge:$DEV_TAG
+          docker tag devatherock/artifactory-badge:$DEV_TAG devatherock/artifactory-badge:$TAG
+          docker tag devatherock/artifactory-badge:$DEV_TAG devatherock/artifactory-badge:${TAG}-amd64
+          docker pull devatherock/artifactory-badge:${DEV_TAG}-arm64
+          docker tag devatherock/artifactory-badge:${DEV_TAG}-arm64 devatherock/artifactory-badge:${TAG}-arm64
+          docker push devatherock/artifactory-badge:$TAG
+          docker push devatherock/artifactory-badge:${TAG}-amd64
+          docker push devatherock/artifactory-badge:${TAG}-arm64
 
   notify:
     <<: *slack_image
@@ -209,6 +231,11 @@ workflows:
             - docker-credentials
           requires:
             - build
+      - publish_arm:
+          context:
+            - docker-credentials
+          requires:
+            - build
       - dockerhub_readme:
           context:
             - docker-credentials
@@ -226,6 +253,8 @@ workflows:
             - slack-webhook
           requires:
             - integration_test
+            - publish_arm
+
   release:
     jobs:
       - publish_release:

@@ -274,8 +274,6 @@ workflows:
           context:
             - docker-credentials
           <<: *pr_filter
-          requires:
-            - validate_yamls
       - publish_arm:
           context:
             - docker-credentials

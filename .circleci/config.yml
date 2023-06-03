@@ -54,6 +54,7 @@ executors:
     machine:
       image: ubuntu-2204:2023.04.2
     resource_class: medium
+    <<: *work_directory
 
 version: 2.1
 jobs:
@@ -111,7 +112,7 @@ jobs:
             - v1-dependencies-{{ checksum "build.gradle" }}
             - v1-dependencies
       - run: |
-          ./gradlew build coveralls sonarqube -Dsonar.login=$SONAR_TOKEN -Dgraalvm=true
+          ./gradlew build -x dependencyCheckAggregate -x spotlessApply -x jacocoTestReport -Dgraalvm=true
       - persist_to_workspace:
           root: ~/artifactory-badge
           paths:
@@ -132,7 +133,7 @@ jobs:
           at: ~/artifactory-badge
       - run: |
           TAG=${CIRCLE_SHA1:0:8}
-          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
           docker build \
             -t devatherock/artifactory-badge:$TAG \
             -t devatherock/artifactory-badge:latest \
@@ -149,7 +150,7 @@ jobs:
           at: ~/artifactory-badge
       - run: |
           TAG=${CIRCLE_SHA1:0:8}-arm64
-          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
           docker build \
             -t devatherock/artifactory-badge:$TAG \
             -t devatherock/artifactory-badge:arm64 .
@@ -189,7 +190,7 @@ jobs:
       - run: |
           TAG=${CIRCLE_TAG#v}
           DEV_TAG=${CIRCLE_SHA1:0:8}
-          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
           docker pull devatherock/artifactory-badge:$DEV_TAG
           docker tag devatherock/artifactory-badge:$DEV_TAG devatherock/artifactory-badge:$TAG
           docker tag devatherock/artifactory-badge:$DEV_TAG devatherock/artifactory-badge:${TAG}-amd64
@@ -269,20 +270,14 @@ workflows:
             - publish_release
   pr_check:
     jobs:
-      - changelog_updater:
+      - build:
           context:
             - docker-credentials
-            - changelog-updater-credentials
-          <<: *pr_filter
-      - validate_yamls:
-          context:
-            - docker-credentials
-          requires:
-            - changelog_updater    
-      - test:
-          context:
-            - docker-credentials
-            - sonar-credentials
           <<: *pr_filter
           requires:
             - validate_yamls
+      - publish_arm:
+          context:
+            - docker-credentials
+          requires:
+            - build      

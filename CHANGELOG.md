@@ -1,6 +1,10 @@
 # Changelog
 
 ## [Unreleased]
+### Changed
+- Combined a few CI steps using parameters
+
+## [2.0.0] - 2023-06-03
 ### Added
 - Tests for framework provided endpoints like `/health`
 - `yaml-validator` to CI pipeline

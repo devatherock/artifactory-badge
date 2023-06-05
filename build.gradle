@@ -41,7 +41,7 @@ dependencies {
     def lombokVersion = '1.18.28'
 
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombokVersion
-    annotationProcessor("io.micronaut.openapi:micronaut-openapi")
+    annotationProcessor group: 'io.micronaut.openapi', name: 'micronaut-openapi'
     annotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
     annotationProcessor "io.micronaut:micronaut-inject-java"
     annotationProcessor "io.micronaut:micronaut-validation"

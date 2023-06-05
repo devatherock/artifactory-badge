@@ -117,13 +117,8 @@ jobs:
             - v1-dependencies-{{ checksum "build.gradle" }}
             - v1-dependencies
       - run: |
-          ./gradlew build coveralls sonar -Dsonar.login=$SONAR_TOKEN -Dgraalvm=true
-      - persist_to_workspace:
-          root: ~/artifactory-badge
-          paths:
-            - build
-      - store_test_results:
-          path: build/test-results
+          rm -rf ~/.gradle
+          ./gradlew build coveralls sonar -Dsonar.login=$SONAR_TOKEN
       - save_cache:
           paths:
             - ~/.gradle
@@ -297,20 +292,10 @@ workflows:
             - publish_release
   pr_check:
     jobs:
-      - changelog_updater:
-          context:
-            - docker-credentials
-            - changelog-updater-credentials
-          <<: *pr_filter
-      - validate_yamls:
-          context:
-            - docker-credentials
-          requires:
-            - changelog_updater    
-      - test:
+      - build:
           context:
             - docker-credentials
             - sonar-credentials
-          <<: *pr_filter
-          requires:
-            - validate_yamls
+          filters:
+            branches:
+              only: prune-cache

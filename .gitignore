@@ -12,7 +12,6 @@ out/
 .settings
 .classpath
 /bin
-src/main/graal/
 code-formatter.xml
 checkstyle.xml
 codenarc.xml

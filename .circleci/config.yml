@@ -103,7 +103,7 @@ jobs:
             - v1-dependencies-{{ checksum "build.gradle" }}
             - v1-dependencies
       - run: |
-          ./gradlew check sonarqube -Dsonar.login=$SONAR_TOKEN -Dgraalvm=true
+          ./gradlew check sonar -Dsonar.login=$SONAR_TOKEN -Dgraalvm=true
       - store_test_results:
           path: build/test-results
   build:
@@ -117,7 +117,7 @@ jobs:
             - v1-dependencies-{{ checksum "build.gradle" }}
             - v1-dependencies
       - run: |
-          ./gradlew build coveralls sonarqube -Dsonar.login=$SONAR_TOKEN -Dgraalvm=true
+          ./gradlew build coveralls sonar -Dsonar.login=$SONAR_TOKEN -Dgraalvm=true
       - persist_to_workspace:
           root: ~/artifactory-badge
           paths:
@@ -157,7 +157,7 @@ jobs:
           docker build \
             -t devatherock/artifactory-badge:$TAG \
             -t devatherock/artifactory-badge:arm64 .
-          docker image push --all-tags devatherock/artifactory-badge            
+          docker image push --all-tags devatherock/artifactory-badge
           
   dockerhub_readme:
     executor: machine-executor
@@ -183,8 +183,16 @@ jobs:
       - checkout
       - attach_workspace:
           at: ~/artifactory-badge
+      - restore_cache:
+          keys:
+            - v1-integration-{{ checksum "build.gradle" }}
+            - v1-integration
       - run: |
           make integration-test remote-integration-test << parameters.command_args >>
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: v1-integration-{{ checksum "build.gradle" }}
       - store_test_results:
           path: build/test-results
   
@@ -198,7 +206,7 @@ jobs:
       - run: |
           TAG=${CIRCLE_TAG#v}
           DEV_TAG=${CIRCLE_SHA1:0:8}
-          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
           docker pull devatherock/artifactory-badge:$DEV_TAG
           docker tag devatherock/artifactory-badge:$DEV_TAG devatherock/artifactory-badge:$TAG
           docker tag devatherock/artifactory-badge:$DEV_TAG devatherock/artifactory-badge:${TAG}-amd64

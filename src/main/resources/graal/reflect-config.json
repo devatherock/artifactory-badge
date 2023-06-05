@@ -1,8 +1,1 @@
-[
-	{
-		"name": "net.logstash.logback.encoder.LogstashEncoder",
-		"allDeclaredFields": true,
-		"allDeclaredMethods": true,
-		"allDeclaredConstructors": true
-	}
-]
+[]

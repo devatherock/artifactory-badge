@@ -3,6 +3,9 @@
 ## [Unreleased]
 ### Changed
 - Combined a few CI steps using parameters
+- Upgraded micronaut application plugin to `3.7.9`
+- Specified all generated json config files to the `native-image` command
+- Used cache for integration tests
 
 ## [2.0.0] - 2023-06-03
 ### Added

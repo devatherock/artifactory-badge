@@ -1,6 +1,6 @@
 plugins {
     id "com.github.johnrengelman.shadow" version "7.1.2"
-    id 'io.micronaut.application' version '2.0.8'
+    id 'io.micronaut.application' version '3.7.9'
     id 'java'
     id 'groovy'
     id 'jacoco'
@@ -90,6 +90,9 @@ test {
     }
     systemProperty 'micronaut.env.deduction', 'false'
 }
+
+// Generates resource-config.json file for graalvm
+build.dependsOn(generateResourcesConfigFile)
 
 tasks.withType(JavaCompile){
     options.encoding = "UTF-8"

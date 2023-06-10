@@ -7,6 +7,7 @@
 - Specified all generated json config files to the `native-image` command
 - Used cache for integration tests
 - chore(deps): update plugin io.micronaut.application to v3.7.10
+- fix(deps): update dependency io.micronaut:micronaut-bom to v3.9.3
 
 ## [2.0.0] - 2023-06-03
 ### Added

@@ -9,6 +9,7 @@
 - chore(deps): update plugin io.micronaut.application to v3.7.10
 - fix(deps): update dependency io.micronaut:micronaut-bom to v3.9.3
 - chore(deps): update plugin org.sonarqube to v4.2.1.3168
+- fix(deps): update dependency ch.qos.logback:logback-classic to v1.4.8
 
 ## [2.0.0] - 2023-06-03
 ### Added

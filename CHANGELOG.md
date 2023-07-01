@@ -14,6 +14,7 @@
 - fix(deps): update dependency net.logstash.logback:logstash-logback-encoder to v7.4
 - fix(deps): update dependency io.micronaut:micronaut-bom to v3.9.4
 - chore(deps): update plugin org.owasp.dependencycheck to v8.3.1
+- chore(deps): update dependency gradle to v7.6.2
 
 ## [2.0.0] - 2023-06-03
 ### Added

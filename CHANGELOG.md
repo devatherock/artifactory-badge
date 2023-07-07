@@ -2,12 +2,8 @@
 
 ## [Unreleased]
 ### Changed
-- Combined a few CI steps using parameters
-- Upgraded micronaut application plugin to `3.7.9`
 - Specified all generated json config files to the `native-image` command
-- Used cache for integration tests
 - chore(deps): update plugin io.micronaut.application to v3.7.10
-- fix(deps): update dependency io.micronaut:micronaut-bom to v3.9.3
 - chore(deps): update plugin org.sonarqube to v4.2.1.3168
 - fix(deps): update dependency ch.qos.logback:logback-classic to v1.4.8
 - chore(deps): update devatherock/simple-slack docker tag to v1

@@ -1,16 +1,17 @@
+docker_auth: &docker_auth
+  auth:
+    username: $DOCKER_USERNAME
+    password: $DOCKER_PASSWORD
+
 slack_image: &slack_image
   docker:
     - image: devatherock/simple-slack:1.0.0
-      auth:
-        username: $DOCKER_USERNAME
-        password: $DOCKER_PASSWORD
+      <<: *docker_auth
         
 docker_executor_image: &docker_executor_image
   docker:
     - image: cimg/openjdk:17.0
-      auth:
-        username: $DOCKER_USERNAME
-        password: $DOCKER_PASSWORD
+      <<: *docker_auth
 
 work_directory: &work_directory
   working_directory: ~/artifactory-badge
@@ -34,9 +35,7 @@ executors:
   jdk-executor:
     docker:
       - image: devatherock/graalvm:ol8-java17-22.3.2-5
-        auth:
-          username: $DOCKER_USERNAME
-          password: $DOCKER_PASSWORD
+        <<: *docker_auth
     <<: *resource_class
     <<: *work_directory
     environment:
@@ -66,9 +65,7 @@ jobs:
   changelog_updater:
     docker:
     - image: devatherock/changelog-updater:0.1.0
-      auth:
-        username: $DOCKER_USERNAME
-        password: $DOCKER_PASSWORD
+      <<: *docker_auth
     <<: *resource_class
     environment:
       VELA_BUILD_AUTHOR: "renovate[bot]"
@@ -82,10 +79,8 @@ jobs:
       
   validate_yamls:
     docker:
-      - image: devatherock/drone-yaml-validator:2.1.0
-        auth:
-          username: $DOCKER_USERNAME
-          password: $DOCKER_PASSWORD
+      - image: devatherock/drone-yaml-validator:3.0.0
+        <<: *docker_auth
     <<: *work_directory
     <<: *resource_class
     steps:
@@ -104,6 +99,8 @@ jobs:
             - v1-dependencies
       - run: |
           ./gradlew check sonar -Dsonar.login=$SONAR_TOKEN -Dgraalvm=true
+      - store_artifacts:
+          path: build/reports
       - store_test_results:
           path: build/test-results
   build:
@@ -122,6 +119,8 @@ jobs:
           root: ~/artifactory-badge
           paths:
             - build
+      - store_artifacts:
+          path: build/reports
       - store_test_results:
           path: build/test-results
       - save_cache:
@@ -158,19 +157,23 @@ jobs:
             -t devatherock/artifactory-badge:$TAG \
             -t devatherock/artifactory-badge:arm64 .
           docker image push --all-tags devatherock/artifactory-badge
-          
+
   dockerhub_readme:
-    executor: machine-executor
+    docker:
+      - image: peterevans/dockerhub-description:3.4.2
+        <<: *docker_auth
+    <<: *resource_class
+    <<: *work_directory
+    environment:
+      DOCKERHUB_REPOSITORY: 'devatherock/artifactory-badge'
+      SHORT_DESCRIPTION: 'Badge generator for docker registries hosted in jfrog artifactory'
+      README_FILEPATH: README.md
     steps:
       - checkout
+      - attach_workspace:
+          at: ~/artifactory-badge
       - run: |
-          docker run -v $PWD:/workspace \
-              -e DOCKERHUB_USERNAME \
-              -e DOCKERHUB_PASSWORD \
-              -e DOCKERHUB_REPOSITORY='devatherock/artifactory-badge' \
-              -e SHORT_DESCRIPTION='Badge generator for docker registries hosted in jfrog artifactory' \
-              -e README_FILEPATH='/workspace/README.md' \
-              peterevans/dockerhub-description:3.4.1
+          sh /entrypoint.sh
               
   integration_test:
     parameters:

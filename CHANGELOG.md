@@ -1,6 +1,9 @@
 # Changelog
 
 ## [Unreleased]
+### Added
+- Used `circleci-templates` orb to simplify CI pipeline
+
 ### Changed
 - Specified all generated json config files to the `native-image` command
 - chore(deps): update plugin io.micronaut.application to v3.7.10

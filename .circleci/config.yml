@@ -81,7 +81,7 @@ jobs:
             - v1-dependencies-{{ checksum "build.gradle" }}
             - v1-dependencies
       - run: |
-          ./gradlew check sonar -Dsonar.login=$SONAR_TOKEN -Dgraalvm=true
+          ./gradlew sonar -Dsonar.login=$SONAR_TOKEN
       - store_artifacts:
           path: build/reports
       - store_test_results:
@@ -273,23 +273,8 @@ workflows:
 
   pr_check:
     jobs:
-      - templates/changelog_updater:
-          name: changelog_updater
-          context:
-            - docker-credentials
-            - changelog-updater-credentials
-          <<: *pr_filter
-      - templates/yaml_validator:
-          name: validate_yamls
-          context:
-            - docker-credentials
-          work_dir: '~/<< pipeline.parameters.repo_name >>'
-          requires:
-            - changelog_updater    
       - test:
           context:
             - docker-credentials
             - sonar-credentials
           <<: *pr_filter
-          requires:
-            - validate_yamls

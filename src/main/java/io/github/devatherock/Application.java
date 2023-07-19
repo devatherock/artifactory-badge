@@ -17,11 +17,11 @@ public class Application {
     public static void main(String[] args) throws IOException {
     	System.out.println("Log 1");
     	
-    	
+    	// @sonar-stop
     	System.out.println("Log 2");
     	System.out.println("Log 3");
     	
-    	
+    	// @sonar-start
     	System.out.println("Log 4");
     	
         LogbackConfigInitializer.initializeConfig();

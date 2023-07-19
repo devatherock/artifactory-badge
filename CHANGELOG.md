@@ -16,6 +16,7 @@
 - chore(deps): update dependency gradle to v7.6.2
 - fix(deps): update dependency org.codehaus.janino:janino to v3.1.10
 - chore(deps): update templates orb to v0.4.0
+- test: Sonar exclusions
 
 ## [2.0.0] - 2023-06-03
 ### Added

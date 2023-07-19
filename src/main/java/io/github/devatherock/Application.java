@@ -15,6 +15,15 @@ import io.swagger.v3.oas.annotations.servers.Server;
 public class Application {
 
     public static void main(String[] args) throws IOException {
+    	System.out.println("Log 1");
+    	
+    	
+    	System.out.println("Log 2");
+    	System.out.println("Log 3");
+    	
+    	
+    	System.out.println("Log 4");
+    	
         LogbackConfigInitializer.initializeConfig();
         Micronaut.run(Application.class);
     }

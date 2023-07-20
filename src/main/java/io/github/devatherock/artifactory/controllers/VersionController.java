@@ -36,15 +36,27 @@ public class VersionController {
      * 
      * @param packageName
      * @param badgeLabel
-     * @param sort
+     * @param sortType
      * @return the version badge
      */
     @Get(value = "/version", produces = CONTENT_TYPE_BADGE)
-    @Operation(summary = "getLatestVersion", description = "Generates the version badge", responses = @ApiResponse(description = "An XML representing the SVG version badge", content = @Content(mediaType = CONTENT_TYPE_BADGE, schema = @Schema(implementation = String.class))))
-    public String getLatestVersion(
-                                   @Parameter(in = ParameterIn.QUERY, description = ApiSpecConstants.API_DESC_PARAM_PACKAGE, example = ApiSpecConstants.EXAMPLE_PARAM_PACKAGE) @QueryValue("package") String packageName,
-                                   @Parameter(in = ParameterIn.QUERY, description = ApiSpecConstants.API_DESC_PARAM_LABEL) @QueryValue(value = "label", defaultValue = "version") String badgeLabel,
-                                   @Parameter(in = ParameterIn.QUERY, description = "The attribute based on which to determine the latest version") @QueryValue(value = "sort", defaultValue = "date") String sortType) {
+    // spotless:off
+    @Operation(summary = "getLatestVersion",
+               description = "Generates the version badge",
+               responses = @ApiResponse(description = "An XML representing the SVG version badge",
+                                        content = @Content(mediaType = CONTENT_TYPE_BADGE,
+                                        schema = @Schema(implementation = String.class))))
+    public String getLatestVersion(@Parameter(in = ParameterIn.QUERY,
+                                              description = ApiSpecConstants.API_DESC_PARAM_PACKAGE,
+                                              example = ApiSpecConstants.EXAMPLE_PARAM_PACKAGE)
+                                   @QueryValue("package") String packageName,
+                                   @Parameter(in = ParameterIn.QUERY,
+                                              description = ApiSpecConstants.API_DESC_PARAM_LABEL)
+                                   @QueryValue(value = "label", defaultValue = "version") String badgeLabel,
+                                   @Parameter(in = ParameterIn.QUERY,
+                                              description = "The attribute based on which to determine the latest version")
+                                   @QueryValue(value = "sort", defaultValue = "date") String sortType) {
+        // spotless:on
         LOGGER.debug("In getLatestVersion");
         return badgeService.getLatestVersionBadge(packageName, badgeLabel, sortType);
     }

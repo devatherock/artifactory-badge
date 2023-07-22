@@ -16,6 +16,7 @@
 - chore(deps): update dependency gradle to v7.6.2
 - fix(deps): update dependency org.codehaus.janino:janino to v3.1.10
 - chore(deps): update plugin com.diffplug.spotless to v6.20.0
+- chore(deps): update plugin org.sonarqube to v4.3.0.3225
 
 ## [2.0.0] - 2023-06-03
 ### Added

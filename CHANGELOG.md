@@ -18,6 +18,7 @@
 - chore(deps): update plugin com.diffplug.spotless to v6.20.0
 - chore(deps): update plugin org.sonarqube to v4.3.0.3225
 - fix(deps): update dependency io.micronaut:micronaut-bom to v3.10.0
+- fix(deps): update dependency ch.qos.logback:logback-classic to v1.4.9
 
 ## [2.0.0] - 2023-06-03
 ### Added

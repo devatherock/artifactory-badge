@@ -21,6 +21,7 @@
 - fix(deps): update dependency ch.qos.logback:logback-classic to v1.4.9
 - fix(deps): update dependency ch.qos.logback:logback-classic to v1.4.11
 - fix(deps): update dependency io.micronaut:micronaut-bom to v3.10.1
+- chore(deps): update plugin org.sonarqube to v4.3.1.3277
 
 ## [2.0.0] - 2023-06-03
 ### Added

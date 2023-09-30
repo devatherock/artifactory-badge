@@ -26,6 +26,7 @@
 - chore(deps): update plugin org.owasp.dependencycheck to v8.4.0
 - fix(deps): update dependency com.github.tomakehurst:wiremock to v3
 - fix(deps): update dependency org.projectlombok:lombok to v1.18.30
+- chore(deps): update plugin com.diffplug.spotless to v6.22.0
 
 ## [2.0.0] - 2023-06-03
 ### Added

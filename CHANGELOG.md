@@ -33,6 +33,7 @@
 - chore(deps): update plugin org.owasp.dependencycheck to v8.4.2
 - chore(deps): update plugin org.sonarqube to v4.4.1.3373
 - chore: Made the gradle-includes location configurable
+- chore(deps): update cimg/openjdk docker tag to v21
 
 ## [2.0.0] - 2023-06-03
 ### Added

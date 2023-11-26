@@ -35,6 +35,7 @@
 - chore: Made the gradle-includes location configurable
 - fix(deps): update dependency io.micronaut:micronaut-bom to v3.10.3
 - chore(deps): update plugin org.owasp.dependencycheck to v8.4.3
+- chore(deps): update plugin org.owasp.dependencycheck to v9
 
 ## [2.0.0] - 2023-06-03
 ### Added

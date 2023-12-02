@@ -37,6 +37,7 @@
 - chore(deps): update plugin org.owasp.dependencycheck to v8.4.3
 - chore(deps): update plugin org.owasp.dependencycheck to v9
 - Configure Mend Bolt for GitHub
+- chore(deps): update plugin org.owasp.dependencycheck to v9.0.2
 
 ## [2.0.0] - 2023-06-03
 ### Added

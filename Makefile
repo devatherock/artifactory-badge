@@ -11,6 +11,8 @@ remote-integration-test:
 	./gradlew integrationTest --tests '*RemoteUrlsIntegrationSpec*'
 	docker-compose down
 build:
-	./gradlew build -Dgraalvm=true	
+	./gradlew build -Dgraalvm=true
+fast-build:
+	./gradlew build -Dgraalvm=true -x dependencyCheckAggregate	
 docker-build:
 	docker build -t devatherock/artifactory-badge:$(docker_tag) .

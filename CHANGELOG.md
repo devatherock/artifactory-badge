@@ -48,6 +48,7 @@
 - chore(deps): update plugin org.owasp.dependencycheck to v9.0.7
 - fix(deps): update dependency org.jsoup:jsoup to v1.17.2
 - chore(deps): update plugin org.owasp.dependencycheck to v9.0.8
+- chore(deps): update plugin org.owasp.dependencycheck to v9.0.9
 
 ## [2.0.0] - 2023-06-03
 ### Added

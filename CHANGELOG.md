@@ -51,6 +51,7 @@
 - chore(deps): update plugin org.owasp.dependencycheck to v9.0.9
 - chore(deps): update plugin com.diffplug.spotless to v6.24.0
 - chore(deps): update plugin com.diffplug.spotless to v6.25.0
+- chore(deps): update cimg/openjdk docker tag to v17.0.10
 
 ## [2.0.0] - 2023-06-03
 ### Added

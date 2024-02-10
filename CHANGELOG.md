@@ -52,6 +52,7 @@
 - chore(deps): update plugin com.diffplug.spotless to v6.24.0
 - chore(deps): update plugin com.diffplug.spotless to v6.25.0
 - chore(deps): update cimg/openjdk docker tag to v17.0.10
+- chore(deps): update dependency gradle to v7.6.4
 
 ## [2.0.0] - 2023-06-03
 ### Added

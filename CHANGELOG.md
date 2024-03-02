@@ -59,6 +59,7 @@
 - fix(deps): update dependency org.wiremock:wiremock to v3.4.0
 - fix(deps): update dependency org.wiremock:wiremock to v3.4.2
 - fix(deps): update dependency ch.qos.logback:logback-classic to v1.5.1
+- fix(deps): update dependency ch.qos.logback:logback-classic to v1.5.2
 
 ## [2.0.0] - 2023-06-03
 ### Added

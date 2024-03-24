@@ -63,6 +63,7 @@
 - fix(deps): update dependency ch.qos.logback:logback-classic to v1.5.3
 - chore(deps): update plugin org.owasp.dependencycheck to v9.0.10
 - fix(deps): update dependency org.projectlombok:lombok to v1.18.32
+- fix(deps): update dependency io.micronaut:micronaut-bom to v3.10.4
 
 ## [2.0.0] - 2023-06-03
 ### Added

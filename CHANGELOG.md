@@ -64,6 +64,7 @@
 - chore(deps): update plugin org.owasp.dependencycheck to v9.0.10
 - fix(deps): update dependency org.projectlombok:lombok to v1.18.32
 - fix(deps): update dependency io.micronaut:micronaut-bom to v3.10.4
+- fix(deps): update dependency org.wiremock:wiremock to v3.5.1
 
 ## [2.0.0] - 2023-06-03
 ### Added

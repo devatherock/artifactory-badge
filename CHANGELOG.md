@@ -22,6 +22,7 @@
 - fix(deps): update dependency io.micronaut:micronaut-bom to v3.10.4
 - fix(deps): update dependency org.wiremock:wiremock to v3.5.1
 - chore(deps): update plugin org.sonarqube to v5
+- fix(deps): update dependency org.wiremock:wiremock to v3.5.2
 
 ## [2.0.0] - 2023-06-03
 ### Added

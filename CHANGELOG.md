@@ -27,6 +27,7 @@
 - fix(deps): update dependency ch.qos.logback:logback-classic to v1.5.5
 - chore(deps): update cimg/openjdk docker tag to v17.0.11
 - fix(deps): update dependency ch.qos.logback:logback-classic to v1.5.6
+- fix(deps): update dependency org.wiremock:wiremock to v3.5.3
 
 ## [2.0.0] - 2023-06-03
 ### Added

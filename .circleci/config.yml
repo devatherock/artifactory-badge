@@ -8,6 +8,10 @@ docker_executor_image: &docker_executor_image
     - image: cimg/openjdk:17.0.11
       <<: *docker_auth
 
+vm_executor_image: &vm_executor_image
+  machine:
+    image: ubuntu-2204:2023.04.2      
+
 work_directory: &work_directory
   working_directory: ~/artifactory-badge
 
@@ -27,7 +31,7 @@ pr_filter: &pr_filter
       ignore: master
 
 orbs:
-  templates: devatherock/circleci-templates@dev:alpha
+  templates: devatherock/circleci-templates@0.7.0
 
 parameters:
   repo_name:
@@ -52,14 +56,16 @@ executors:
     <<: *docker_executor_image
     resource_class: medium
     <<: *work_directory
+  arm-native-image-executor:
+    <<: *docker_executor_image
+    resource_class: arm.medium
+    <<: *work_directory    
   machine-executor:
-    machine:
-      image: ubuntu-2204:2023.04.2
+    <<: *vm_executor_image
     resource_class: medium
     <<: *work_directory
   arm-executor:
-    machine:
-      image: ubuntu-2004:2022.04.1
+    <<: *vm_executor_image
     resource_class: arm.medium
     <<: *work_directory
 
@@ -76,7 +82,7 @@ jobs:
             - v1-dependencies-{{ checksum "build.gradle" }}
             - v1-dependencies
       - run: |
-          ./gradlew check sonar -Dsonar.login=$SONAR_TOKEN -Dgraalvm=true
+          ./gradlew check sonar -Dsonar.token=$SONAR_TOKEN -Dgraalvm=true
       - store_artifacts:
           path: build/reports
       - store_test_results:
@@ -92,7 +98,7 @@ jobs:
             - v1-dependencies-{{ checksum "build.gradle" }}
             - v1-dependencies
       - run: |
-          ./gradlew build coveralls sonar -Dsonar.login=$SONAR_TOKEN -Dgraalvm=true
+          ./gradlew build coveralls sonar -Dsonar.token=$SONAR_TOKEN -Dgraalvm=true
       - persist_to_workspace:
           root: ~/artifactory-badge
           paths:
@@ -107,39 +113,27 @@ jobs:
           key: v1-dependencies-{{ checksum "build.gradle" }}
           
   publish:
-    executor: native-image-executor
+    parameters:
+      runner:
+        type: executor
+      tag_suffix:
+        type: string  
+    executor: << parameters.runner >>
     steps:
       - checkout
       - setup_remote_docker
       - attach_workspace:
           at: ~/artifactory-badge
       - run: |
-          TAG=${CIRCLE_SHA1:0:8}
+          TAG=${CIRCLE_SHA1:0:8}-<< parameters.tag_suffix >>
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
           docker build \
             -t devatherock/artifactory-badge:$TAG \
-            -t devatherock/artifactory-badge:latest \
-            -t devatherock/artifactory-badge:amd64 .
-          docker image push --all-tags devatherock/artifactory-badge
-            
-  publish_arm:
-    executor: arm-executor
-    steps:
-      - checkout
-      - attach_workspace:
-          at: ~/artifactory-badge
-      - run: |
-          TAG=${CIRCLE_SHA1:0:8}-arm64
-          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-          docker build \
-            -t devatherock/artifactory-badge:$TAG \
-            -t devatherock/artifactory-badge:arm64 .
+            -t devatherock/artifactory-badge:<< parameters.tag_suffix >> .
           docker image push --all-tags devatherock/artifactory-badge
               
   integration_test:
     parameters:
-      command_args:
-        type: string
       runner:
         type: executor
     executor: << parameters.runner >>
@@ -152,7 +146,7 @@ jobs:
             - v1-integration-{{ checksum "build.gradle" }}
             - v1-integration
       - run: |
-          make integration-test remote-integration-test << parameters.command_args >>
+          make integration-test remote-integration-test
       - save_cache:
           paths:
             - ~/.gradle
@@ -171,14 +165,11 @@ jobs:
           TAG=${CIRCLE_TAG#v}
           DEV_TAG=${CIRCLE_SHA1:0:8}
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-          docker pull devatherock/artifactory-badge:$DEV_TAG
-          docker tag devatherock/artifactory-badge:$DEV_TAG devatherock/artifactory-badge:$TAG
-          docker tag devatherock/artifactory-badge:$DEV_TAG devatherock/artifactory-badge:${TAG}-amd64
-          docker pull devatherock/artifactory-badge:${DEV_TAG}-arm64
-          docker tag devatherock/artifactory-badge:${DEV_TAG}-arm64 devatherock/artifactory-badge:${TAG}-arm64
-          docker push devatherock/artifactory-badge:$TAG
-          docker push devatherock/artifactory-badge:${TAG}-amd64
-          docker push devatherock/artifactory-badge:${TAG}-arm64
+          docker buildx create --name rockbuilder \
+            --driver docker-container --use --bootstrap
+          docker buildx imagetools create \
+            -t devatherock/<< pipeline.parameters.repo_name >>:$TAG \
+            devatherock/<< pipeline.parameters.repo_name >>:$DEV_TAG
 
 workflows:
   version: 2.1
@@ -209,13 +200,26 @@ workflows:
       - publish:
           context:
             - docker-credentials
+          runner: native-image-executor
+          tag_suffix: amd64
           requires:
             - build
-      - publish_arm:
+      - publish:
+          name: publish_arm
           context:
             - docker-credentials
+          runner: arm-native-image-executor
+          tag_suffix: arm64
           requires:
             - build
+      - templates/image_merge:
+          name: publish_multi_arch
+          context:
+            - docker-credentials
+          docker_image: '<< pipeline.parameters.repo_name >>'
+          requires:
+            - publish
+            - publish_arm            
       - templates/dockerhub_readme_update:
           name: dockerhub_readme
           context:
@@ -225,21 +229,19 @@ workflows:
           image_description: 'Badge generator for docker registries hosted in jfrog artifactory'
           work_dir: '~/<< pipeline.parameters.repo_name >>'
           requires:
-            - publish_arm
+            - publish_multi_arch
       - integration_test:
           name: integration_test_amd
           context:
             - docker-credentials
           runner: machine-executor
-          command_args: ''
           requires:
-            - publish
+            - publish_multi_arch
       - integration_test:
           name: integration_test_arm
           context:
             - docker-credentials
           runner: arm-executor
-          command_args: 'docker_tag=arm64'
           requires:
             - dockerhub_readme
 

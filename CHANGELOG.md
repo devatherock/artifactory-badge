@@ -7,28 +7,22 @@
 ### Changed
 - Specified all generated json config files to the `native-image` command
 - fix(deps): update dependency net.logstash.logback:logstash-logback-encoder to v7.4
-- chore(deps): update plugin org.sonarqube to v4.4.1.3373
 - chore: Made the gradle-includes location configurable
 - Configure Mend Bolt for GitHub
 - fix(deps): update dependency org.jsoup:jsoup to v1.17.2
 - chore(deps): update plugin com.diffplug.spotless to v6.25.0
-- chore(deps): update cimg/openjdk docker tag to v17.0.10
 - chore(deps): update dependency gradle to v7.6.4
 - fix(deps): update dependency org.codehaus.janino:janino to v3.1.12
-- fix(deps): update dependency org.wiremock:wiremock to v3.4.2
-- fix(deps): update dependency ch.qos.logback:logback-classic to v1.5.3
-- chore(deps): update plugin org.owasp.dependencycheck to v9.0.10
 - fix(deps): update dependency org.projectlombok:lombok to v1.18.32
 - fix(deps): update dependency io.micronaut:micronaut-bom to v3.10.4
-- fix(deps): update dependency org.wiremock:wiremock to v3.5.1
 - chore(deps): update plugin org.sonarqube to v5
-- fix(deps): update dependency org.wiremock:wiremock to v3.5.2
-- chore(deps): update plugin org.owasp.dependencycheck to v9.1.0
-- fix(deps): update dependency ch.qos.logback:logback-classic to v1.5.5
 - chore(deps): update cimg/openjdk docker tag to v17.0.11
 - fix(deps): update dependency ch.qos.logback:logback-classic to v1.5.6
-- fix(deps): update dependency org.wiremock:wiremock to v3.5.3
 - fix(deps): update dependency org.wiremock:wiremock to v3.5.4
+- Combined the amd64 and arm64 images into a single multi-arch image
+
+### Removed
+- Dependency check plugin
 
 ## [2.0.0] - 2023-06-03
 ### Added

@@ -1,6 +1,10 @@
 # Changelog
 
 ## [Unreleased]
+### Changed
+- fix(deps): update dependency org.objenesis:objenesis to v3.4
+
+## [2.1.0] - 2024-05-07
 ### Added
 - Used `circleci-templates` orb to simplify CI pipeline
 

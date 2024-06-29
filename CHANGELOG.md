@@ -6,6 +6,7 @@
 - fix(deps): update dependency org.wiremock:wiremock to v3.6.0
 - fix(deps): update dependency org.wiremock:wiremock to v3.7.0
 - fix(deps): update dependency org.projectlombok:lombok to v1.18.34
+- fix(deps): update dependency org.wiremock:wiremock to v3.8.0
 
 ## [2.1.0] - 2024-05-07
 ### Added

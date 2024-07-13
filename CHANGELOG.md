@@ -8,6 +8,7 @@
 - fix(deps): update dependency org.projectlombok:lombok to v1.18.34
 - fix(deps): update dependency org.wiremock:wiremock to v3.8.0
 - chore(deps): update plugin org.sonarqube to v5.1.0.4882
+- fix(deps): update dependency org.jsoup:jsoup to v1.18.1
 
 ## [2.1.0] - 2024-05-07
 ### Added

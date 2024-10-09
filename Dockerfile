@@ -1,9 +1,10 @@
-FROM ghcr.io/graalvm/native-image:ol8-java17-22.3.2 as graalvm
+FROM ghcr.io/graalvm/native-image-community:17-ol8 as graalvm
 
 COPY . /home/app/micronaut-graal-app
 WORKDIR /home/app/micronaut-graal-app
 
-RUN native-image -cp build/libs/*-all.jar
+ARG QUICK_BUILD
+RUN native-image ${QUICK_BUILD} -cp build/libs/*-all.jar
 
 
 

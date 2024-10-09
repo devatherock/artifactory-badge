@@ -10,6 +10,7 @@
 - fix(deps): update dependency ch.qos.logback:logback-classic to v1.5.8
 - fix(deps): update dependency net.logstash.logback:logstash-logback-encoder to v8
 - Upgraded gradle to `8.10.2`
+- Switched to `native-image-community` graalvm image
 
 ## [2.1.0] - 2024-05-07
 ### Added

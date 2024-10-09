@@ -1,7 +1,7 @@
 docker_tag=latest
 
 clean:
-	./gradlew clean
+	rm -rf build
 integration-test:
 	DOCKER_TAG=$(docker_tag) docker-compose up &
 	./gradlew integrationTest --tests '*ControllerIntegrationSpec*'
@@ -13,4 +13,4 @@ remote-integration-test:
 build-all:
 	./gradlew build -Dgraalvm=true
 docker-build:
-	docker build -t devatherock/artifactory-badge:$(docker_tag) .
+	docker build --progress=plain --build-arg QUICK_BUILD=-Ob -t devatherock/artifactory-badge:$(docker_tag) .

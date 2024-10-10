@@ -15,3 +15,5 @@ out/
 code-formatter.xml
 checkstyle.xml
 codenarc.xml
+logs-intg.txt
+logs-intg-remote.txt

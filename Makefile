@@ -3,11 +3,11 @@ docker_tag=latest
 clean:
 	rm -rf build
 integration-test:
-	DOCKER_TAG=$(docker_tag) docker-compose up &
+	DOCKER_TAG=$(docker_tag) docker compose up --wait
 	./gradlew integrationTest --tests '*ControllerIntegrationSpec*'
 	docker-compose down
 remote-integration-test:
-	DOCKER_TAG=$(docker_tag) docker-compose -f docker-compose-remote.yml up &
+	DOCKER_TAG=$(docker_tag) docker compose -f docker-compose-remote.yml up --wait
 	./gradlew integrationTest --tests '*RemoteUrlsIntegrationSpec*'
 	docker-compose down
 build-all:

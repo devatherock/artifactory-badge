@@ -4,7 +4,7 @@ COPY . /home/app/micronaut-graal-app
 WORKDIR /home/app/micronaut-graal-app
 
 ARG QUICK_BUILD
-RUN native-image ${QUICK_BUILD} -cp build/libs/*-all.jar
+RUN native-image --verbose ${QUICK_BUILD} -cp build/libs/*-all.jar
 
 
 

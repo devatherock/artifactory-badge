@@ -1,8 +1,7 @@
 package io.github.devatherock.artifactory.config;
 
-import javax.annotation.PostConstruct;
-
 import io.micronaut.context.annotation.ConfigurationProperties;
+import jakarta.annotation.PostConstruct;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;

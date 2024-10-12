@@ -4,10 +4,12 @@ services:
     image: devatherock/artifactory-badge:${DOCKER_TAG:-latest}
     container_name: artifactory-badge-intg-remote
     network_mode: "host"
+    volumes:
+      - ./src/test/resources/logback-tests.xml:/config/logback.xml
     environment:
       - ARTIFACTORY_URL=http://localhost:8081
       - ARTIFACTORY_API_KEY=dummyKey
-      - LOGBACK_CONFIGURATION_FILE=https://raw.githubusercontent.com/devatherock/artifactory-badge/master/src/main/resources/logback.xml
+      - LOGBACK_CONFIGURATION_FILE=/config/logback.xml
 
   health:
     image: alpine:3.20.3

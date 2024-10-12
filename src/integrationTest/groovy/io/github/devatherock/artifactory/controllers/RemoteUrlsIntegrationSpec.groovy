@@ -12,8 +12,11 @@ import io.micronaut.test.extensions.spock.annotation.MicronautTest
 class RemoteUrlsIntegrationSpec extends RemoteUrlsSpec {
 
     void 'test log output'() {
-        expect:
-        Files.readString(Paths.get('logs-intg-remote.txt'))
-                .contains('INFO  io.micronaut.runtime.Micronaut - Startup completed')
+        when:
+        String logs = Files.readString(Paths.get('logs-intg-remote.txt'))
+
+        then:
+        logs.contains('INFO  io.micronaut.runtime.Micronaut - Startup completed')
+        logs.contains('Request GET /docker/image-size')
     }
 }

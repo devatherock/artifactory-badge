@@ -1,3 +1,5 @@
+.PHONY: build
+
 docker_tag=latest
 
 clean:
@@ -14,7 +16,10 @@ remote-integration-test:
 	docker logs -f artifactory-badge-intg-remote > logs-intg-remote.txt &
 	./gradlew integrationTest --tests '*RemoteUrlsIntegrationSpec*'
 	docker-compose down
-build-all:
-	./gradlew build -Dgraalvm=true
+build:
+	./gradlew build
+fast-build:
+	./gradlew build -x test
 docker-build:
-	docker build --progress=plain --build-arg QUICK_BUILD=-Ob -t devatherock/artifactory-badge:$(docker_tag) .
+	./gradlew dockerBuildNative -Dnative.threads=2 -Dnative.xmx=3072m \
+	    -Dnative.tag=$(docker_tag) -Dnative.arch=native -Dnative.mode=dev

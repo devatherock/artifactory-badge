@@ -9,6 +9,7 @@ services:
       - ARTIFACTORY_API_KEY=dummyKey
       - ARTIFACTORY_BADGE_SHIELDS_IO_URL=http://localhost:8081
       - LOGBACK_CONFIGURATION_FILE=logback-json.xml
+      - LOGGER_LEVELS_IO_MICRONAUT_HTTP_SERVER_NETTY=DEBUG
 
   health:
     image: alpine:3.20.3

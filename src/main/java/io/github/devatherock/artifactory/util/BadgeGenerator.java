@@ -1,13 +1,12 @@
 package io.github.devatherock.artifactory.util;
 
-import javax.inject.Singleton;
-
 import io.github.devatherock.artifactory.config.ShieldsIOProperties;
 
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.client.BlockingHttpClient;
 import io.micronaut.http.client.exceptions.HttpClientResponseException;
 import io.micronaut.http.uri.UriBuilder;
+import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

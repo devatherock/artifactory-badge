@@ -5,11 +5,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-import javax.validation.constraints.NotBlank;
-
 import io.micronaut.context.annotation.ConfigurationProperties;
 import io.micronaut.context.annotation.Context;
+import jakarta.annotation.PostConstruct;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;

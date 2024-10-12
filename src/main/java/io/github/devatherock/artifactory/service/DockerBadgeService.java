@@ -3,8 +3,6 @@ package io.github.devatherock.artifactory.service;
 import java.time.Instant;
 import java.util.regex.Pattern;
 
-import javax.inject.Singleton;
-
 import io.github.devatherock.artifactory.config.ArtifactoryProperties;
 import io.github.devatherock.artifactory.entities.ArtifactoryFileStats;
 import io.github.devatherock.artifactory.entities.ArtifactoryFolderElement;
@@ -20,6 +18,7 @@ import io.micronaut.http.HttpMethod;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.client.BlockingHttpClient;
 import io.micronaut.http.client.exceptions.HttpClientResponseException;
+import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

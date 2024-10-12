@@ -3,8 +3,6 @@ package io.github.devatherock.artifactory.controllers
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
 
-import javax.inject.Inject
-
 import io.github.devatherock.artifactory.service.DockerBadgeService
 import io.github.devatherock.test.TestUtil
 
@@ -14,6 +12,7 @@ import io.micronaut.http.HttpRequest
 import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.annotation.Client
 import io.micronaut.http.uri.UriBuilder
+import jakarta.inject.Inject
 import spock.lang.Shared
 import spock.lang.Specification
 

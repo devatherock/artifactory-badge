@@ -9,6 +9,11 @@ import spock.lang.Unroll
  * Test class for {@link LogbackConfigInitializer}
  */
 class LogbackConfigInitializerSpec extends Specification {
+    static final String PROP_LOGGING_CONFIG = 'logger.config'
+
+    void cleanup() {
+        System.clearProperty(PROP_LOGGING_CONFIG)
+    }
 
     void 'test initialize config - no args'() {
         when:
@@ -25,6 +30,7 @@ class LogbackConfigInitializerSpec extends Specification {
 
         then:
         stream
+        System.properties[PROP_LOGGING_CONFIG] == loggingConfig
 
         cleanup:
         stream?.close()
@@ -35,12 +41,21 @@ class LogbackConfigInitializerSpec extends Specification {
             Paths.get(System.properties['user.dir'], 'src/main/resources/logback.xml').toString(),
             'https://raw.githubusercontent.com/devatherock/artifactory-badge/master/src/main/resources/logback-json.xml'
         ]
+        loggingConfig << [
+            'logback.xml',
+            Paths.get(System.properties['user.dir'], 'src/main/resources/logback.xml').toString(),
+            null,
+        ]
     }
 
     @Unroll
     void 'test read config - non-existent/invalid path - #configFile'() {
-        expect:
-        !LogbackConfigInitializer.readConfig(configFile)
+        when:
+        def stream = LogbackConfigInitializer.readConfig(configFile)
+
+        then:
+        !stream
+        !System.properties[PROP_LOGGING_CONFIG]
 
         where:
         configFile << [
@@ -57,7 +72,7 @@ class LogbackConfigInitializerSpec extends Specification {
         LogbackConfigInitializer.initializeConfig(configFile)
 
         then:
-        noExceptionThrown()
+        System.properties[PROP_LOGGING_CONFIG] == loggingConfig
 
         where:
         configFile << [
@@ -65,7 +80,16 @@ class LogbackConfigInitializerSpec extends Specification {
             Paths.get(System.properties['user.dir'], 'src/main/resources/logback.xml').toString(),
             'https://raw.githubusercontent.com/devatherock/artifactory-badge/master/src/main/resources/logback-json.xml',
             'classpath:logback.xml',
-            'logback-invalid.xml'
+            'logback-invalid.xml',
+            'application-test.yml',
+        ]
+        loggingConfig << [
+                'logback.xml',
+                Paths.get(System.properties['user.dir'], 'src/main/resources/logback.xml').toString(),
+                null,
+                null,
+                'logback-invalid.xml',
+                null,
         ]
     }
 }

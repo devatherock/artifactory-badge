@@ -16,6 +16,7 @@
 - Upgraded gradle to `8.10.2`
 - Switched to `native-image-community` graalvm image
 - fix(deps): update dependency ch.qos.logback:logback-classic to v1.5.9
+- fix(deps): update dependency ch.qos.logback:logback-classic to v1.5.10
 
 ## [2.1.0] - 2024-05-07
 ### Added

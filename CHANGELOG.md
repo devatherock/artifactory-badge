@@ -16,6 +16,7 @@
 - Upgraded gradle to `8.10.2`
 - Switched to `native-image-community` graalvm image
 - fix(deps): update dependency ch.qos.logback:logback-classic to v1.5.9
+- chore(deps): update ghcr.io/graalvm/native-image-community docker tag to v23
 
 ## [2.1.0] - 2024-05-07
 ### Added

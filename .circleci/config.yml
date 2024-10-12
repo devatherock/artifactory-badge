@@ -40,9 +40,7 @@ parameters:
   
 executors:
   jdk-executor:
-    docker:
-      - image: devatherock/graalvm:17-ol8
-        <<: *docker_auth
+    <<: *docker_executor_image
     <<: *resource_class
     <<: *work_directory
     environment:
@@ -82,7 +80,7 @@ jobs:
             - v1-dependencies-{{ checksum "build.gradle" }}
             - v1-dependencies
       - run: |
-          ./gradlew check sonar -Dsonar.token=$SONAR_TOKEN -Dgraalvm=true
+          ./gradlew check sonar -Dsonar.token=$SONAR_TOKEN
       - store_artifacts:
           path: build/reports
       - store_test_results:
@@ -98,7 +96,7 @@ jobs:
             - v1-dependencies-{{ checksum "build.gradle" }}
             - v1-dependencies
       - run: |
-          ./gradlew build coveralls sonar -Dsonar.token=$SONAR_TOKEN -Dgraalvm=true
+          ./gradlew build coveralls sonar -Dsonar.token=$SONAR_TOKEN
       - persist_to_workspace:
           root: ~/artifactory-badge
           paths:
@@ -127,10 +125,11 @@ jobs:
       - run: |
           TAG=${CIRCLE_SHA1:0:8}-<< parameters.tag_suffix >>
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-          docker build \
-            -t devatherock/artifactory-badge:$TAG \
-            -t devatherock/artifactory-badge:<< parameters.tag_suffix >> .
-          docker image push --all-tags devatherock/artifactory-badge
+          ./gradlew dockerBuildNative -Dnative.threads=2 -Dnative.xmx=3072m -Dnative.tag=$TAG
+          docker tag \
+            devatherock/<< pipeline.parameters.repo_name >>:$TAG \
+            devatherock/<< pipeline.parameters.repo_name >>:<< parameters.tag_suffix >>
+          docker image push --all-tags devatherock/<< pipeline.parameters.repo_name >>
               
   integration_test:
     parameters:

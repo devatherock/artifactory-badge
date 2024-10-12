@@ -1,10 +1,6 @@
 # Changelog
 
 ## [Unreleased]
-### Added
-- Health check to `docker compose`, to make integration tests wait for app startup
-- Tests to verify log format
-
 ### Changed
 - fix(deps): update dependency org.objenesis:objenesis to v3.4
 - fix(deps): update dependency org.projectlombok:lombok to v1.18.34

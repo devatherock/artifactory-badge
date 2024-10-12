@@ -12,7 +12,11 @@ import io.micronaut.test.extensions.spock.annotation.MicronautTest
 class AdditionalControllerIntegrationSpec extends AdditionalEndpointsSpec {
 
     void 'test log format'() {
-        expect:
-        Files.readString(Paths.get('logs-intg.txt')).contains('"message":"Startup completed')
+        when:
+        String logs = Files.readString(Paths.get('logs-intg.txt'))
+
+        then:
+        logs.contains('"message":"Startup completed')
+        logs.contains('Request GET /swagger-ui')
     }
 }

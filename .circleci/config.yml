@@ -152,6 +152,24 @@ jobs:
           key: v1-integration-{{ checksum "build.gradle" }}
       - store_test_results:
           path: build/test-results
+
+  perf_test:
+    parameters:
+      runner:
+        type: executor
+    executor: << parameters.runner >>
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/artifactory-badge
+      - restore_cache:
+          keys:
+            - v1-integration-{{ checksum "build.gradle" }}
+            - v1-integration
+      - run: |
+          make perf-test
+      - store_artifacts:
+          path: build/reports/gatling
   
   publish_release:
     executor: docker-executor
@@ -243,6 +261,20 @@ workflows:
           runner: arm-executor
           requires:
             - dockerhub_readme
+      - perf_test:
+          name: perf_test_amd
+          context:
+            - docker-credentials
+          runner: machine-executor
+          requires:
+            - integration_test_amd
+      - perf_test:
+          name: perf_test_arm
+          context:
+            - docker-credentials
+          runner: arm-executor
+          requires:
+            - integration_test_arm
 
   release:
     jobs:

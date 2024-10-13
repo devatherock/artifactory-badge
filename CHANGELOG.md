@@ -1,6 +1,10 @@
 # Changelog
 
 ## [Unreleased]
+### Added
+- Tests to verify log format
+- Performance tests using gatling
+
 ### Changed
 - fix(deps): update dependency org.objenesis:objenesis to v3.4
 - fix(deps): update dependency org.projectlombok:lombok to v1.18.34

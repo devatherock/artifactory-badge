@@ -1,0 +1,4 @@
+{
+  "lastModified": "{{now offset='3 days' format='yyyy-MM-dd HH:mm:ss.SSSZ'}}",
+  "path": "{{request.path}}"
+}

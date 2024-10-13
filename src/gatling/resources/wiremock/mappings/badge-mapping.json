@@ -1,0 +1,18 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPattern": "/static/v1?(.*)"
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "badge-response.xml",
+    "headers": {
+      "Content-Type": "text/xml"
+    },
+    "delayDistribution": {
+      "type": "lognormal",
+      "median": 250,
+      "sigma": 0.4
+    }
+  }
+}

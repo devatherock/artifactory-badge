@@ -1,0 +1,24 @@
+{
+  "children": [
+    {
+      "uri": "/1.1.0",
+      "folder": true
+    },
+    {
+      "uri": "/1.1.2-rc.1",
+      "folder": true
+    },
+    {
+      "uri": "/latest",
+      "folder": true
+    },
+    {
+      "uri": "/_uploads",
+      "folder": true
+    },
+    {
+      "uri": "/dummy",
+      "folder": false
+    }
+  ]
+}

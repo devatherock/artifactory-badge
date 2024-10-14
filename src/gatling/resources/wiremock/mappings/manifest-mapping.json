@@ -1,0 +1,18 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPattern": "/artifactory/api/storage/devatherock/([a-z-]*)/([^//]*)/manifest.json\\?stats"
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "manifest-response.json",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "delayDistribution": {
+      "type": "lognormal",
+      "median": 250,
+      "sigma": 0.4
+    }
+  }
+}

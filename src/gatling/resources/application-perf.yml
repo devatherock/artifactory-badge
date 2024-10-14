@@ -1,0 +1,7 @@
+artifactory:
+  url: http://wiremock:8080
+  api-key: dummy
+  dateFormat: yyyy-MM-dd HH:mm:ss.SSSZ
+  badge:
+    shields-io:
+      url: http://wiremock:8080

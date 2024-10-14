@@ -16,6 +16,12 @@ remote-integration-test:
 	docker logs -f artifactory-badge-intg-remote > logs-intg-remote.txt &
 	./gradlew integrationTest --tests '*RemoteUrlsIntegrationSpec*'
 	docker-compose down
+perf-test:
+	rm -rf logs-perf.txt
+	DOCKER_TAG=$(docker_tag) docker compose -f docker-compose-perf.yml up --wait
+	docker logs -f artifactory-badge-perf > logs-perf.txt &
+	./gradlew gatlingRun --all $(additional_gradle_args)
+	docker compose down
 build:
 	./gradlew build
 fast-build:

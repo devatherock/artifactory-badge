@@ -3,7 +3,7 @@
 ## [Unreleased]
 ### Added
 - Tests to verify log format
-- Performance tests using gatling
+- Performance tests for `/docker/pulls` and `/version` endpoints using gatling
 
 ### Changed
 - fix(deps): update dependency org.objenesis:objenesis to v3.4

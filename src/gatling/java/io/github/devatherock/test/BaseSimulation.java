@@ -4,10 +4,14 @@ import static io.gatling.javaapi.http.HttpDsl.http;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,6 +64,12 @@ public abstract class BaseSimulation extends Simulation {
         }
 
         return randomString.toString();
+    }
+
+    public static Iterator<Map<String, Object>> createImageNameFeeder() {
+        return Stream.generate(
+                (Supplier<Map<String, Object>>) () -> Collections.singletonMap("imageName", generateRandomString()))
+                .iterator();
     }
 
     protected abstract ScenarioBuilder buildScenario();

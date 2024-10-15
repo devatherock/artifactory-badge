@@ -15,31 +15,31 @@ import io.gatling.javaapi.core.ScenarioBuilder;
 import io.gatling.javaapi.http.HttpRequestActionBuilder;
 
 /**
- * Perf tests for the {@code /docker/pulls} endpoint
+ * Perf tests for the {@code /version} endpoint
  */
-public class DockerPullsSimulation extends BaseSimulation {
-    static final String GET_PULLS = "GET /docker/pulls";
+public class VersionSimulation extends BaseSimulation {
+    static final String GET_VERSION = "GET /version";
 
     {
         setUp(buildScenario().injectOpen(
-                rampUsers(Integer.parseInt(getConfig("perf.docker-pulls.users")))
+                rampUsers(Integer.parseInt(getConfig("perf.version.users")))
                         .during(1)))
                 .protocols(buildProtocol())
-                .maxDuration(Long.parseLong(getConfig("perf.docker-pulls.duration")));
+                .maxDuration(Long.parseLong(getConfig("perf.version.duration")));
     }
 
     protected ScenarioBuilder buildScenario() {
         Iterator<Map<String, Object>> feeder = createImageNameFeeder();
 
-        return scenario(GET_PULLS)
+        return scenario(GET_VERSION)
                 .feed(feeder)
                 .forever()
                 .on(exec(buildRequest()).feed(feeder));
     }
 
     static HttpRequestActionBuilder buildRequest() {
-        return http(GET_PULLS)
-                .get("/docker/pulls?package=devatherock/#{imageName}")
+        return http(GET_VERSION)
+                .get("/version?package=devatherock/#{imageName}")
                 .check(status().is(200));
     }
 }

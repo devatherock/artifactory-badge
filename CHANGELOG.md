@@ -1,6 +1,10 @@
 # Changelog
 
 ## [Unreleased]
+### Changed
+- Used virtual threads when available
+
+## [3.0.0] - 2024-10-16
 ### Added
 - Tests to verify log format
 - Performance tests for `/docker/pulls` and `/version` endpoints using gatling

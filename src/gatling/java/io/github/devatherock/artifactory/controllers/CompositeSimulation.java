@@ -1,6 +1,7 @@
 package io.github.devatherock.artifactory.controllers;
 
 import static io.gatling.javaapi.core.CoreDsl.exec;
+import static io.gatling.javaapi.core.CoreDsl.global;
 import static io.gatling.javaapi.core.CoreDsl.rampUsers;
 import static io.gatling.javaapi.core.CoreDsl.scenario;
 
@@ -19,7 +20,10 @@ public class CompositeSimulation extends BaseSimulation {
                 rampUsers(Integer.parseInt(getConfig("perf.users")))
                         .during(1)))
                 .protocols(buildProtocol())
-                .maxDuration(Long.parseLong(getConfig("perf.duration")));
+                .maxDuration(Long.parseLong(getConfig("perf.duration")))
+                .assertions(
+                        global().responseTime().percentile(95).lt(2500),
+                        global().successfulRequests().percent().is(100d));
     }
 
     protected ScenarioBuilder buildScenario() {

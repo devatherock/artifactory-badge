@@ -1,6 +1,8 @@
 package io.github.devatherock.artifactory.service;
 
 import java.time.Instant;
+import java.util.List;
+import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
 import io.github.devatherock.artifactory.config.ArtifactoryProperties;
@@ -10,6 +12,7 @@ import io.github.devatherock.artifactory.entities.ArtifactoryFolderInfo;
 import io.github.devatherock.artifactory.entities.DockerLayer;
 import io.github.devatherock.artifactory.entities.DockerManifest;
 import io.github.devatherock.artifactory.util.BadgeGenerator;
+import io.github.devatherock.artifactory.util.ParallelProcessor;
 
 import io.micronaut.cache.annotation.Cacheable;
 import io.micronaut.core.annotation.Blocking;
@@ -53,6 +56,7 @@ public class DockerBadgeService {
 
     private final BlockingHttpClient artifactoryClient;
     private final BadgeGenerator badgeGenerator;
+    private final ParallelProcessor parallelProcessor;
     private final ArtifactoryProperties artifactoryConfig;
 
     @Cacheable(cacheNames = "size-cache")
@@ -93,15 +97,19 @@ public class DockerBadgeService {
         if (null != folderInfo && CollectionUtils.isNotEmpty(folderInfo.getChildren())) {
             long downloadCount = 0;
 
-            for (ArtifactoryFolderElement child : folderInfo.getChildren()) {
-                if (isTag(child)) {
-                    ArtifactoryFileStats fileStats = getManifestStats(packageName, child.getUri());
+            List<Supplier<ArtifactoryFileStats>> statsSuppliers = folderInfo.getChildren()
+                    .stream()
+                    .filter(this::isTag)
+                    .map(child -> (Supplier<ArtifactoryFileStats>) () -> getManifestStats(packageName, child.getUri()))
+                    .toList();
+            List<ArtifactoryFileStats> statsList = parallelProcessor.parallelProcess(statsSuppliers);
 
-                    if (null != fileStats) {
-                        downloadCount += fileStats.getDownloadCount();
-                    }
+            for (ArtifactoryFileStats fileStats : statsList) {
+                if (null != fileStats) {
+                    downloadCount += fileStats.getDownloadCount();
                 }
             }
+
             LOGGER.info("Download count of {}: {}", packageName, downloadCount);
             return badgeGenerator.generateBadge(badgeLabel,
                     DockerBadgeServiceHelper.formatDownloadCount(downloadCount));
@@ -126,9 +134,9 @@ public class DockerBadgeService {
         if (null != folderInfo && CollectionUtils.isNotEmpty(folderInfo.getChildren())) {
             ArtifactoryFolderInfo latestVersion = null;
 
-            for (ArtifactoryFolderElement child : folderInfo.getChildren()) {
-                if (isTag(child)) {
-                    if (SORT_TYPE_SEMVER.equals(sortType)) {
+            if (SORT_TYPE_SEMVER.equals(sortType)) {
+                for (ArtifactoryFolderElement child : folderInfo.getChildren()) {
+                    if (isTag(child)) {
                         // Substring to remove the leading slash
                         String currentVersion = child.getUri().substring(1);
 
@@ -145,20 +153,28 @@ public class DockerBadgeService {
                                 }
                             }
                         }
-                    } else {
-                        // Find the modified time of each subfolder - each subfolder corresponds to a
-                        // tag
-                        ArtifactoryFolderInfo currentVersion = getArtifactoryFolderInfo(packageName + child.getUri());
+                    }
+                }
+            } else {
+                // Find the modified time of each subfolder - each subfolder corresponds to a
+                // tag
+                List<Supplier<ArtifactoryFolderInfo>> versionSuppliers = folderInfo.getChildren()
+                        .stream()
+                        .filter(this::isTag)
+                        .map(child -> (Supplier<ArtifactoryFolderInfo>) () -> getArtifactoryFolderInfo(
+                                packageName + child.getUri()))
+                        .toList();
+                List<ArtifactoryFolderInfo> versions = parallelProcessor.parallelProcess(versionSuppliers);
 
-                        if (null == latestVersion || (null != currentVersion
-                                && Instant
-                                        .from(artifactoryConfig.getDateParser().parse(currentVersion.getLastModified()))
-                                        .compareTo(
-                                                Instant.from(
-                                                        artifactoryConfig.getDateParser()
-                                                                .parse(latestVersion.getLastModified()))) > 0)) {
-                            latestVersion = currentVersion;
-                        }
+                for (ArtifactoryFolderInfo currentVersion : versions) {
+                    if (null == latestVersion || (null != currentVersion
+                            && Instant
+                                    .from(artifactoryConfig.getDateParser().parse(currentVersion.getLastModified()))
+                                    .compareTo(
+                                            Instant.from(
+                                                    artifactoryConfig.getDateParser()
+                                                            .parse(latestVersion.getLastModified()))) > 0)) {
+                        latestVersion = currentVersion;
                     }
                 }
             }
@@ -255,7 +271,7 @@ public class DockerBadgeService {
 
     /**
      * Checks if the supplied artifactory folder content corresponds to a tag
-     * 
+     *
      * @param child
      * @return a flag
      */

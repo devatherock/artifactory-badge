@@ -29,19 +29,20 @@ logger:
 
 #### Environment variables
 
-| Name                                 |   Required   |   Default        | Description                                                                                                                                      |
-|--------------------------------------|--------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
-| ARTIFACTORY_URL                      |   true       |   (None)         | The JFrog artifactory URL that hosts the docker registry                                                                                         |
-| ARTIFACTORY_API_KEY                  |   true       |   (None)         | API key for interacting with artifactory's REST API                                                                                              |
-| ARTIFACTORY_EXCLUDED_FOLDERS         |   false      |   /_uploads      | Subfolders to be not treated as docker tags                                                                                                      |
-| ARTIFACTORY_DATE_FORMAT              |   false      |   yyyy-MM-dd'T'HH:mm:ss.SSSXXX | Date format to parse dates in artifactory API responses                                                                            |
-| ARTIFACTORY_BADGE_SHIELDS_IO_ENABLED |   false      |   true           | Indicates if <a href="https://shields.io">shields.io</a> should be used to generate the badge                                                    |
-| LOGGER_LEVELS_ROOT                   |   false      |   INFO           | [SLF4J](http://www.slf4j.org/api/org/apache/commons/logging/Log.html) log level, for all(framework and custom) code                              |
-| LOGGER_LEVELS_IO_GITHUB_DEVATHEROCK  |   false      |   INFO           | [SLF4J](http://www.slf4j.org/api/org/apache/commons/logging/Log.html) log level, for custom code                                                 |
-| MICRONAUT_ENVIRONMENTS               |   false      |   (None)         | Setting the value to `local` will mock the calls to the artifactory. Only for testing purposes                                                   |
-| MICRONAUT_SERVER_PORT                |   false      |   8080           | Port in which the app listens on                                                                                                                 |
-| MICRONAUT_CONFIG_FILES               |   true       |   (None)         | Path to YAML config files. The YAML files can be used to specify complex, object and array properties                                            |
-| LOGBACK_CONFIGURATION_FILE           |   false      |   (None)         | Class, file or remote path to logback configuration file. Will be ignored when using a remote path with any `logger.*` or `LOGGER_` config set   |
+| Name                                 |   Required   | Default                      | Description                                                                                                                                    |
+|--------------------------------------|--------------|------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|
+| ARTIFACTORY_URL                      |   true       | (None)                       | The JFrog artifactory URL that hosts the docker registry                                                                                       |
+| ARTIFACTORY_API_KEY                  |   true       | (None)                       | API key for interacting with artifactory's REST API                                                                                            |
+| ARTIFACTORY_EXCLUDED_FOLDERS         |   false      | /_uploads                    | Subfolders to be not treated as docker tags                                                                                                    |
+| ARTIFACTORY_DATE_FORMAT              |   false      | yyyy-MM-dd'T'HH:mm:ss.SSSXXX | Date format to parse dates in artifactory API responses                                                                                        |
+| ARTIFACTORY_BADGE_SHIELDS_IO_ENABLED |   false      | true                         | Indicates if <a href="https://shields.io">shields.io</a> should be used to generate the badge                                                  |
+| ARTIFACTORY_BADGE_PARALLELISM        |   false      | 5                            | Amount of parallelism to use when fetching details about versions of an image                                                                  |
+| LOGGER_LEVELS_ROOT                   |   false      | INFO                         | [SLF4J](http://www.slf4j.org/api/org/apache/commons/logging/Log.html) log level, for all(framework and custom) code                            |
+| LOGGER_LEVELS_IO_GITHUB_DEVATHEROCK  |   false      | INFO                         | [SLF4J](http://www.slf4j.org/api/org/apache/commons/logging/Log.html) log level, for custom code                                               |
+| MICRONAUT_ENVIRONMENTS               |   false      | (None)                       | Setting the value to `local` will mock the calls to the artifactory. Only for testing purposes                                                 |
+| MICRONAUT_SERVER_PORT                |   false      | 8080                         | Port in which the app listens on                                                                                                               |
+| MICRONAUT_CONFIG_FILES               |   true       | (None)                       | Path to YAML config files. The YAML files can be used to specify complex, object and array properties                                          |
+| LOGBACK_CONFIGURATION_FILE           |   false      | (None)                       | Class, file or remote path to logback configuration file. Will be ignored when using a remote path with any `logger.*` or `LOGGER_` config set |
 
 ### API spec
 When the app is running, detailed API documentation can be accessed at `{host}/swagger-ui` or `{host}/swagger/artifactory-badge-{version}.yml`. The available endpoints are listed below for reference:

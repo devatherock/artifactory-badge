@@ -1,9 +1,15 @@
 package io.github.devatherock.artifactory.config;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.Semaphore;
+
+import io.github.devatherock.artifactory.util.ParallelProcessor;
+
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.http.client.BlockingHttpClient;
 import io.micronaut.http.client.HttpClient;
 import io.micronaut.http.client.annotation.Client;
+import jakarta.inject.Named;
 import jakarta.inject.Singleton;
 
 /**
@@ -21,5 +27,14 @@ public class AppConfig {
     @Singleton
     public BlockingHttpClient httpClient(@Client HttpClient httpClient) {
         return httpClient.toBlocking();
+    }
+
+    /**
+     * @param appProperties miscellaneous application properties
+     * @return a parallel processor bean
+     */
+    @Singleton
+    public ParallelProcessor parallelProcessor(@Named("blocking") Executor executor, AppProperties appProperties) {
+        return new ParallelProcessor(executor, new Semaphore(appProperties.getParallelism()));
     }
 }

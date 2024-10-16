@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Changed
 - Used virtual threads when available
+- [#26](https://github.com/devatherock/artifactory-badge/issues/26): Fetched child folder information in parallel
 
 ## [3.0.0] - 2024-10-16
 ### Added

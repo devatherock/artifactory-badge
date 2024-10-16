@@ -3,8 +3,12 @@ package io.github.devatherock.artifactory.service
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
 
+import java.util.concurrent.Executors
+import java.util.concurrent.Semaphore
+
 import io.github.devatherock.artifactory.config.ArtifactoryProperties
 import io.github.devatherock.artifactory.util.BadgeGenerator
+import io.github.devatherock.artifactory.util.ParallelProcessor
 import io.github.devatherock.test.TestUtil
 
 import com.github.tomakehurst.wiremock.WireMockServer
@@ -41,10 +45,12 @@ class DockerBadgeServiceSpec extends Specification {
     BlockingHttpClient httpClient = HttpClient.create(new URL('http://localhost:8081')).toBlocking()
     BadgeGenerator badgeGenerator = Mock()
     ArtifactoryProperties config = new ArtifactoryProperties(url: 'http://localhost:8081', apiKey: 'dummyKey')
+    ParallelProcessor parallelProcessor =
+            new ParallelProcessor(Executors.newSingleThreadExecutor(), new Semaphore(1))
 
     void setup() {
         config.init()
-        dockerBadgeService = new DockerBadgeService(httpClient, badgeGenerator, config)
+        dockerBadgeService = new DockerBadgeService(httpClient, badgeGenerator, parallelProcessor, config)
     }
 
     void 'test get image size badge - manifest not found'() {

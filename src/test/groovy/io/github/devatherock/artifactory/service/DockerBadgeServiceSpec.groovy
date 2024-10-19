@@ -3,8 +3,12 @@ package io.github.devatherock.artifactory.service
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
 
+import java.util.concurrent.Executors
+import java.util.concurrent.Semaphore
+
 import io.github.devatherock.artifactory.config.ArtifactoryProperties
 import io.github.devatherock.artifactory.util.BadgeGenerator
+import io.github.devatherock.artifactory.util.ParallelProcessor
 import io.github.devatherock.test.TestUtil
 
 import com.github.tomakehurst.wiremock.WireMockServer
@@ -41,10 +45,12 @@ class DockerBadgeServiceSpec extends Specification {
     BlockingHttpClient httpClient = HttpClient.create(new URL('http://localhost:8081')).toBlocking()
     BadgeGenerator badgeGenerator = Mock()
     ArtifactoryProperties config = new ArtifactoryProperties(url: 'http://localhost:8081', apiKey: 'dummyKey')
+    ParallelProcessor parallelProcessor =
+            new ParallelProcessor(Executors.newSingleThreadExecutor(), new Semaphore(1))
 
     void setup() {
         config.init()
-        dockerBadgeService = new DockerBadgeService(httpClient, badgeGenerator, config)
+        dockerBadgeService = new DockerBadgeService(httpClient, badgeGenerator, parallelProcessor, config)
     }
 
     void 'test get image size badge - manifest not found'() {
@@ -280,13 +286,13 @@ class DockerBadgeServiceSpec extends Specification {
         WireMock.givenThat(WireMock.get("/artifactory/api/storage/${packageName}")
                 .willReturn(WireMock.okJson(TestUtil.getFoldersResponse(packageName, '2020-10-01T00:00:00.000Z'))))
         WireMock.givenThat(WireMock.get("/artifactory/api/storage/${packageName}/1.1.0")
-                .willReturn(WireMock.okJson(TestUtil.getFoldersResponse("${packageName}/1.1.0", '2020-10-01T00:00:00.000Z'))))
-        WireMock.givenThat(WireMock.get("/artifactory/api/storage/${packageName}/1.1.2")
                 .willReturn(WireMock.notFound()))
+        WireMock.givenThat(WireMock.get("/artifactory/api/storage/${packageName}/1.1.2")
+                .willReturn(WireMock.okJson(TestUtil.getFoldersResponse("${packageName}/1.1.2", '2020-10-01T00:00:00.000Z'))))
         WireMock.givenThat(WireMock.get("/artifactory/api/storage/${packageName}/latest")
                 .willReturn(WireMock.notFound()))
         WireMock.givenThat(WireMock.get("/artifactory/api/storage/${packageName}/abcdefgh")
-                .willReturn(WireMock.notFound()))
+                .willReturn(WireMock.okJson(TestUtil.getFoldersResponse("${packageName}/abcdefgh", '2020-09-01T00:00:00.000Z'))))
 
         when:
         String badge = dockerBadgeService.getLatestVersionBadge(packageName, 'version', 'date')
@@ -309,7 +315,7 @@ class DockerBadgeServiceSpec extends Specification {
                         .withHeader(DockerBadgeService.HDR_API_KEY, equalTo('dummyKey')))
         WireMock.verify(0,
                 WireMock.getRequestedFor(urlEqualTo("/artifactory/api/storage/${packageName}/_uploads")))
-        1 * badgeGenerator.generateBadge('version', 'v1.1.0') >> 'dummyBadge'
+        1 * badgeGenerator.generateBadge('version', 'v1.1.2') >> 'dummyBadge'
         badge == 'dummyBadge'
     }
 

@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 ### Changed
+- chore(deps): update wiremock/wiremock docker tag to v3.9.2
+
+## [3.1.0] - 2024-10-22
+### Changed
 - Used virtual threads when available
 - [#26](https://github.com/devatherock/artifactory-badge/issues/26): Fetched child folder information in parallel
 - fix(deps): update dependency ch.qos.logback:logback-classic to v1.5.11

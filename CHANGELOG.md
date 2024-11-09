@@ -5,6 +5,7 @@
 - chore(deps): update wiremock/wiremock docker tag to v3.9.2
 - fix(deps): update dependency ch.qos.logback:logback-classic to v1.5.12
 - fix(deps): update dependency org.wiremock:wiremock to v3.9.2
+- chore(deps): update plugin io.gatling.gradle to v3.12.0.4
 
 ## [3.1.0] - 2024-10-22
 ### Changed

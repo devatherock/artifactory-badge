@@ -8,6 +8,7 @@
 - chore(deps): update plugin io.gatling.gradle to v3.12.0.4
 - chore(deps): update plugin io.micronaut.application to v4.4.4
 - fix(deps): update dependency org.projectlombok:lombok to v1.18.36
+- chore(deps): update dependency gradle to v8.11
 
 ## [3.1.0] - 2024-10-22
 ### Changed

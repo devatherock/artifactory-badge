@@ -10,6 +10,7 @@
 - fix(deps): update dependency org.projectlombok:lombok to v1.18.36
 - chore(deps): update dependency gradle to v8.11
 - chore(deps): update plugin io.gatling.gradle to v3.13.1
+- chore(deps): update dependency gradle to v8.11.1
 
 ## [3.1.0] - 2024-10-22
 ### Changed

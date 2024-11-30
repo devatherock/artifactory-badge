@@ -12,6 +12,7 @@
 - chore(deps): update plugin io.gatling.gradle to v3.13.1
 - chore(deps): update dependency gradle to v8.11.1
 - chore(deps): update plugin org.sonarqube to v6
+- chore(deps): update plugin org.sonarqube to v6.0.1.5171
 
 ## [3.1.0] - 2024-10-22
 ### Changed

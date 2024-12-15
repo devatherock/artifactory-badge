@@ -4,8 +4,8 @@ import static com.github.tomakehurst.wiremock.client.WireMock.equalTo
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
 
 import java.util.concurrent.Executors
-import java.util.concurrent.Semaphore
 
+import io.github.devatherock.artifactory.config.AppProperties
 import io.github.devatherock.artifactory.config.ArtifactoryProperties
 import io.github.devatherock.artifactory.util.BadgeGenerator
 import io.github.devatherock.artifactory.util.ParallelProcessor
@@ -46,7 +46,7 @@ class DockerBadgeServiceSpec extends Specification {
     BadgeGenerator badgeGenerator = Mock()
     ArtifactoryProperties config = new ArtifactoryProperties(url: 'http://localhost:8081', apiKey: 'dummyKey')
     ParallelProcessor parallelProcessor =
-            new ParallelProcessor(Executors.newSingleThreadExecutor(), new Semaphore(1))
+            new ParallelProcessor(Executors.newSingleThreadExecutor(), new AppProperties(parallelism: 1))
 
     void setup() {
         config.init()

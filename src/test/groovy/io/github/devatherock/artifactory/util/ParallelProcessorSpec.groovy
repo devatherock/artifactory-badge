@@ -2,8 +2,9 @@ package io.github.devatherock.artifactory.util
 
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
-import java.util.concurrent.Semaphore
 import java.util.function.Supplier
+
+import io.github.devatherock.artifactory.config.AppProperties
 
 import spock.lang.Specification
 import spock.lang.Subject
@@ -13,10 +14,9 @@ import spock.lang.Subject
  */
 class ParallelProcessorSpec extends Specification {
     Executor executor = Executors.newSingleThreadExecutor()
-    Semaphore semaphore = new Semaphore(1)
 
     @Subject
-    ParallelProcessor processor = new ParallelProcessor(executor, semaphore)
+    ParallelProcessor processor = new ParallelProcessor(executor, new AppProperties(parallelism: 1))
 
     void 'test parallel process - interrupted exception'() {
         given:

@@ -1,7 +1,6 @@
 package io.github.devatherock.artifactory.config;
 
 import java.util.concurrent.Executor;
-import java.util.concurrent.Semaphore;
 
 import io.github.devatherock.artifactory.util.ParallelProcessor;
 
@@ -35,6 +34,6 @@ public class AppConfig {
      */
     @Singleton
     public ParallelProcessor parallelProcessor(@Named("blocking") Executor executor, AppProperties appProperties) {
-        return new ParallelProcessor(executor, new Semaphore(appProperties.getParallelism()));
+        return new ParallelProcessor(executor, appProperties);
     }
 }

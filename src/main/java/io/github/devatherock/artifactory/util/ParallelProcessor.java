@@ -11,6 +11,8 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Semaphore;
 import java.util.function.Supplier;
 
+import io.github.devatherock.artifactory.config.AppProperties;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,11 +20,13 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class ParallelProcessor {
     private final Executor executor;
-    private final Semaphore semaphore; // To limit parallelism in case of outbound API calls
+    private final AppProperties config;
 
     public <T> List<T> parallelProcess(List<Supplier<T>> suppliers) {
         Map<Integer, Optional<T>> result = new ConcurrentHashMap<>();
         CountDownLatch countDownLatch = new CountDownLatch(suppliers.size());
+        Semaphore semaphore = new Semaphore(config.getParallelism()); // To limit parallelism in case of outbound API
+                                                                      // calls
 
         try {
             for (int index = 0; index < suppliers.size(); index++) {

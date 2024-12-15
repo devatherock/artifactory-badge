@@ -2,22 +2,16 @@
 
 ## [Unreleased]
 ### Changed
-- chore(deps): update wiremock/wiremock docker tag to v3.9.2
 - fix(deps): update dependency ch.qos.logback:logback-classic to v1.5.12
-- fix(deps): update dependency org.wiremock:wiremock to v3.9.2
-- chore(deps): update plugin io.gatling.gradle to v3.12.0.4
 - chore(deps): update plugin io.micronaut.application to v4.4.4
 - fix(deps): update dependency org.projectlombok:lombok to v1.18.36
-- chore(deps): update dependency gradle to v8.11
 - chore(deps): update plugin io.gatling.gradle to v3.13.1
 - chore(deps): update dependency gradle to v8.11.1
-- chore(deps): update plugin org.sonarqube to v6
 - chore(deps): update plugin org.sonarqube to v6.0.1.5171
-- fix(deps): update dependency org.jsoup:jsoup to v1.18.2
-- chore(deps): update wiremock/wiremock docker tag to v3.10.0
 - fix(deps): update dependency org.wiremock:wiremock to v3.10.0
 - fix(deps): update dependency org.jsoup:jsoup to v1.18.3
 - chore(deps): update alpine docker tag to v3.21.0
+- Outbound API call throttling logic to be per incoming request instead of global
 
 ## [3.1.0] - 2024-10-22
 ### Changed

@@ -12,6 +12,7 @@
 - fix(deps): update dependency org.jsoup:jsoup to v1.18.3
 - chore(deps): update alpine docker tag to v3.21.0
 - Outbound API call throttling logic to be per incoming request instead of global
+- chore(deps): update plugin io.gatling.gradle to v3.13.1.2
 
 ## [3.1.0] - 2024-10-22
 ### Changed

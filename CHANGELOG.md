@@ -15,6 +15,7 @@
 - chore(deps): update plugin io.gatling.gradle to v3.13.1.2
 - fix(deps): update dependency ch.qos.logback:logback-classic to v1.5.15
 - chore(deps): update dependency gradle to v8.12
+- chore(deps): update alpine docker tag to v3.21.2
 
 ## [3.1.0] - 2024-10-22
 ### Changed

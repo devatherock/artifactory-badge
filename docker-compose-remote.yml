@@ -10,7 +10,7 @@ services:
       - LOGBACK_CONFIGURATION_FILE=https://raw.githubusercontent.com/devatherock/artifactory-badge/master/src/test/resources/logback-tests.xml
 
   health:
-    image: alpine:3.21.0
+    image: alpine:3.21.2
     network_mode: "host"
     depends_on:
       - artifactory-badge

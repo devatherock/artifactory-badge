@@ -22,6 +22,7 @@
 - chore(deps): update plugin io.micronaut.application to v4.4.5
 - chore(deps): update dependency gradle to v8.12.1
 - chore(deps): update plugin io.gatling.gradle to v3.13.3
+- chore(deps): update plugin io.gatling.gradle to v3.13.3.1
 
 ## [3.1.0] - 2024-10-22
 ### Changed

@@ -25,6 +25,7 @@
 - chore(deps): update plugin io.gatling.gradle to v3.13.3.1
 - chore(deps): update plugin io.gatling.gradle to v3.13.3.2
 - chore(deps): update wiremock/wiremock docker tag to v3.11.0
+- fix(deps): update dependency org.wiremock:wiremock to v3.11.0
 
 ## [3.1.0] - 2024-10-22
 ### Changed

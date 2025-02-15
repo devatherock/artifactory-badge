@@ -12,7 +12,7 @@ services:
       - LOGGER_LEVELS_IO_MICRONAUT_HTTP_SERVER_NETTY=DEBUG
 
   health:
-    image: alpine:3.21.2
+    image: alpine:3.21.3
     network_mode: "host"
     depends_on:
       - artifactory-badge

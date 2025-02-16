@@ -29,6 +29,7 @@
 - chore(deps): update alpine docker tag to v3.21.3
 - chore(deps): update plugin io.gatling.gradle to v3.13.4
 - chore(deps): update wiremock/wiremock docker tag to v3.12.0
+- fix(deps): update dependency org.wiremock:wiremock to v3.12.0
 
 ## [3.1.0] - 2024-10-22
 ### Changed

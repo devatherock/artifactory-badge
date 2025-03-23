@@ -38,6 +38,7 @@
 - fix(deps): update dependency org.wiremock:wiremock to v3.12.1
 - chore(deps): update plugin io.micronaut.application to v4.5.0
 - chore(deps): update plugin io.gatling.gradle to v3.13.5.1
+- fix(deps): update dependency ch.qos.logback:logback-classic to v1.5.18
 
 ## [3.1.0] - 2024-10-22
 ### Changed

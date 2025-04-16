@@ -40,6 +40,7 @@
 - chore(deps): update plugin io.gatling.gradle to v3.13.5.1
 - fix(deps): update dependency ch.qos.logback:logback-classic to v1.5.18
 - fix(deps): update dependency org.jsoup:jsoup to v1.19.1
+- chore(deps): update plugin io.micronaut.application to v4.5.3
 
 ## [3.1.0] - 2024-10-22
 ### Changed

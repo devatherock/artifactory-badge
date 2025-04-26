@@ -42,6 +42,7 @@
 - fix(deps): update dependency org.jsoup:jsoup to v1.19.1
 - chore(deps): update plugin io.micronaut.application to v4.5.3
 - chore(deps): update plugin com.diffplug.spotless to v7.0.3
+- chore(deps): update plugin io.gatling.gradle to v3.13.5.4
 
 ## [3.1.0] - 2024-10-22
 ### Changed

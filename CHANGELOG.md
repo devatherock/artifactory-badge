@@ -44,6 +44,7 @@
 - chore(deps): update plugin com.diffplug.spotless to v7.0.3
 - chore(deps): update plugin io.gatling.gradle to v3.13.5.4
 - fix(deps): update dependency org.projectlombok:lombok to v1.18.38
+- chore(deps): update dependency gradle to v8.14
 
 ## [3.1.0] - 2024-10-22
 ### Changed

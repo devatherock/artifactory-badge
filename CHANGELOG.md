@@ -48,6 +48,7 @@
 - chore(deps): update plugin org.sonarqube to v6.1.0.5360
 - chore(deps): update wiremock/wiremock docker tag to v3.13.0
 - fix(deps): update dependency net.logstash.logback:logstash-logback-encoder to v8.1
+- fix(deps): update dependency org.jsoup:jsoup to v1.20.1
 
 ## [3.1.0] - 2024-10-22
 ### Changed

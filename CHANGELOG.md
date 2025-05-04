@@ -46,6 +46,7 @@
 - fix(deps): update dependency org.projectlombok:lombok to v1.18.38
 - chore(deps): update dependency gradle to v8.14
 - chore(deps): update plugin org.sonarqube to v6.1.0.5360
+- chore(deps): update wiremock/wiremock docker tag to v3.13.0
 
 ## [3.1.0] - 2024-10-22
 ### Changed

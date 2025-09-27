@@ -51,6 +51,7 @@
 - fix(deps): update dependency org.jsoup:jsoup to v1.20.1
 - fix(deps): update dependency org.wiremock:wiremock to v3.13.1
 - chore(deps): update gradle to v8.14.3
+- chore(deps): update plugin io.micronaut.application to v4.5.4
 
 ## [3.1.0] - 2024-10-22
 ### Changed

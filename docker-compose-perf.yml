@@ -1,7 +1,7 @@
 services:
 
   wiremock:
-    image: wiremock/wiremock:3.13.0
+    image: wiremock/wiremock:3.13.1
     ports:
       - '8081:8080'
     volumes:

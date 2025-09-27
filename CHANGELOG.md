@@ -50,6 +50,7 @@
 - fix(deps): update dependency net.logstash.logback:logstash-logback-encoder to v8.1
 - fix(deps): update dependency org.jsoup:jsoup to v1.20.1
 - fix(deps): update dependency org.wiremock:wiremock to v3.13.1
+- chore(deps): update gradle to v8.14.3
 
 ## [3.1.0] - 2024-10-22
 ### Changed

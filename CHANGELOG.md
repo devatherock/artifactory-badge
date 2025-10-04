@@ -55,6 +55,7 @@
 - chore(deps): update wiremock/wiremock docker tag to v3.13.1
 - fix(deps): update dependency org.projectlombok:lombok to v1.18.42
 - chore(deps): update alpine docker tag to v3.22.1
+- chore(deps): update plugin io.micronaut.application to v4.5.5
 
 ## [3.1.0] - 2024-10-22
 ### Changed

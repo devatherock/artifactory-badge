@@ -7,7 +7,7 @@ plugins {
     id 'org.sonarqube' version '6.1.0.5360'
     id 'com.github.kt3k.coveralls' version '2.12.2'
     id 'com.diffplug.spotless' version '7.2.1'
-    id 'io.gatling.gradle' version '3.13.5.4'
+    id 'io.gatling.gradle' version '3.14.5.1'
 }
 
 version "3.0.0"

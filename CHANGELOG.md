@@ -57,6 +57,7 @@
 - chore(deps): update alpine docker tag to v3.22.1
 - chore(deps): update plugin io.micronaut.application to v4.5.5
 - fix(deps): update dependency ch.qos.logback:logback-classic to v1.5.19
+- chore(deps): update plugin com.diffplug.spotless to v7.2.1
 
 ## [3.1.0] - 2024-10-22
 ### Changed

@@ -56,6 +56,7 @@
 - fix(deps): update dependency org.projectlombok:lombok to v1.18.42
 - chore(deps): update alpine docker tag to v3.22.1
 - chore(deps): update plugin io.micronaut.application to v4.5.5
+- fix(deps): update dependency ch.qos.logback:logback-classic to v1.5.19
 
 ## [3.1.0] - 2024-10-22
 ### Changed

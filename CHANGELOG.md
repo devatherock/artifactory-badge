@@ -61,6 +61,7 @@
 - chore(deps): update plugin io.gatling.gradle to v3.14.5.1
 - chore(deps): update plugin org.sonarqube to v6.3.1.5724
 - chore(deps): update alpine docker tag to v3.22.2
+- fix(deps): update dependency org.jsoup:jsoup to v1.21.2
 
 ## [3.1.0] - 2024-10-22
 ### Changed

@@ -2,59 +2,11 @@
 
 ## [Unreleased]
 ### Changed
-- fix(deps): update dependency ch.qos.logback:logback-classic to v1.5.12
-- chore(deps): update plugin io.micronaut.application to v4.4.4
-- fix(deps): update dependency org.projectlombok:lombok to v1.18.36
-- chore(deps): update plugin io.gatling.gradle to v3.13.1
-- chore(deps): update dependency gradle to v8.11.1
-- chore(deps): update plugin org.sonarqube to v6.0.1.5171
-- fix(deps): update dependency org.wiremock:wiremock to v3.10.0
-- fix(deps): update dependency org.jsoup:jsoup to v1.18.3
-- chore(deps): update alpine docker tag to v3.21.0
 - Outbound API call throttling logic to be per incoming request instead of global
-- chore(deps): update plugin io.gatling.gradle to v3.13.1.2
-- fix(deps): update dependency ch.qos.logback:logback-classic to v1.5.15
-- chore(deps): update dependency gradle to v8.12
-- chore(deps): update alpine docker tag to v3.21.2
-- fix(deps): update dependency ch.qos.logback:logback-classic to v1.5.16
-- chore(deps): update plugin com.diffplug.spotless to v7
-- chore(deps): update plugin com.diffplug.spotless to v7.0.2
-- chore(deps): update plugin io.micronaut.application to v4.4.5
-- chore(deps): update dependency gradle to v8.12.1
-- chore(deps): update plugin io.gatling.gradle to v3.13.3
-- chore(deps): update plugin io.gatling.gradle to v3.13.3.1
-- chore(deps): update plugin io.gatling.gradle to v3.13.3.2
-- chore(deps): update wiremock/wiremock docker tag to v3.11.0
-- fix(deps): update dependency org.wiremock:wiremock to v3.11.0
-- chore(deps): update alpine docker tag to v3.21.3
-- chore(deps): update plugin io.gatling.gradle to v3.13.4
-- chore(deps): update wiremock/wiremock docker tag to v3.12.0
-- fix(deps): update dependency org.wiremock:wiremock to v3.12.0
-- chore(deps): update plugin io.gatling.gradle to v3.13.4.1
-- fix(deps): update dependency ch.qos.logback:logback-classic to v1.5.17
-- chore(deps): update dependency gradle to v8.13
-- chore(deps): update wiremock/wiremock docker tag to v3.12.1
-- chore(deps): update plugin io.gatling.gradle to v3.13.5
-- fix(deps): update dependency org.wiremock:wiremock to v3.12.1
-- chore(deps): update plugin io.micronaut.application to v4.5.0
-- chore(deps): update plugin io.gatling.gradle to v3.13.5.1
-- fix(deps): update dependency ch.qos.logback:logback-classic to v1.5.18
-- fix(deps): update dependency org.jsoup:jsoup to v1.19.1
-- chore(deps): update plugin io.micronaut.application to v4.5.3
-- chore(deps): update plugin com.diffplug.spotless to v7.0.3
-- chore(deps): update plugin io.gatling.gradle to v3.13.5.4
-- fix(deps): update dependency org.projectlombok:lombok to v1.18.38
-- chore(deps): update dependency gradle to v8.14
-- chore(deps): update plugin org.sonarqube to v6.1.0.5360
-- chore(deps): update wiremock/wiremock docker tag to v3.13.0
 - fix(deps): update dependency net.logstash.logback:logstash-logback-encoder to v8.1
-- fix(deps): update dependency org.jsoup:jsoup to v1.20.1
 - fix(deps): update dependency org.wiremock:wiremock to v3.13.1
-- chore(deps): update gradle to v8.14.3
-- chore(deps): update plugin io.micronaut.application to v4.5.4
 - chore(deps): update wiremock/wiremock docker tag to v3.13.1
 - fix(deps): update dependency org.projectlombok:lombok to v1.18.42
-- chore(deps): update alpine docker tag to v3.22.1
 - chore(deps): update plugin io.micronaut.application to v4.5.5
 - fix(deps): update dependency ch.qos.logback:logback-classic to v1.5.19
 - chore(deps): update plugin com.diffplug.spotless to v7.2.1
@@ -63,6 +15,7 @@
 - chore(deps): update alpine docker tag to v3.22.2
 - fix(deps): update dependency org.jsoup:jsoup to v1.21.2
 - chore(deps): update gradle to v9
+- Switched to com.gradleup.shadow gradle plugin from com.github.johnrengelman.shadow
 
 ## [3.1.0] - 2024-10-22
 ### Changed
